@@ -1,50 +1,25 @@
 version: "3.8"
 
 services:
-  postgres_users_db:
-    container_name: postgres_users_db
-    image: ghcr.io/joseesco24/postgres_users_db:latest
+  sar_bd_mysql:
+    container_name: sar_bd_mysql
+    image: ghcr.io/joseesco24/sar_bd_mysql:v1.0.0
     networks:
-      - dockerized_databases_network
+      - sar_system_network
     ports:
-      - target: 5432
-        published: 5434
+      - target: 3306
+        published: 3308
         protocol: tcp
     volumes:
       - type: volume
-        source: postgres_users_db_disc
-        target: /var/lib/postgresql/data
-
-  mongo_configs_db:
-    container_name: mongo_configs_db
-    image: ghcr.io/joseesco24/mongo_configs_db:latest
-    networks:
-      - dockerized_databases_network
-    ports:
-      - target: 27017
-        published: 5440
-        protocol: tcp
-    volumes:
-      - type: volume
-        source: mongo_configs_db_disc
-        target: /data/db
-
-  redis_cache_db:
-    container_name: redis_cache_db
-    image: ghcr.io/joseesco24/redis_cache_db:latest
-    networks:
-      - dockerized_databases_network
-    ports:
-      - target: 6378
-        published: 5436
-        protocol: tcp
+        source: sar_bd_mysql_disc
+        target: /var/lib/mysql
 
 networks:
-  dockerized_databases_network:
-    name: dockerized_databases_network
+  sar_system_network:
+    name: sar_system_network
     external: false
     driver: bridge
 
 volumes:
-  postgres_users_db_disc:
-  mongo_configs_db_disc:
+  sar_bd_mysql_disc:
