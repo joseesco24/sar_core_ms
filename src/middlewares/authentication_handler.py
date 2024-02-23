@@ -57,7 +57,7 @@ class AuthenticationHandler(metaclass=Singleton):
 
         is_authenticated: bool = False
 
-        if endpoint_url in configs.app_database_health_check_middleware_exclude:
+        if endpoint_url in configs.app_authentication_handler_middleware_exclude:
             logging.info("jumping authentication middleware validations")
             is_authenticated = True
 

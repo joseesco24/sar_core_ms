@@ -78,7 +78,7 @@ else:
 # ** info: setting up app middlewares
 # ---------------------------------------------------------------------------------------------------------------------
 
-if configs.app_use_database_health_check_middleware is True:
+if configs.app_use_authentication_handler_middleware is True:
     logging.info("authentication middleware active")
     sar_ms_py.add_middleware(middleware_class=BaseHTTPMiddleware, dispatch=authentication_handler)
 else:
