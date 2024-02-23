@@ -1,8 +1,14 @@
 version: "3.8"
 
 services:
-  users_crud_api_python_app:
-    image: ghcr.io/joseesco24/users_crud_api_python:v1.0.0
+  sar_ms_py_v1.0.0:
+    image: ghcr.io/joseesco24/sar_ms_py:v1.0.0
+    build:
+      dockerfile: Dockerfile
+      context: ../.
+
+  sar_ms_py_latest:
+    image: ghcr.io/joseesco24/sar_ms_py:latest
     build:
       dockerfile: Dockerfile
       context: ../.

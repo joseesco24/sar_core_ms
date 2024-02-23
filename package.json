@@ -14,6 +14,7 @@
 		"docker-dependencies-stop": "docker compose -f docker_compose/deploy.dependencies.yaml down",
 		"docker-dependencies-start": "docker compose -f docker_compose/deploy.dependencies.yaml up",
 		"docker-image-build": "docker compose -f docker_compose/image.build.yaml build",
+		"docker-image-push": "docker push ghcr.io/joseesco24/sar_ms_py --all-tags",
 		"docker-full-stop": "docker compose -f docker_compose/deploy.full.yaml down",
 		"docker-full-start": "docker compose -f docker_compose/deploy.full.yaml up",
 		"start-dev": "APP_ENVIRONMENT_MODE=development python src/sar_ms_py.py",
