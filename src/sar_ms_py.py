@@ -27,8 +27,8 @@ from fastapi import FastAPI
 from starlette.middleware.base import BaseHTTPMiddleware
 
 # ** info: rest based routers imports
+from src.rest_routers.collect_request_router import CollectRequestRouter
 from src.rest_routers.parameter_router import ParameterRouter
-from src.rest_routers.request_router import RequestRouter
 
 # ** info: artifacts imports
 from src.artifacts.logging.custom_logger import custom_logger
@@ -56,8 +56,8 @@ rest_router: APIRouter = APIRouter(prefix=generator.build_posix_path("rest"))
 # ** info: setting rest routers
 # ---------------------------------------------------------------------------------------------------------------------
 
-request_router: RequestRouter = RequestRouter()
-rest_router.include_router(request_router.router)
+collect_request_router: CollectRequestRouter = CollectRequestRouter()
+rest_router.include_router(collect_request_router.router)
 
 parameter_router: ParameterRouter = ParameterRouter()
 rest_router.include_router(parameter_router.router)

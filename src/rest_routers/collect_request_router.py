@@ -13,16 +13,16 @@ from fastapi import Body
 from src.artifacts.path.generator import generator
 
 # ** info: health check dtos imports
-from src.dtos.request_dtos import RequestCreateResponseDto
-from src.dtos.request_dtos import RequestCreateRequestDto
+from src.dtos.collect_request_dtos import CollectRequestCreateResponseDto
+from src.dtos.collect_request_dtos import CollectRequestCreateRequestDto
 
 # ** info: rest controllers imports
-from src.rest_controllers.request_controller import RequestController
+from src.rest_controllers.collect_request_controller import CollectRequestController
 
-__all__: list[str] = ["RequestRouter"]
+__all__: list[str] = ["CollectRequestRouter"]
 
 
-class RequestRouter:
+class CollectRequestRouter:
     def __init__(self: Self):
         # ** info: building class router
         self.router: APIRouter = APIRouter(prefix=generator.build_posix_path("request"))
@@ -30,15 +30,15 @@ class RequestRouter:
         # ** info: bulding router endpoints
         self.router.add_api_route(
             path=generator.build_posix_path("create"),
-            response_model=RequestCreateResponseDto,
+            response_model=CollectRequestCreateResponseDto,
             endpoint=self.api_request_create,
             status_code=status.HTTP_200_OK,
             methods=["POST"],
         )
 
         # ** info: building router controllers
-        self.request_controller: RequestController = RequestController()
+        self.collect_request_controller: CollectRequestController = CollectRequestController()
 
-    async def api_request_create(self: Self, request_create_request: RequestCreateRequestDto = Body(...)) -> RequestCreateResponseDto:
-        request_create_response: RequestCreateResponseDto = await self.request_controller.driver_request_create(request_create_request)
+    async def api_request_create(self: Self, request_create_request: CollectRequestCreateRequestDto = Body(...)) -> CollectRequestCreateResponseDto:
+        request_create_response: CollectRequestCreateResponseDto = await self.collect_request_controller.driver_request_create(request_create_request)
         return request_create_response

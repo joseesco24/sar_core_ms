@@ -9,7 +9,7 @@ from pydantic import Field
 from typing import Optional
 from typing import List
 
-__all__: list[str] = ["RequestCreateRequestDto", "RequestCreateResponseDto", "RequestRequestDataDto", "RequestWasteDataDto"]
+__all__: list[str] = ["CollectRequestCreateRequestDto", "CollectRequestCreateResponseDto", "RequestRequestDataDto", "RequestWasteDataDto"]
 
 
 class RequestWasteDataDto(BaseModel):
@@ -26,7 +26,7 @@ class RequestRequestDataDto(BaseModel):
     collectDate: str = Field(...)
 
 
-class RequestCreateRequestDto(BaseModel):
+class CollectRequestCreateRequestDto(BaseModel):
     waste: List[RequestWasteDataDto] = Field(...)
     request: RequestRequestDataDto = Field(...)
 
@@ -48,6 +48,6 @@ class ResponseRequestDataDto(BaseModel):
     id: Optional[str] = None
 
 
-class RequestCreateResponseDto(BaseModel):
+class CollectRequestCreateResponseDto(BaseModel):
     waste: Optional[List[ResponseWasteDataDto]] = None
     request: Optional[ResponseRequestDataDto] = None

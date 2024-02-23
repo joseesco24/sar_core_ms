@@ -5,17 +5,17 @@
 from typing import Self
 
 # ** info: health check dtos imports
-from src.dtos.request_dtos import RequestCreateResponseDto
-from src.dtos.request_dtos import RequestCreateRequestDto
-from src.dtos.request_dtos import ResponseRequestDataDto
-from src.dtos.request_dtos import ResponseWasteDataDto
+from src.dtos.collect_request_dtos import CollectRequestCreateResponseDto
+from src.dtos.collect_request_dtos import CollectRequestCreateRequestDto
+from src.dtos.collect_request_dtos import ResponseRequestDataDto
+from src.dtos.collect_request_dtos import ResponseWasteDataDto
 
-__all__: list[str] = ["RequestController"]
+__all__: list[str] = ["CollectRequestController"]
 
 
-class RequestController:
-    async def driver_request_create(self: Self, request_create_request: RequestCreateRequestDto) -> RequestCreateResponseDto:
-        request_create_response: RequestCreateResponseDto = RequestCreateResponseDto()
+class CollectRequestController:
+    async def driver_request_create(self: Self, request_create_request: CollectRequestCreateRequestDto) -> CollectRequestCreateResponseDto:
+        request_create_response: CollectRequestCreateResponseDto = CollectRequestCreateResponseDto()
 
         request_detail: ResponseRequestDataDto = ResponseRequestDataDto()
         request_detail.id = "ee8a7b81-9062-45e1-9a31-ea9989571719"
