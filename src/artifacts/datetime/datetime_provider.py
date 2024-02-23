@@ -8,13 +8,11 @@ from datetime import datetime
 # ** info: typing imports
 from typing import Self
 
-# ** info: artifacts imports
-from src.artifacts.pattern.singleton import Singleton
 
-__all__: list[str] = ["datetime_provider"]
+__all__: list[str] = ["DatetimeProvider"]
 
 
-class DatetimeProvider(metaclass=Singleton):
+class DatetimeProvider:
     def get_utc_time(self: Self) -> datetime:
         return datetime.utcnow()
 

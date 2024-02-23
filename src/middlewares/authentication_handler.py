@@ -19,14 +19,13 @@ from starlette.requests import Request
 # ** info: fastapi imports
 from fastapi import status
 
-# ** info: artifacts imports
-from src.artifacts.pattern.singleton import Singleton
+
 from src.artifacts.env.configs import configs
 
 __all__: list[str] = ["authentication_handler"]
 
 
-class AuthenticationHandler(metaclass=Singleton):
+class AuthenticationHandler:
 
     """authentication handler
     this class provides a custom authentication middleware for fastapi based applications

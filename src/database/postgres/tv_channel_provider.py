@@ -19,14 +19,13 @@ from src.dtos.tv_programmation_dtos import TvProgrammationResponseDto
 # ** info: users database connection manager import
 from src.database.postgres.connection_manager import CrudManagedSession
 
-# ** info: artifacts imports
-from src.artifacts.pattern.singleton import Singleton
+
 from src.artifacts.env.configs import configs
 
 __all__: list[str] = ["tv_programattion_provider"]
 
 
-class TvProgramattionProvider(metaclass=Singleton):
+class TvProgramattionProvider:
     def __init__(self: Self):
         self.connection_manager: CrudManagedSession = CrudManagedSession(
             password=configs.tv_database_password,

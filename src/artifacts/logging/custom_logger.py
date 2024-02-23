@@ -26,12 +26,12 @@ from loguru._recattrs import RecordException
 # ** info: artifacts imports
 from src.artifacts.datetime.datetime_provider import datetime_provider
 from src.artifacts.uuid.uuid_provider import uuid_provider
-from src.artifacts.pattern.singleton import Singleton
+
 
 __all__: list[str] = ["custom_logger"]
 
 
-class CustomLogger(metaclass=Singleton):
+class CustomLogger:
     def __init__(self: Self) -> None:
         self._extras: Dict[str, str] = {
             "internalId": "397d4343-2855-4c92-b64b-58ee82006e0b",

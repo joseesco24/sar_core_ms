@@ -25,12 +25,12 @@ from starlette.requests import Request
 # ** info: artifacts imports
 from src.artifacts.datetime.datetime_provider import datetime_provider
 from src.artifacts.uuid.uuid_provider import uuid_provider
-from src.artifacts.pattern.singleton import Singleton
+
 
 __all__: list[str] = ["logger_contextualizer"]
 
 
-class LoggerContextualizer(metaclass=Singleton):
+class LoggerContextualizer:
 
     """logger contextualizer
     this class provides a custom loguru contextualizer middleware for fastapi based applications

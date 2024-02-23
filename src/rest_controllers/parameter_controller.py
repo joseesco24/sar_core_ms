@@ -9,7 +9,7 @@ from src.dtos.parameter_dtos import ParameterSearchResponseDto
 from src.dtos.parameter_dtos import ParameterSearchRequestDto
 from src.dtos.parameter_dtos import ParameterDataDto
 
-__all__: list[str] = ["parameter_controller"]
+__all__: list[str] = ["ParameterController"]
 
 
 class ParameterController:
@@ -27,6 +27,3 @@ class ParameterController:
         parameter_search_response.values = [waste_1, waste_2]
 
         return parameter_search_response
-
-
-parameter_controller: ParameterController = ParameterController()

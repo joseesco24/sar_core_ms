@@ -19,13 +19,11 @@ from starlette.requests import Request
 # ** info: fastapi imports
 from fastapi import status
 
-# ** info: artifacts imports
-from src.artifacts.pattern.singleton import Singleton
 
 __all__: list[str] = ["error_handler"]
 
 
-class ErrorHandler(metaclass=Singleton):
+class ErrorHandler:
 
     """error handler
     this class provides a custom error handler middleware for fastapi based applications

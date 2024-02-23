@@ -19,14 +19,13 @@ from src.dtos.users_dtos import UserDto
 # ** info: users database connection manager import
 from src.database.postgres.connection_manager import CrudManagedSession
 
-# ** info: artifacts imports
-from src.artifacts.pattern.singleton import Singleton
+
 from src.artifacts.env.configs import configs
 
 __all__: list[str] = ["users_provider"]
 
 
-class UsersProvider(metaclass=Singleton):
+class UsersProvider:
     def __init__(self: Self):
         self.connection_manager: CrudManagedSession = CrudManagedSession(
             password=configs.database_password,
