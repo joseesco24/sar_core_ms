@@ -1,0 +1,85 @@
+{
+	"info": {
+		"_postman_id": "4e74ce64-996c-46ad-9a6a-5a10cbe9afc0",
+		"name": "sars_ms_py",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8443281"
+	},
+	"item": [
+		{
+			"name": "rest",
+			"item": [
+				{
+					"name": "parameter",
+					"item": [
+						{
+							"name": "search-programmation-pretty-return",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"domain\": \"wasteType\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/rest/parameter/search",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"rest",
+										"parameter",
+										"search"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "HOST",
+			"value": "{{LOCAL_HOST}}",
+			"type": "string"
+		},
+		{
+			"key": "LOCAL_HOST",
+			"value": "localhost:10048",
+			"type": "string"
+		},
+		{
+			"key": "CLOUD_HOST",
+			"value": "http://13.92.28.33:10048",
+			"type": "string"
+		}
+	]
+}
