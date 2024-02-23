@@ -13,7 +13,7 @@
 					"name": "parameter",
 					"item": [
 						{
-							"name": "search-programmation-pretty-return",
+							"name": "search",
 							"request": {
 								"method": "POST",
 								"header": [],
@@ -35,6 +35,39 @@
 										"rest",
 										"parameter",
 										"search"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "request",
+					"item": [
+						{
+							"name": "create",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"request\": {\n        \"productionCenterId\": 123456789,\n        \"collectDate\": \"24/12/2024\"\n    },\n    \"waste\": [\n        {\n            \"type\": 1,\n            \"weightInKg\": 18.2,\n            \"volumeInL\": 18.4,\n            \"packaging\": 1,\n            \"description\": \"aaaa\",\n            \"note\": \"aaaa\"\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/rest/request/create",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"rest",
+										"request",
+										"create"
 									]
 								}
 							},
