@@ -1,0 +1,32 @@
+{
+	"name": "sar_ms_py",
+	"version": "1.0.0",
+	"description": "This repository corresponds to the a small python microservice that is gint to be used used in the sar system.",
+	"author": {
+		"email": "josed.escobar@outlook.com",
+		"name": "joseesco24"
+	},
+	"readme": "readme.md",
+	"scripts": {
+		"export-dependencies": "poetry export --without-hashes --only dev --format=requirements.txt > ./requirements/dev.txt && poetry export --without-hashes --format=requirements.txt > ./requirements/app.txt",
+		"clean-cache": "find . | grep -E \"(/__pycache__$|\\.pyc$|\\.pyo$)\" | xargs rm -rf && rm -r .mypy_cache .pytest_cache",
+		"lint": "flake8 ./src --max-line-length=150 --verbose && mypy --explicit-package-bases ./src",
+		"docker-build-ms-image": "docker compose -f docker_compose/compose.project.build.yaml build",
+		"docker-stop-databases": "docker compose -f docker_compose/compose.databases.yaml down",
+		"docker-start-databases": "docker compose -f docker_compose/compose.databases.yaml up",
+		"docker-stop-proyect": "docker compose -f docker_compose/compose.project.yaml down",
+		"docker-start-proyect": "docker compose -f docker_compose/compose.project.yaml up",
+		"start-dev": "APP_ENVIRONMENT_MODE=development python src/main.py",
+		"start-app": "APP_ENVIRONMENT_MODE=production python src/main.py",
+		"format": "black ./src --line-length=150",
+		"commitmsg": "bash hooks/commit-msg.sh",
+		"precommit": "bash hooks/pre-commit.sh",
+		"postinstall": "npx husky install",
+		"test": "pytest"
+	},
+	"devDependencies": {
+		"@commitlint/cli": "^18.6.1",
+		"@commitlint/config-conventional": "^18.6.2",
+		"husky": "^9.0.11"
+	}
+}

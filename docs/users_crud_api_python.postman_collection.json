@@ -1,0 +1,243 @@
+{
+	"info": {
+		"_postman_id": "d8b93edf-bd93-4659-8fbf-9f29eb46b16a",
+		"name": "users_crud_api_python",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8443281"
+	},
+	"item": [
+		{
+			"name": "graphql",
+			"item": [
+				{
+					"name": "users",
+					"item": [
+						{
+							"name": "add-user",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"test response status\", function() {",
+											"    pm.response.to.have.status(200)",
+											"})",
+											"",
+											"pm.test(\"test response time is less than 300s\", function() {",
+											"    pm.expect(pm.response.responseTime).to.be.below(300)",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "graphql",
+									"graphql": {
+										"query": "mutation {\n    nuevoUsuario: addUser (\n        estatalId: 1075313854,\n        firstName: \"jose\",\n        lastName: \"daniel\",\n        phoneNumber: 3188987488,\n        email: \"josed@outlook.com\",\n        gender: \"Male\",\n        birthday: \"1998-07-24\",\n        password: \"password\"\n    ) {\n        idSistema: internalId\n        nombre: firstName\n        apellido: lastName\n        cedula: estatalId\n        numeroTelefono: phoneNumber\n        genero: gender\n        fechaNacimiento: birthday\n        correo: email\n    }\n}",
+										"variables": ""
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/graphql/users",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"graphql",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "list-users",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"test response status\", function() {",
+											"    pm.response.to.have.status(200)",
+											"})",
+											"",
+											"pm.test(\"test response time is less than 300s\", function() {",
+											"    pm.expect(pm.response.responseTime).to.be.below(300)",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "graphql",
+									"graphql": {
+										"query": "query {\n    usuarios: listUsers (\n        limit: 4, \n        offset: 0,\n        ) {\n        idSistema: internalId\n        nombre: firstName\n        apellido: lastName\n        cedula: estatalId\n        numeroTelefono: phoneNumber\n        genero: gender\n        fechaNacimiento: birthday\n        correo: email\n    }\n}",
+										"variables": ""
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/graphql/users",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"graphql",
+										"users"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "rest",
+			"item": [
+				{
+					"name": "tv-channel",
+					"item": [
+						{
+							"name": "programmation",
+							"item": [
+								{
+									"name": "add-programmation",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"channelId\": 1,\n    \"channelName\": \"palpito\",\n    \"channelContentType\": \"novela\",\n    \"startHoure\": \"14:00:00\",\n    \"endHoure\": \"15:00:00\",\n    \"weeks\": [\n        17,\n        18,\n        19,\n        20\n    ],\n    \"days\": [\n        1,\n        2,\n        3,\n        4,\n        5\n    ],\n    \"year\": 2023\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{HOST}}/rest/tv-channel/programmation/add-programmation",
+											"host": [
+												"{{HOST}}"
+											],
+											"path": [
+												"rest",
+												"tv-channel",
+												"programmation",
+												"add-programmation"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "search-programmation-raw-return",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"weeks\": [\n        18\n    ]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{HOST}}/rest/tv-channel/programmation/search-programmation-raw-return",
+											"host": [
+												"{{HOST}}"
+											],
+											"path": [
+												"rest",
+												"tv-channel",
+												"programmation",
+												"search-programmation-raw-return"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "search-programmation-pretty-return",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"weeks\": [\n        18\n    ]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{HOST}}/rest/tv-channel/programmation/search-programmation-pretty-return",
+											"host": [
+												"{{HOST}}"
+											],
+											"path": [
+												"rest",
+												"tv-channel",
+												"programmation",
+												"search-programmation-pretty-return"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "HOST",
+			"value": "{{CLOUD_HOST}}",
+			"type": "string"
+		},
+		{
+			"key": "LOCAL_HOST",
+			"value": "localhost:10048",
+			"type": "string"
+		},
+		{
+			"key": "CLOUD_HOST",
+			"value": "http://13.92.28.33:10048",
+			"type": "string"
+		}
+	]
+}
