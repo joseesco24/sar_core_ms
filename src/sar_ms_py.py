@@ -10,7 +10,6 @@ import sys
 
 # ** info: typing imports
 from typing import Dict
-from typing import List
 from typing import Any
 
 # **info: appending src path to the system paths for absolute imports from src path
@@ -26,14 +25,9 @@ from fastapi import FastAPI
 
 # ** info: starlette imports
 from starlette.middleware.base import BaseHTTPMiddleware
-from starlette.routing import BaseRoute
-from starlette.routing import Mount
 
 # ** info: rest based routers imports
-from src.rest_routers.tv_channel_router import tv_channel_router
-
-# ** info: graphql based routers imports
-from src.graphql_routers.users_router import users_router
+from src.rest_routers.parameter_router import parameter_router
 
 # ** info: artifacts imports
 from src.artifacts.logging.custom_logger import custom_logger
@@ -42,37 +36,32 @@ from src.artifacts.env.configs import configs
 
 # ** info: middlewares imports
 from src.middlewares.authentication_handler import authentication_handler
-from src.middlewares.database_health_check import database_health_check
 from src.middlewares.logger_contextualizer import logger_contextualizer
 from src.middlewares.error_handler import error_handler
 
-# ** info: databases connection managers imports
-from src.database.cache_database.connection_manager import (
-    connection_manager as cache_connection_manager,
-)
-
-
 # ---------------------------------------------------------------------------------------------------------------------
-# ** info: initializing app graphql based routers
+# ** info: initializing app
 # ---------------------------------------------------------------------------------------------------------------------
 
-routers: List[BaseRoute] = [Mount(path=generator.build_posix_path("graphql"), routes=[users_router])]
+sar_ms_py: FastAPI = FastAPI()
 
 # ---------------------------------------------------------------------------------------------------------------------
-# ** info: initializing app dependencies and mounting graphql based routes
-# ---------------------------------------------------------------------------------------------------------------------
-
-app: FastAPI = FastAPI(routes=routers)
-
-# ---------------------------------------------------------------------------------------------------------------------
-# ** info: mounting rest based routes
+# ** info: setting rest base router
 # ---------------------------------------------------------------------------------------------------------------------
 
 rest_router: APIRouter = APIRouter(prefix=generator.build_posix_path("rest"))
 
-rest_router.include_router(tv_channel_router)
+# ---------------------------------------------------------------------------------------------------------------------
+# ** info: setting rest routers
+# ---------------------------------------------------------------------------------------------------------------------
 
-app.include_router(rest_router)
+rest_router.include_router(parameter_router)
+
+# ---------------------------------------------------------------------------------------------------------------------
+# ** info: mounting rest based routers
+# ---------------------------------------------------------------------------------------------------------------------
+
+sar_ms_py.include_router(rest_router)
 
 # ---------------------------------------------------------------------------------------------------------------------
 # ** info: setting up global app logging
@@ -90,22 +79,16 @@ else:
 # ---------------------------------------------------------------------------------------------------------------------
 
 if configs.app_use_database_health_check_middleware is True:
-    logging.info("databases health check middleware active")
-    app.add_middleware(middleware_class=BaseHTTPMiddleware, dispatch=database_health_check)
-else:
-    logging.warn("databases health check middleware inactive")
-
-if configs.app_use_database_health_check_middleware is True:
     logging.info("authentication middleware active")
-    app.add_middleware(middleware_class=BaseHTTPMiddleware, dispatch=authentication_handler)
+    sar_ms_py.add_middleware(middleware_class=BaseHTTPMiddleware, dispatch=authentication_handler)
 else:
     logging.warn("authentication middleware inactive")
 
-app.add_middleware(middleware_class=BaseHTTPMiddleware, dispatch=error_handler)
+sar_ms_py.add_middleware(middleware_class=BaseHTTPMiddleware, dispatch=error_handler)
 
-app.add_middleware(middleware_class=BaseHTTPMiddleware, dispatch=logger_contextualizer)
+sar_ms_py.add_middleware(middleware_class=BaseHTTPMiddleware, dispatch=logger_contextualizer)
 
-app.add_middleware(CORSMiddleware, allow_credentials=True, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
+sar_ms_py.add_middleware(CORSMiddleware, allow_credentials=True, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
 # ---------------------------------------------------------------------------------------------------------------------
 # ** info: disabling uvicorn access and error logs on production mode
@@ -128,20 +111,12 @@ if __name__ != "__main__":
     logging.info(f"application reloaded in {configs.app_environment_mode.lower()} mode")
 
 # ---------------------------------------------------------------------------------------------------------------------
-# ** info: warming database modules
-# ---------------------------------------------------------------------------------------------------------------------
-
-cache_connection_manager._download_connection._start_connection()
-cache_connection_manager._upload_connection._start_connection()
-
-# ---------------------------------------------------------------------------------------------------------------------
 # ** info: setting up uvicorn asgi server with fast api app
 # ---------------------------------------------------------------------------------------------------------------------
 
-
 uvicorn_server_configs: Dict[str, Any] = {
+    "app": sar_ms_py if configs.app_environment_mode == "production" else "sar_ms_py:sar_ms_py",
     "use_colors": False if configs.app_environment_mode == "production" else True,
-    "app": app if configs.app_environment_mode == "production" else "main:app",
     "reload": False if configs.app_environment_mode == "production" else True,
     "reload_includes": ["**/*.py", "**/*.graphql"],
     "reload_excludes": ["**/*.pyc", "**/*.pyc.*", "**/*.pyo"],

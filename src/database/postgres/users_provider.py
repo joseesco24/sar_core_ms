@@ -11,7 +11,7 @@ from typing import Any
 from sqlalchemy import select
 
 # ** info: users entity
-from src.entities.users_entity import Users
+from entities.parameter_entity import Users
 
 # ** info: users dtos imports
 from src.dtos.users_dtos import UserDto
