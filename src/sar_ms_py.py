@@ -87,7 +87,7 @@ if configs.app_use_authentication_handler_middleware is True:
     logging.info("authentication middleware active")
     sar_ms_py.add_middleware(middleware_class=BaseHTTPMiddleware, dispatch=authentication_handler)
 else:
-    logging.warn("authentication middleware inactive")
+    logging.warning("authentication middleware inactive")
 
 sar_ms_py.add_middleware(middleware_class=BaseHTTPMiddleware, dispatch=error_handler)
 

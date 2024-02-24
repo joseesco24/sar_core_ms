@@ -109,7 +109,11 @@ class ConnectionManager:
 
     def _start_engine(self: Self) -> None:
         if self._engine is None:
-            self._engine = create_engine(f"postgresql://{self._user}:{self._password}@{self._host}:{self._port}/{self._database}")
+            try:
+                self._engine = create_engine(f"mysql+pymysql://{self._user}:{self._password}@{self._host}:{self._port}/{self._database}")
+            except Exception as e:
+                print("error al crear el engine")
+                print(e)
 
     def _end_engine(self: Self) -> None:
         if self._query_session is not None:
@@ -139,7 +143,7 @@ class ConnectionManager:
         self._start_engine()
         self._start_query_session()
         try:
-            self._query_session.execute(text("select 1"))
+            self._query_session.execute(text("select 'Something sweet'"))
             if self._logs:
                 logging.debug(f"query session {self._query_session.session_id} is healthy")
             return True
@@ -147,7 +151,7 @@ class ConnectionManager:
         except SQLAlchemyError:
             if self._logs:
                 logging.exception(f"query session {self._query_session.session_id} isn't healthy")
-                logging.warning("creating a new query session")
+                logging.warninging("creating a new query session")
             self._reset_query_session()
             return False
 

@@ -35,6 +35,7 @@ class Configs(BaseSettings):
 
     # ** info: users database credentials
     database_password: str = Field(..., env="DATABASE_PASSWORD")
+    database_logs: bool = Field(..., env="DATABASE_LOGS")
     database_host: str = Field(..., env="DATABASE_HOST")
     database_name: str = Field(..., env="DATABASE_NAME")
     database_user: str = Field(..., env="DATABASE_USER")

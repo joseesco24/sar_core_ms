@@ -17,7 +17,7 @@ class RequestWasteDataDto(BaseModel):
     volumeInL: float = Field(...)
     description: str = Field(...)
     packaging: int = Field(...)
-    note: str = Field(...)
+    note: Optional[str] = None
     type: int = Field(...)
 
 

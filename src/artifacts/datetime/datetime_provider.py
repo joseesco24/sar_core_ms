@@ -22,11 +22,17 @@ class DatetimeProvider:
     def iso_string_to_datetime(self: Self, iso_string: str) -> datetime:
         return datetime.strptime(iso_string, "%Y-%m-%d %H:%M:%S.%f")
 
+    def pretty_date_string_to_date(self: Self, iso_string: str) -> datetime:
+        return datetime.strptime(iso_string, "%d/%m/%Y")
+
     def get_utc_iso_string(self: Self) -> str:
         return self.get_utc_time().isoformat()
 
     def prettify_date_time_obj(self: Self, date_time_obj: datetime) -> str:
         return date_time_obj.strftime("%Y-%m-%d %H:%M:%S.%f")
+
+    def prettify_date_obj(self: Self, date_time_obj: datetime) -> str:
+        return date_time_obj.strftime("%d/%m/%Y")
 
     def prettify_time_delta_obj(self: Self, time_delta_obj: timedelta) -> str:
         delta_days: int = time_delta_obj.days
