@@ -15,6 +15,20 @@ services:
         source: sar_bd_mysql_disc
         target: /var/lib/mysql
 
+  sar_ms_py:
+    container_name: sar_ms_py
+    image: ghcr.io/joseesco24/sar_ms_py:v1.0.0
+    env_file:
+      - ../.env
+    networks:
+      - sar_system_network
+    ports:
+      - target: 10048
+        published: 10048
+        protocol: tcp
+    depends_on:
+      - sar_bd_mysql
+
 networks:
   sar_system_network:
     name: sar_system_network
