@@ -2,6 +2,8 @@
 # type: ignore
 
 # ** info: python imports
+from dotenv import load_dotenv
+from dotenv import find_dotenv
 from enum import Enum
 
 # ** info: typing imports
@@ -41,8 +43,6 @@ class Configs(BaseSettings):
     database_user: str = Field(..., env="DATABASE_USER")
     database_port: int = Field(..., env="DATABASE_PORT")
 
-    class Config:
-        env_file = ".env"
 
-
+load_dotenv(override=True, verbose=True, dotenv_path=find_dotenv(".env"))
 configs: Configs = Configs()

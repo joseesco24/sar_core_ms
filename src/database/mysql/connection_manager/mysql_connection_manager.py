@@ -151,7 +151,7 @@ class ConnectionManager:
         except SQLAlchemyError:
             if self._logs:
                 logging.exception(f"query session {self._query_session.session_id} isn't healthy")
-                logging.warninging("creating a new query session")
+                logging.warning("creating a new query session")
             self._reset_query_session()
             return False
 
