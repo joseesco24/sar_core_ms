@@ -45,7 +45,9 @@ class CustomLogger:
 
         # ** info: optional add [{process.name}][{thread.name}] to fmt to see the thread and process names
 
-        fmt: str = "[<fg #66a3ff>{time:YYYY-MM-DD HH:mm:ss.SSSSSS!UTC}</fg #66a3ff>:<fg #fc03cf>{extra[internalId]}</fg #fc03cf>] <level>{level}</level>: {message}"  # noqa: E501
+        fmt: str = (
+            "[<fg #66a3ff>{time:YYYY-MM-DD HH:mm:ss.SSSSSS!UTC}</fg #66a3ff>:<fg #fc03cf>{extra[internalId]}</fg #fc03cf>] <level>{level}</level>: {message}"  # noqa: E501
+        )
 
         # ** info: overwriting all the loggers configs with the new one
         logging.root.handlers = [self._CustomInterceptHandler()]

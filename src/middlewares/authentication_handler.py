@@ -26,22 +26,6 @@ __all__: list[str] = ["authentication_handler"]
 
 
 class AuthenticationHandler:
-
-    """authentication handler
-    this class provides a custom authentication middleware for fastapi based applications
-    """
-
-    def __init__(self: Self):
-        pass
-
-    async def __set_body__(self: Self, request: Request):
-        receive_ = await request._receive()
-
-        async def receive():
-            return receive_
-
-        request._receive = receive
-
     async def __call__(
         self: Self,
         request: Request,
@@ -49,41 +33,34 @@ class AuthenticationHandler:
     ) -> StreamingResponse:
         logging.debug("authentication middleware started")
 
-        await self.__set_body__(request=request)
-
-        base_url: str = str(request.base_url)
-        full_url: str = str(request.url)
-
-        endpoint_url: str = full_url.replace(base_url, "").strip().lower()
-
-        is_authenticated: bool = False
-
-        if endpoint_url in configs.app_authentication_handler_middleware_exclude:
-            logging.info("jumping authentication middleware validations")
-            is_authenticated = True
-
-        else:
-            # todo: create a real authentication logic here
-            is_authenticated = True
-
+        endpoint_url: str = request.url.replace(request.base_url, "").strip().lower()
         request_context: Context = contextvars.copy_context()
+        is_authenticated: bool = False
         logger_kwargs: Dict = dict()
+
+        response: StreamingResponse
+        internal_id: str
 
         for item in request_context.items():
             if item[0].name == r"loguru_context":
                 logger_kwargs = item[1]
                 break
 
-        internal_id: str = logger_kwargs[r"internalId"]
+        internal_id = logger_kwargs[r"internalId"]
+
+        if endpoint_url in configs.app_authentication_handler_middleware_exclude:
+            logging.info("jumping authentication middleware validations")
+            is_authenticated = True
+        else:
+            # todo: create a real authentication logic here
+            is_authenticated = True
 
         if is_authenticated:
             logging.info(f"the request with id {internal_id} was successfully authorized")
             response: StreamingResponse = await call_next(request)
-
         else:
             logging.error(f"the request with id {internal_id} was not successfully authorized")
             response_stream: ContentStream = iter([r"Not Authorized"])
-
             response: StreamingResponse = StreamingResponse(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 content=response_stream,

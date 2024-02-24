@@ -24,22 +24,6 @@ __all__: list[str] = ["error_handler"]
 
 
 class ErrorHandler:
-
-    """error handler
-    this class provides a custom error handler middleware for fastapi based applications
-    """
-
-    def __init__(self: Self):
-        pass
-
-    async def __set_body__(self: Self, request: Request):
-        receive_ = await request._receive()
-
-        async def receive():
-            return receive_
-
-        request._receive = receive
-
     async def __call__(
         self: Self,
         request: Request,
@@ -50,22 +34,22 @@ class ErrorHandler:
         request_context: Context = contextvars.copy_context()
         logger_kwargs: Dict = dict()
 
+        response: StreamingResponse
+        internal_id: str
+
         for item in request_context.items():
             if item[0].name == r"loguru_context":
                 logger_kwargs = item[1]
                 break
 
-        internal_id: str = logger_kwargs[r"internalId"]
+        internal_id = logger_kwargs[r"internalId"]
 
         try:
-            response: StreamingResponse = await call_next(request)
-
+            response = await call_next(request)
         except Exception:
             logging.exception(f"an error has occurred while processing the request {internal_id}")
-
             response_stream: ContentStream = iter([r"Internal Server Error"])
-
-            response: StreamingResponse = StreamingResponse(
+            response = StreamingResponse(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 content=response_stream,
             )
