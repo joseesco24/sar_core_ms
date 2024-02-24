@@ -47,6 +47,8 @@ class AuthenticationHandler:
         request: Request,
         call_next: Callable,
     ) -> StreamingResponse:
+        logging.debug("authentication middleware started")
+
         await self.__set_body__(request=request)
 
         base_url: str = str(request.base_url)
@@ -68,11 +70,11 @@ class AuthenticationHandler:
         logger_kwargs: Dict = dict()
 
         for item in request_context.items():
-            if item[0].name == "loguru_context":
+            if item[0].name == r"loguru_context":
                 logger_kwargs = item[1]
                 break
 
-        internal_id: str = logger_kwargs["internalId"]
+        internal_id: str = logger_kwargs[r"internalId"]
 
         if is_authenticated:
             logging.info(f"the request with id {internal_id} was successfully authorized")
@@ -80,12 +82,14 @@ class AuthenticationHandler:
 
         else:
             logging.error(f"the request with id {internal_id} was not successfully authorized")
-            response_stream: ContentStream = iter(["Not Authorized"])
+            response_stream: ContentStream = iter([r"Not Authorized"])
 
             response: StreamingResponse = StreamingResponse(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 content=response_stream,
             )
+
+        logging.debug("authentication middleware ended")
 
         return response
 

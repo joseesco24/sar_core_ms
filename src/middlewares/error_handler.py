@@ -45,35 +45,32 @@ class ErrorHandler:
         request: Request,
         call_next: Callable,
     ) -> StreamingResponse:
+        logging.debug("error handler middleware started")
+
         request_context: Context = contextvars.copy_context()
         logger_kwargs: Dict = dict()
 
         for item in request_context.items():
-            if item[0].name == "loguru_context":
+            if item[0].name == r"loguru_context":
                 logger_kwargs = item[1]
                 break
 
-        internal_id: str = logger_kwargs["internalId"]
+        internal_id: str = logger_kwargs[r"internalId"]
 
         try:
             response: StreamingResponse = await call_next(request)
-            logging.info(f"request with id {internal_id} successfully processed")
 
-        except Exception as exception:
-            if str(exception.args[0]).strip() == "":
-                logging.exception(f"a handled error has occurred on the api while processing the request with id {internal_id}")
+        except Exception:
+            logging.exception(f"an error has occurred while processing the request {internal_id}")
 
-            else:
-                logging.exception(
-                    f"a not handled error has occurred on the api while processing the request with id {internal_id}: {exception.args[0]}"  # noqa: E501
-                )
-
-            response_stream: ContentStream = iter(["Internal Server Error"])
+            response_stream: ContentStream = iter([r"Internal Server Error"])
 
             response: StreamingResponse = StreamingResponse(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 content=response_stream,
             )
+
+        logging.debug("error handler middleware ended")
 
         return response
 
