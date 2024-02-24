@@ -13,8 +13,7 @@ from fastapi import Body
 from src.artifacts.path.generator import generator
 
 # ** info: health check dtos imports
-# todo: enable response logic here
-# from src.dtos.collect_request_dtos import CollectRequestCreateResponseDto
+from src.dtos.collect_request_dtos import CollectRequestCreateResponseDto
 from src.dtos.collect_request_dtos import CollectRequestCreateRequestDto
 
 # ** info: rest controllers imports
@@ -31,7 +30,7 @@ class CollectRequestRouter:
         # ** info: bulding router endpoints
         self.router.add_api_route(
             path=generator.build_posix_path("create"),
-            response_model=None,  # todo: enable response logic here
+            response_model=CollectRequestCreateResponseDto,
             endpoint=self.api_request_create,
             status_code=status.HTTP_200_OK,
             methods=["POST"],
@@ -40,6 +39,6 @@ class CollectRequestRouter:
         # ** info: building router controllers
         self.collect_request_controller: CollectRequestController = CollectRequestController()
 
-    async def api_request_create(self: Self, request_create_request: CollectRequestCreateRequestDto = Body(...)) -> None:
-        # todo: enable response logic here
-        await self.collect_request_controller.driver_request_create(request_create_request)
+    async def api_request_create(self: Self, request_create_request: CollectRequestCreateRequestDto = Body(...)) -> CollectRequestCreateResponseDto:
+        request_create_response: CollectRequestCreateResponseDto = await self.collect_request_controller.driver_request_create(request_create_request)
+        return request_create_response

@@ -9,13 +9,13 @@ packages = [{ include = "*", from = "src" }]
 [tool.poetry.dependencies]
 python = "^3.12"
 fastapi = "^0.104.0"
-SQLAlchemy = "^2.0.1"
 loguru = "^0.7.0"
 pydantic = "^2.0.2"
 uvicorn = "^0.24.0"
 pydantic-settings = "^2.0.3"
 pymysql = "^1.1.0"
 cryptography = "^42.0.5"
+sqlmodel = "^0.0.16"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.1a1"

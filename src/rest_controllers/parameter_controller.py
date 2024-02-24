@@ -11,7 +11,7 @@ from src.dtos.parameter_dtos import ParameterSearchRequestDto
 from src.dtos.parameter_dtos import ParameterDataDto
 
 # ** info: providers imports
-from src.database.mysql.parameter_provider import ParameterProvider
+from src.database.parameter_provider import ParameterProvider
 
 # ** info: users entity
 from src.entities.parameter_entity import Parameter

@@ -1,23 +1,20 @@
 # !/usr/bin/python3
 # type: ignore
 
-# ** info: sqlalchemy imports
-from sqlalchemy import Integer
-from sqlalchemy import String
-from sqlalchemy import Column
-from sqlalchemy import Date
+# ** info: python imports
+from datetime import datetime
 
-# ** info: sqlalchemy declarative imports
-from sqlalchemy.ext.declarative import declarative_base
-
-Base = declarative_base()
+# ** info: sqlmodel imports
+from sqlmodel import SQLModel
+from sqlmodel import Field
 
 __all__: list[str] = ["CollectRequest"]
 
 
-class CollectRequest(Base):
+class CollectRequest(SQLModel, table=True):
+    __table_args__ = {"extend_existing": True}
     __tablename__ = "collect_request"
 
-    uuid = Column(String(36), primary_key=True)
-    collect_date = Column(Date)
-    production_center_id = Column(Integer)
+    uuid: str = Field(max_length=36, primary_key=True)
+    collect_date: datetime = Field(nullable=False)
+    production_center_id: int = Field(nullable=False)

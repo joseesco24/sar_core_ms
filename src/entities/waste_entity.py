@@ -1,29 +1,26 @@
 # !/usr/bin/python3
 # type: ignore
 
-# ** info: sqlalchemy imports
-from sqlalchemy import Integer
-from sqlalchemy import String
-from sqlalchemy import Column
-from sqlalchemy import Float
-from sqlalchemy import Text
+# ** info: python imports
+from decimal import Decimal
 
-# ** info: sqlalchemy declarative imports
-from sqlalchemy.ext.declarative import declarative_base
+# ** info: typing imports
+from typing import Optional
 
-Base = declarative_base()
-
-__all__: list[str] = ["Waste"]
+# ** info: sqlmodel imports
+from sqlmodel import SQLModel
+from sqlmodel import Field
 
 
-class Waste(Base):
+class Waste(SQLModel, table=True):
+    __table_args__ = {"extend_existing": True}
     __tablename__ = "waste"
 
-    uuid = Column(String(36), primary_key=True)
-    request_uuid = Column(String(36))
-    type = Column(Integer)
-    packaging = Column(Integer)
-    weight_in_kg = Column(Float(10, 2))
-    volume_in_l = Column(Float(10, 2))
-    description = Column(Text)
-    note = Column(Text)
+    uuid: str = Field(max_length=36, primary_key=True)
+    request_uuid: str = Field(max_length=36, nullable=False)
+    type: int = Field(nullable=False)
+    packaging: int = Field(nullable=False)
+    weight_in_kg: Decimal = Field(max_digits=10, decimal_places=2, nullable=False)
+    volume_in_l: Decimal = Field(max_digits=10, decimal_places=2, nullable=False)
+    description: str = Field(max_length=65535, nullable=False)
+    note: Optional[str] = Field(max_length=65535, nullable=False)
