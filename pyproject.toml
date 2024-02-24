@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "sar_ms_py"
-version = "v1.0.2"
+version = "v1.1.0"
 description = "This repository corresponds to the a small python microservice that is gint to be used used in the sar system."
 authors = ["joseesco24 <josed.escobar@outlook.com>"]
 readme = "readme.md"
@@ -8,7 +8,7 @@ packages = [{ include = "*", from = "src" }]
 
 [tool.poetry.dependencies]
 python = "^3.12"
-fastapi = "^0.104.0"
+fastapi = "^0.110.0"
 loguru = "^0.7.0"
 pydantic = "^2.0.2"
 uvicorn = "^0.24.0"

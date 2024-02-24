@@ -121,12 +121,12 @@ if __name__ != "__main__":
 
 uvicorn_server_configs: Dict[str, Any] = {
     "app": sar_ms_py if configs.app_environment_mode == "production" else "sar_ms_py:sar_ms_py",
+    "log_level": "debug" if configs.app_environment_mode != "production" else "error",
     "use_colors": False if configs.app_environment_mode == "production" else True,
     "reload": False if configs.app_environment_mode == "production" else True,
     "reload_excludes": ["**/*.pyc", "**/*.pyc.*", "**/*.pyo"],
     "reload_includes": ["**/*.py", "**/*.graphql"],
     "port": configs.app_server_port,
-    "log_level": "critical",
     "access_log": False,
     "host": "0.0.0.0",
 }
