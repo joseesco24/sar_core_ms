@@ -17,7 +17,7 @@ services:
 
   sar_ms_py:
     container_name: sar_ms_py
-    image: ghcr.io/joseesco24/sar_ms_py:v1.1.0
+    image: ghcr.io/joseesco24/sar_ms_py:v1.2.0
     env_file:
       - ../.env
     networks:
