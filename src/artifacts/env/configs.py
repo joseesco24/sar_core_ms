@@ -34,6 +34,7 @@ class Configs(BaseSettings):
     app_server_port: int = Field(..., env="APP_SERVER_PORT")
     app_authentication_handler_middleware_exclude: Set[str] = Field(..., env="APP_AUTHENTICATION_HANDLER_MIDDLEWARE_EXCLUDE")
     app_use_authentication_handler_middleware: bool = Field(..., env="APP_USE_AUTHENTICATION_HANDLER_MIDDLEWARE")
+    app_swagger_docs: bool = Field(..., env="APP_SWAGGER_DOCS")
 
     # ** info: users database credentials
     database_password: str = Field(..., env="DATABASE_PASSWORD")

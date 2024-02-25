@@ -43,8 +43,13 @@ from src.middlewares.error_handler import error_handler
 # ---------------------------------------------------------------------------------------------------------------------
 # ** info: initializing app
 # ---------------------------------------------------------------------------------------------------------------------
-
-sar_ms_py: FastAPI = FastAPI()
+sar_ms_py: FastAPI
+if configs.app_swagger_docs is False:
+    sar_ms_py = FastAPI(docs_url=None, redoc_url=None)
+    logging.warning("swagger docs inactive")
+else:
+    sar_ms_py = FastAPI()
+    logging.warning("swagger docs active")
 
 # ---------------------------------------------------------------------------------------------------------------------
 # ** info: setting rest base router
