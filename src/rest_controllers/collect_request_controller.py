@@ -37,19 +37,13 @@ class CollectRequestController:
         self.waste_provider: WasteProvider = WasteProvider()
 
     async def driver_request_create(self: Self, request_create_request: CollectRequestCreateRequestDto) -> CollectRequestCreateResponseDto:
-        # ** info: storing collect request information
         collect_request_id: str = await self._store_collect_request(request_create_request=request_create_request)
         wastes_ids = await self._store_collect_request_wastes(collect_request_id=collect_request_id, request_create_request=request_create_request)
-
-        # ** info: getting response information
         collect_request_info: CollectRequest = await self._search_collect_request_by_id(collect_request_id=collect_request_id)
         wastes_info: List[Waste] = await self._search_wastes_by_ids(wastes_ids=wastes_ids)
-
-        # ** info: mapping response information
         request_create_response: CollectRequestCreateResponseDto = await self._map_collect_response(
             collect_request_info=collect_request_info, wastes_info=wastes_info
         )
-
         return request_create_response
 
     async def _store_collect_request(self: Self, request_create_request: CollectRequestCreateRequestDto) -> str:
