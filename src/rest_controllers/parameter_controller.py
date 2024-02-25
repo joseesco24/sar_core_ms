@@ -36,9 +36,7 @@ class ParameterController:
         return parameters
 
     async def _map_parameter_response(self: Self, parameters: List[Parameter]) -> ParameterSearchResponseDto:
-        parameter_search_response: ParameterSearchResponseDto = ParameterSearchResponseDto()
-        parameter_search_response.values = await self._map_parameters_data(parameters=parameters)
-        return parameter_search_response
+        return ParameterSearchResponseDto(values=await self._map_parameters_data(parameters=parameters))
 
     async def _map_parameters_data(self: Self, parameters: List[Parameter]) -> List[ParameterDataDto]:
         parameters_data: List[ParameterDataDto] = []
@@ -48,7 +46,4 @@ class ParameterController:
         return parameters_data
 
     async def _map_parameter_data(self: Self, parameter: Parameter) -> ParameterDataDto:
-        parameter_data: ParameterDataDto = ParameterDataDto()
-        parameter_data.label = parameter.value
-        parameter_data.value = parameter.id
-        return parameter_data
+        return ParameterDataDto(label=parameter.value, value=parameter.id)

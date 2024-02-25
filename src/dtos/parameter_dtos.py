@@ -6,7 +6,6 @@ from pydantic import BaseModel
 from pydantic import Field
 
 # ** info: typing imports
-from typing import Optional
 from typing import List
 
 __all__: list[str] = ["ParameterDtos"]
@@ -20,7 +19,7 @@ class ParameterDtos:
         model_config = {"json_schema_extra": {"examples": [{"domain": "wasteType"}]}}
 
     class ParameterSearchResponseDto(BaseModel):
-        values: Optional[List["ParameterDtos.ParameterDataDto"]] = None
+        values: List["ParameterDtos.ParameterDataDto"] = Field(...)
 
         model_config = {
             "json_schema_extra": {
@@ -37,5 +36,5 @@ class ParameterDtos:
         }
 
     class ParameterDataDto(BaseModel):
-        label: Optional[str] = None
-        value: Optional[int] = None
+        label: str = Field(...)
+        value: int = Field(...)

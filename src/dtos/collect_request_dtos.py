@@ -51,8 +51,8 @@ class CollectRequestControllerDtos:
         type: int = Field(...)
 
     class CollectRequestCreateResponseDto(BaseModel):
-        waste: Optional[List["CollectRequestControllerDtos.ResponseWasteDataDto"]] = None
-        request: Optional["CollectRequestControllerDtos.ResponseRequestDataDto"] = None
+        waste: List["CollectRequestControllerDtos.ResponseWasteDataDto"] = Field(...)
+        request: "CollectRequestControllerDtos.ResponseRequestDataDto" = Field(...)
 
         model_config = {
             "json_schema_extra": {
@@ -87,16 +87,16 @@ class CollectRequestControllerDtos:
         }
 
     class ResponseRequestDataDto(BaseModel):
-        productionCenterId: Optional[int] = None
-        collectDate: Optional[str] = None
-        id: Optional[str] = None
+        productionCenterId: int = Field(...)
+        collectDate: str = Field(...)
+        id: str = Field(...)
 
     class ResponseWasteDataDto(BaseModel):
-        weightInKg: Optional[float] = None
-        volumeInL: Optional[float] = None
-        description: Optional[str] = None
-        packaging: Optional[int] = None
-        requestId: Optional[str] = None
+        weightInKg: float = Field(...)
+        volumeInL: float = Field(...)
+        description: str = Field(...)
+        packaging: int = Field(...)
+        requestId: str = Field(...)
         note: Optional[str] = None
-        type: Optional[int] = None
-        id: Optional[str] = None
+        type: int = Field(...)
+        id: str = Field(...)

@@ -90,17 +90,17 @@ class CollectRequestController:
         return waste
 
     async def _map_collect_response(self: Self, collect_request_info: CollectRequest, wastes_info: List[Waste]) -> CollectRequestCreateResponseDto:
-        request_create_response: CollectRequestCreateResponseDto = CollectRequestCreateResponseDto()
-        request_create_response.request = await self._map_collect_response_request_info(collect_request_info=collect_request_info)
-        request_create_response.waste = await self._map_collect_response_wastes_info(wastes_info=wastes_info)
-        return request_create_response
+        return CollectRequestCreateResponseDto(
+            request=await self._map_collect_response_request_info(collect_request_info=collect_request_info),
+            waste=await self._map_collect_response_wastes_info(wastes_info=wastes_info),
+        )
 
     async def _map_collect_response_request_info(self: Self, collect_request_info: CollectRequest) -> ResponseRequestDataDto:
-        collect_response_request_info: ResponseRequestDataDto = ResponseRequestDataDto()
-        collect_response_request_info.productionCenterId = collect_request_info.production_center_id
-        collect_response_request_info.collectDate = datetime_provider.prettify_date_obj(collect_request_info.collect_date)
-        collect_response_request_info.id = collect_request_info.uuid
-        return collect_response_request_info
+        return ResponseRequestDataDto(
+            collectDate=datetime_provider.prettify_date_obj(collect_request_info.collect_date),
+            productionCenterId=collect_request_info.production_center_id,
+            id=collect_request_info.uuid,
+        )
 
     async def _map_collect_response_wastes_info(self: Self, wastes_info: List[Waste]) -> List[ResponseWasteDataDto]:
         collect_response_wastes_info: List[ResponseWasteDataDto] = list()
@@ -110,13 +110,13 @@ class CollectRequestController:
         return collect_response_wastes_info
 
     async def _map_collect_response_waste_info(self: Self, waste_info: Waste) -> ResponseWasteDataDto:
-        collect_response_waste_info: ResponseWasteDataDto = ResponseWasteDataDto()
-        collect_response_waste_info.id = waste_info.uuid
-        collect_response_waste_info.requestId = waste_info.request_uuid
-        collect_response_waste_info.description = waste_info.description
-        collect_response_waste_info.note = waste_info.note
-        collect_response_waste_info.weightInKg = float(waste_info.weight_in_kg)
-        collect_response_waste_info.volumeInL = float(waste_info.volume_in_l)
-        collect_response_waste_info.packaging = waste_info.packaging
-        collect_response_waste_info.type = waste_info.type
-        return collect_response_waste_info
+        return ResponseWasteDataDto(
+            weightInKg=float(waste_info.weight_in_kg),
+            volumeInL=float(waste_info.volume_in_l),
+            description=waste_info.description,
+            requestId=waste_info.request_uuid,
+            packaging=waste_info.packaging,
+            note=waste_info.note,
+            type=waste_info.type,
+            id=waste_info.uuid,
+        )
