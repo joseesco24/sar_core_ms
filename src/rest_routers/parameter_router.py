@@ -12,9 +12,11 @@ from fastapi import Body
 # ** info: artifacts imports
 from src.artifacts.path.generator import generator
 
-# ** info: health check dtos imports
-from src.dtos.parameter_dtos import ParameterSearchResponseDto
-from src.dtos.parameter_dtos import ParameterSearchRequestDto
+# ** info: dtos imports
+from src.dtos.parameter_dtos import ParameterDtos
+
+ParameterSearchResponseDto = ParameterDtos.ParameterSearchResponseDto
+ParameterSearchRequestDto = ParameterDtos.ParameterSearchRequestDto
 
 # ** info: rest controllers imports
 from src.rest_controllers.parameter_controller import ParameterController

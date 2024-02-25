@@ -8,11 +8,13 @@ from datetime import datetime
 from typing import Self
 from typing import List
 
-# ** info: health check dtos imports
-from src.dtos.collect_request_dtos import CollectRequestCreateResponseDto
-from src.dtos.collect_request_dtos import CollectRequestCreateRequestDto
-from src.dtos.collect_request_dtos import ResponseRequestDataDto
-from src.dtos.collect_request_dtos import ResponseWasteDataDto
+# ** info: dtos imports
+from src.dtos.collect_request_dtos import CollectRequestControllerDtos
+
+CollectRequestCreateResponseDto = CollectRequestControllerDtos.CollectRequestCreateResponseDto
+CollectRequestCreateRequestDto = CollectRequestControllerDtos.CollectRequestCreateRequestDto
+ResponseRequestDataDto = CollectRequestControllerDtos.ResponseRequestDataDto
+ResponseWasteDataDto = CollectRequestControllerDtos.ResponseWasteDataDto
 
 # ** info: providers imports
 from src.database.collect_request_provider import CollectRequestProvider

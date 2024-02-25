@@ -5,10 +5,12 @@
 from typing import Self
 from typing import List
 
-# ** info: health check dtos imports
-from src.dtos.parameter_dtos import ParameterSearchResponseDto
-from src.dtos.parameter_dtos import ParameterSearchRequestDto
-from src.dtos.parameter_dtos import ParameterDataDto
+# ** info: dtos imports
+from src.dtos.parameter_dtos import ParameterDtos
+
+ParameterSearchResponseDto = ParameterDtos.ParameterSearchResponseDto
+ParameterSearchRequestDto = ParameterDtos.ParameterSearchRequestDto
+ParameterDataDto = ParameterDtos.ParameterDataDto
 
 # ** info: providers imports
 from src.database.parameter_provider import ParameterProvider

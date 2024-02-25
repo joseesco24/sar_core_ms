@@ -12,9 +12,11 @@ from fastapi import Body
 # ** info: artifacts imports
 from src.artifacts.path.generator import generator
 
-# ** info: health check dtos imports
-from src.dtos.collect_request_dtos import CollectRequestCreateResponseDto
-from src.dtos.collect_request_dtos import CollectRequestCreateRequestDto
+# ** info: dtos imports
+from src.dtos.collect_request_dtos import CollectRequestControllerDtos
+
+CollectRequestCreateResponseDto = CollectRequestControllerDtos.CollectRequestCreateResponseDto
+CollectRequestCreateRequestDto = CollectRequestControllerDtos.CollectRequestCreateRequestDto
 
 # ** info: rest controllers imports
 from src.rest_controllers.collect_request_controller import CollectRequestController

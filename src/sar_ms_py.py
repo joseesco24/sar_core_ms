@@ -43,12 +43,19 @@ from src.middlewares.error_handler import error_handler
 # ---------------------------------------------------------------------------------------------------------------------
 # ** info: initializing app
 # ---------------------------------------------------------------------------------------------------------------------
+metadata: Dict[str, Any] = {
+    "description": "This repository corresponds to the a small python microservice that is gint to be used used in the sar system.",
+    "summary": "Sar Python Microservice",
+    "title": "Sar Python Microservice",
+    "version": "v1.1.0",
+}
+
 sar_ms_py: FastAPI
 if configs.app_swagger_docs is False:
-    sar_ms_py = FastAPI(docs_url=None, redoc_url=None)
+    sar_ms_py = FastAPI(docs_url=None, redoc_url=None, **metadata)
     logging.warning("swagger docs inactive")
 else:
-    sar_ms_py = FastAPI()
+    sar_ms_py = FastAPI(**metadata)
     logging.warning("swagger docs active")
 
 # ---------------------------------------------------------------------------------------------------------------------
