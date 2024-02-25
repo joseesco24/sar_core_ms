@@ -16,7 +16,7 @@ from entities.waste_entity import Waste
 from src.artifacts.uuid.uuid_provider import uuid_provider
 
 # ** info: session managers imports
-from src.database.session_managers.mysql_sar_manager import mysql_sar_manager
+from src.database.session_managers.mysql_sar_manager import MySQLSarManager
 
 __all__: list[str] = ["WasteProvider"]
 
@@ -24,7 +24,7 @@ __all__: list[str] = ["WasteProvider"]
 class WasteProvider:
     @staticmethod
     def search_waste_by_id(uuid: str) -> Waste:
-        session: Session = mysql_sar_manager.obtain_session()
+        session: Session = MySQLSarManager.obtain_session()
         query: Any = select(Waste).where(Waste.uuid == uuid)
         search_waste_by_id_result: Waste = session.exec(statement=query).first()
         return search_waste_by_id_result
@@ -39,7 +39,7 @@ class WasteProvider:
         description: str,
         note: Union[str, None] = None,
     ) -> str:
-        session: Session = mysql_sar_manager.obtain_session()
+        session: Session = MySQLSarManager.obtain_session()
         uuid: str = uuid_provider.get_str_uuid()
         new_waste: Waste = Waste(
             uuid=uuid,
