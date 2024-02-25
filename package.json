@@ -10,7 +10,7 @@
 	"scripts": {
 		"export-dependencies": "poetry export --without-hashes --only dev --format=requirements.txt > ./requirements/dev.txt && poetry export --without-hashes --format=requirements.txt > ./requirements/app.txt",
 		"clean-cache": "find . | grep -E \"(/__pycache__$|\\.pyc$|\\.pyo$)\" | xargs rm -rf && rm -r .mypy_cache .pytest_cache",
-		"lint": "flake8 ./src --max-line-length=150 --verbose && mypy --explicit-package-bases ./src",
+		"lint": "flake8 ./src --max-line-length=180 --verbose && mypy --explicit-package-bases ./src",
 		"docker-dependencies-stop": "docker compose -f docker_compose/deploy.dependencies.yaml down",
 		"docker-dependencies-start": "docker compose -f docker_compose/deploy.dependencies.yaml up",
 		"docker-image-build": "docker compose -f docker_compose/image.build.yaml build",
@@ -19,7 +19,7 @@
 		"docker-full-start": "docker compose -f docker_compose/deploy.full.yaml up",
 		"start-dev": "cp -f ./env/development.env .env & python src/sar_ms_py.py",
 		"start-app": "cp -f ./env/production.env .env & python src/sar_ms_py.py",
-		"format": "black ./src --line-length=150",
+		"format": "black ./src --line-length=180",
 		"commitmsg": "bash hooks/commit-msg.sh",
 		"precommit": "bash hooks/pre-commit.sh",
 		"postinstall": "npx husky install",

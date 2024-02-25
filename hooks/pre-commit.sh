@@ -62,7 +62,7 @@ fi
 
 # ** info: linting files
 print_title "Linting Files"
-flake8 ./src --max-line-length=150 --verbose
+flake8 ./src --max-line-length=180 --verbose
 
 # ** info: validating typos
 # todo: enable typo validation
