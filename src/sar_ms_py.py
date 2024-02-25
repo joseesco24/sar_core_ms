@@ -41,6 +41,17 @@ from src.middlewares.logger_contextualizer import logger_contextualizer
 from src.middlewares.error_handler import error_handler
 
 # ---------------------------------------------------------------------------------------------------------------------
+# ** info: setting up global app logging
+# ---------------------------------------------------------------------------------------------------------------------
+
+if configs.app_logging_mode == "structured":
+    CustomLogger.setup_structured_logging()
+    logging.info(f"logger setup on {configs.app_logging_mode.lower()} mode")
+else:
+    CustomLogger.setup_pretty_logging()
+    logging.info(f"logger setup on {configs.app_logging_mode.lower()} mode")
+
+# ---------------------------------------------------------------------------------------------------------------------
 # ** info: initializing app
 # ---------------------------------------------------------------------------------------------------------------------
 metadata: Dict[str, Any] = {
@@ -79,17 +90,6 @@ rest_router.include_router(parameter_router.router)
 # ---------------------------------------------------------------------------------------------------------------------
 
 sar_ms_py.include_router(rest_router)
-
-# ---------------------------------------------------------------------------------------------------------------------
-# ** info: setting up global app logging
-# ---------------------------------------------------------------------------------------------------------------------
-
-if configs.app_logging_mode == "structured":
-    CustomLogger.setup_structured_logging()
-    logging.info(f"logger setup on {configs.app_logging_mode.lower()} mode")
-else:
-    CustomLogger.setup_pretty_logging()
-    logging.info(f"logger setup on {configs.app_logging_mode.lower()} mode")
 
 # ---------------------------------------------------------------------------------------------------------------------
 # ** info: setting up app middlewares
