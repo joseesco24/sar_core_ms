@@ -31,7 +31,7 @@ from src.rest_routers.collect_request_router import CollectRequestRouter
 from src.rest_routers.parameter_router import ParameterRouter
 
 # ** info: artifacts imports
-from src.artifacts.logging.custom_logger import custom_logger
+from src.artifacts.logging.custom_logger import CustomLogger
 from src.artifacts.path.generator import generator
 from src.artifacts.env.configs import configs
 
@@ -73,10 +73,10 @@ sar_ms_py.include_router(rest_router)
 # ---------------------------------------------------------------------------------------------------------------------
 
 if configs.app_logging_mode == "structured":
-    custom_logger.setup_structured_logging()
+    CustomLogger.setup_structured_logging()
     logging.info(f"logger setup on {configs.app_logging_mode.lower()} mode")
 else:
-    custom_logger.setup_pretty_logging()
+    CustomLogger.setup_pretty_logging()
     logging.info(f"logger setup on {configs.app_logging_mode.lower()} mode")
 
 # ---------------------------------------------------------------------------------------------------------------------
