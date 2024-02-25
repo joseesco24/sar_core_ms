@@ -27,10 +27,12 @@ __all__: list[str] = ["CollectRequestRouter"]
 class CollectRequestRouter:
     def __init__(self: Self):
         # ** info: building class router
-        self.router: APIRouter = APIRouter(prefix=generator.build_posix_path("request"))
+        self.router: APIRouter = APIRouter(prefix=generator.build_posix_path("request"), tags=["Collect Requests"])
 
         # ** info: bulding router endpoints
         self.router.add_api_route(
+            description="create a new collect request description",
+            summary="create a new collect request summary",
             path=generator.build_posix_path("create"),
             response_model=CollectRequestCreateResponseDto,
             endpoint=self.api_request_create,

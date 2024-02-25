@@ -27,10 +27,12 @@ __all__: list[str] = ["ParameterRouter"]
 class ParameterRouter:
     def __init__(self: Self):
         # ** info: building class router
-        self.router: APIRouter = APIRouter(prefix=generator.build_posix_path("parameter"))
+        self.router: APIRouter = APIRouter(prefix=generator.build_posix_path("parameter"), tags=["Parameters"])
 
         # ** info: bulding router endpoints
         self.router.add_api_route(
+            description="searc a prameter by its domain description",
+            summary="searc a prameter by its domain summary",
             path=generator.build_posix_path("search"),
             response_model=ParameterSearchResponseDto,
             endpoint=self.api_parameter_search,
