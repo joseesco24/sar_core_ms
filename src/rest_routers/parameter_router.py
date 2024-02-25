@@ -31,8 +31,8 @@ class ParameterRouter:
 
         # ** info: bulding router endpoints
         self.router.add_api_route(
-            description="searc a prameter by its domain description",
-            summary="searc a prameter by its domain summary",
+            description="search a prameter by its domain description",
+            summary="search a prameter by its domain summary",
             path=generator.build_posix_path("search"),
             response_model=ParameterSearchResponseDto,
             endpoint=self.api_parameter_search,

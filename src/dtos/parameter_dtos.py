@@ -8,6 +8,10 @@ from pydantic import Field
 # ** info: typing imports
 from typing import List
 
+# **info: metadata for the model imports
+from src.dtos.parameter_dtos_metadata import parameter_searc_req_ex
+from src.dtos.parameter_dtos_metadata import parameter_searc_res_ex
+
 __all__: list[str] = ["ParameterDtos"]
 
 
@@ -15,25 +19,11 @@ class ParameterDtos:
 
     class ParameterSearchRequestDto(BaseModel):
         domain: str = Field(...)
-
-        model_config = {"json_schema_extra": {"examples": [{"domain": "wasteType"}]}}
+        model_config = parameter_searc_req_ex
 
     class ParameterSearchResponseDto(BaseModel):
         values: List["ParameterDtos.ParameterDataDto"] = Field(...)
-
-        model_config = {
-            "json_schema_extra": {
-                "examples": [
-                    {
-                        "values": [
-                            {"label": "Radioterapia", "value": 1},
-                            {"label": "Combustible Nuclear", "value": 2},
-                            {"label": "RadiografÃ­a industrial", "value": 3},
-                        ]
-                    }
-                ]
-            }
-        }
+        model_config = parameter_searc_res_ex
 
     class ParameterDataDto(BaseModel):
         label: str = Field(...)
