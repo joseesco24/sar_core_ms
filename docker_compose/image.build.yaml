@@ -1,14 +1,8 @@
 version: "3.8"
 
 services:
-  sar_ms_py_v1.3.0:
-    image: ghcr.io/joseesco24/sar_ms_py:v1.3.0
-    build:
-      dockerfile: Dockerfile
-      context: ../.
-
-  sar_ms_py_latest:
-    image: ghcr.io/joseesco24/sar_ms_py:latest
+  sar_ms_py:
+    image: ghcr.io/joseesco24/sar_ms_py:v1.3.1
     build:
       dockerfile: Dockerfile
       context: ../.
