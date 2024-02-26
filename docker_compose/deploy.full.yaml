@@ -17,7 +17,7 @@ services:
 
   sar_ms_py:
     container_name: sar_ms_py
-    image: ghcr.io/joseesco24/sar_ms_py:v1.2.2
+    image: ghcr.io/joseesco24/sar_ms_py:v1.3.0
     networks:
       - sar_system_network
     ports:
