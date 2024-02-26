@@ -2,6 +2,8 @@
 # type: ignore
 
 # ** info: pydantic imports
+from pydantic import field_validator
+from pydantic import ValidationInfo
 from pydantic import BaseModel
 from pydantic import Field
 
@@ -12,6 +14,9 @@ from typing import List
 # **info: metadata for the model imports
 from src.dtos.collect_request_dtos_metadata import collect_request_creation_req_ex
 from src.dtos.collect_request_dtos_metadata import collect_request_creation_res_ex
+
+# ** info: artifacts imports
+from src.artifacts.datetime.datetime_provider import datetime_provider
 
 __all__: list[str] = ["CollectRequestControllerDtos"]
 
@@ -26,6 +31,24 @@ class CollectRequestControllerDtos:
         productionCenterId: int = Field(...)
         collectDate: str = Field(...)
 
+        @field_validator("productionCenterId")
+        @classmethod
+        def int_validator(cls, value: int, info: ValidationInfo) -> int:
+            if isinstance(value, int):
+                value = int(value)
+            else:
+                raise ValueError(f"{info.field_name} packaging is not a integer input")
+            return value
+
+        @field_validator("collectDate")
+        @classmethod
+        def date_validator(cls, value: int, info: ValidationInfo) -> int:
+            try:
+                value = datetime_provider.pretty_date_string_to_date(value)
+            except ValueError:
+                raise ValueError(f"{info.field_name} is not a valid dd/mm/yyyy date")
+            return value
+
     class RequestWasteDataDto(BaseModel):
         weightInKg: float = Field(...)
         volumeInL: float = Field(...)
@@ -33,6 +56,24 @@ class CollectRequestControllerDtos:
         packaging: int = Field(...)
         note: Optional[str] = None
         type: int = Field(...)
+
+        @field_validator("weightInKg", "volumeInL")
+        @classmethod
+        def float_validator(cls, value: str, info: ValidationInfo) -> int:
+            if isinstance(value, float):
+                value = float(value)
+            else:
+                raise ValueError(f"{info.field_name} packaging is not a float input")
+            return value
+
+        @field_validator("packaging", "type")
+        @classmethod
+        def int_validator(cls, value: int, info: ValidationInfo) -> int:
+            if isinstance(value, int):
+                value = int(value)
+            else:
+                raise ValueError(f"{info.field_name} packaging is not a integer input")
+            return value
 
     class CollectRequestCreateResponseDto(BaseModel):
         waste: List["CollectRequestControllerDtos.ResponseWasteDataDto"] = Field(...)
@@ -44,6 +85,24 @@ class CollectRequestControllerDtos:
         collectDate: str = Field(...)
         id: str = Field(...)
 
+        @field_validator("productionCenterId")
+        @classmethod
+        def int_validator(cls, value: int, info: ValidationInfo) -> int:
+            if isinstance(value, int):
+                value = int(value)
+            else:
+                raise ValueError(f"{info.field_name} packaging is not a integer input")
+            return value
+
+        @field_validator("collectDate")
+        @classmethod
+        def date_validator(cls, value: int, info: ValidationInfo) -> int:
+            try:
+                value = datetime_provider.pretty_date_string_to_date(value)
+            except ValueError:
+                raise ValueError(f"{info.field_name} is not a valid dd/mm/yyyy date")
+            return value
+
     class ResponseWasteDataDto(BaseModel):
         weightInKg: float = Field(...)
         volumeInL: float = Field(...)
@@ -53,3 +112,21 @@ class CollectRequestControllerDtos:
         note: Optional[str] = None
         type: int = Field(...)
         id: str = Field(...)
+
+        @field_validator("weightInKg", "volumeInL")
+        @classmethod
+        def float_validator(cls, value: str, info: ValidationInfo) -> int:
+            if isinstance(value, float):
+                value = float(value)
+            else:
+                raise ValueError(f"{info.field_name} packaging is not a float input")
+            return value
+
+        @field_validator("packaging", "type")
+        @classmethod
+        def int_validator(cls, value: int, info: ValidationInfo) -> int:
+            if isinstance(value, int):
+                value = int(value)
+            else:
+                raise ValueError(f"{info.field_name} packaging is not a integer input")
+            return value

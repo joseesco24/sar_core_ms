@@ -1,9 +1,6 @@
 # !/usr/bin/python3
 # type: ignore
 
-# ** info: python imports
-from datetime import datetime
-
 # ** info: typing imports
 from typing import Self
 from typing import List
@@ -47,9 +44,8 @@ class CollectRequestController:
         return request_create_response
 
     async def _store_collect_request(self: Self, request_create_request: CollectRequestCreateRequestDto) -> str:
-        collect_date: datetime = datetime_provider.pretty_date_string_to_date(request_create_request.request.collectDate)
         collect_request_id: str = self.collect_request_provider.store_collect_request(
-            collect_date=collect_date, production_center_id=request_create_request.request.productionCenterId
+            collect_date=request_create_request.request.collectDate, production_center_id=request_create_request.request.productionCenterId
         )
         return collect_request_id
 

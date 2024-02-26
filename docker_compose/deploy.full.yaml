@@ -18,8 +18,6 @@ services:
   sar_ms_py:
     container_name: sar_ms_py
     image: ghcr.io/joseesco24/sar_ms_py:v1.2.2
-    env_file:
-      - ../.env
     networks:
       - sar_system_network
     ports:
@@ -29,6 +27,24 @@ services:
     depends_on:
       - sar_bd_mysql
 
+  portainer:
+    container_name: portainer
+    image: portainer/portainer-ce:2.19.4
+    ports:
+      - target: 9443
+        published: 9443
+        protocol: tcp
+      - target: 8080
+        published: 8080
+        protocol: tcp
+    volumes:
+      - type: volume
+        source: portainer_disc
+        target: /data
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+
 networks:
   sar_system_network:
     name: sar_system_network
@@ -37,3 +53,4 @@ networks:
 
 volumes:
   sar_bd_mysql_disc:
+  portainer_disc:

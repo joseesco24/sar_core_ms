@@ -2,6 +2,8 @@
 # type: ignore
 
 # ** info: pydantic imports
+from pydantic import field_validator
+from pydantic import ValidationInfo
 from pydantic import BaseModel
 from pydantic import Field
 
@@ -28,3 +30,12 @@ class ParameterDtos:
     class ParameterDataDto(BaseModel):
         label: str = Field(...)
         value: int = Field(...)
+
+        @field_validator("value")
+        @classmethod
+        def int_validator(cls, value: int, info: ValidationInfo) -> int:
+            if isinstance(value, int):
+                value = int(value)
+            else:
+                raise ValueError(f"{info.field_name} packaging is not a integer input")
+            return value
