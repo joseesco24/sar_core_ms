@@ -1,9 +1,16 @@
 # !/usr/bin/python3
 # type: ignore
 
+# ** info: python imports
+import logging
+
 # ** info: typing imports
 from typing import Self
 from typing import List
+
+# ** info: fastapi imports
+from fastapi import HTTPException
+from fastapi import status
 
 # ** info: dtos imports
 from src.dtos.collect_request_dtos import CollectRequestControllerDtos
@@ -15,10 +22,12 @@ ResponseWasteDataDto = CollectRequestControllerDtos.ResponseWasteDataDto
 
 # ** info: providers imports
 from src.database.collect_request_provider import CollectRequestProvider
+from src.database.parameter_provider import ParameterProvider
 from src.database.waste_provider import WasteProvider
 
-# ** info: users entity
+# ** info: entities imports
 from src.entities.collect_request_entity import CollectRequest
+from src.entities.parameter_entity import Parameter
 from src.entities.waste_entity import Waste
 
 # ** info: artifacts imports
@@ -31,9 +40,11 @@ class CollectRequestController:
     def __init__(self: Self):
         # ** info: building controller needed providers
         self.collect_request_provider: CollectRequestProvider = CollectRequestProvider()
+        self.parameter_provider: ParameterProvider = ParameterProvider()
         self.waste_provider: WasteProvider = WasteProvider()
 
     async def driver_request_create(self: Self, request_create_request: CollectRequestCreateRequestDto) -> CollectRequestCreateResponseDto:
+        await self._validate_wastes_domains(request_create_request=request_create_request)
         collect_request_id: str = await self._store_collect_request(request_create_request=request_create_request)
         wastes_ids = await self._store_collect_request_wastes(collect_request_id=collect_request_id, request_create_request=request_create_request)
         collect_request_info: CollectRequest = await self._search_collect_request_by_id(collect_request_id=collect_request_id)
@@ -42,6 +53,21 @@ class CollectRequestController:
             collect_request_info=collect_request_info, wastes_info=wastes_info
         )
         return request_create_response
+
+    async def _validate_wastes_domains(self: Self, request_create_request: CollectRequestCreateRequestDto) -> None:
+        waste_packaging_types: List[Parameter] = self.parameter_provider.search_parameters_by_domain(domain=r"wastePackagingType")
+        waste_types: List[Parameter] = self.parameter_provider.search_parameters_by_domain(domain=r"wasteType")
+        waste_packaging_types_ids: set(int) = set([waste_packaging_type.id for waste_packaging_type in waste_packaging_types])
+        waste_types_ids: set(int) = set([waste_type.id for waste_type in waste_types])
+        for waste in request_create_request.waste:
+            if waste.packaging not in waste_packaging_types_ids:
+                valid_waste_types: str = r",".join(str(s) for s in waste_packaging_types_ids)
+                logging.error(f"packaging type {waste.packaging} is not valid valid types are {valid_waste_types}")
+                raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"packaging type {waste.packaging} is not valid")
+            if waste.type not in waste_types_ids:
+                valid_packaging_types: str = r",".join(str(s) for s in waste_types_ids)
+                logging.error(f"waste type {waste.packaging} is not valid valid types are {valid_packaging_types}")
+                raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"waste type {waste.type} is not valid")
 
     async def _store_collect_request(self: Self, request_create_request: CollectRequestCreateRequestDto) -> str:
         collect_request_id: str = self.collect_request_provider.store_collect_request(

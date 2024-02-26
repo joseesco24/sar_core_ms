@@ -15,7 +15,7 @@ ParameterDataDto = ParameterDtos.ParameterDataDto
 # ** info: providers imports
 from src.database.parameter_provider import ParameterProvider
 
-# ** info: users entity
+# ** info: entities imports
 from src.entities.parameter_entity import Parameter
 
 __all__: list[str] = ["ParameterController"]
