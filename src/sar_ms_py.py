@@ -2,7 +2,6 @@
 # type: ignore
 
 # ** info: python imports
-from logging import Logger
 from os.path import join
 from os import path
 import logging
@@ -52,8 +51,9 @@ else:
     logging.info(f"logger setup on {configs.app_logging_mode.lower()} mode")
 
 # ---------------------------------------------------------------------------------------------------------------------
-# ** info: initializing app
+# ** info: initializing app metadata and documentation
 # ---------------------------------------------------------------------------------------------------------------------
+
 metadata: Dict[str, Any] = {
     "description": "This repository corresponds to the a small python microservice that is gint to be used used in the sar system.",
     "summary": "sar python microservice summary",
@@ -99,28 +99,15 @@ else:
     logging.warning("authentication middleware inactive")
 
 sar_ms_py.add_middleware(middleware_class=BaseHTTPMiddleware, dispatch=error_handler)
-
 sar_ms_py.add_middleware(middleware_class=BaseHTTPMiddleware, dispatch=logger_contextualizer)
-
 sar_ms_py.add_middleware(CORSMiddleware, allow_credentials=True, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
 # ---------------------------------------------------------------------------------------------------------------------
-# ** info: disabling uvicorn access and error logs on production mode
+# ** info: hot reload notification
 # ---------------------------------------------------------------------------------------------------------------------
-
-uvicorn_access: Logger = logging.getLogger("uvicorn.access")
-uvicorn_error: Logger = logging.getLogger("uvicorn.erro")
-
-if configs.app_environment_mode == "production":
-    uvicorn_access.disabled = True
-    uvicorn_error.disabled = True
-else:
-    uvicorn_access.disabled = False
-    uvicorn_error.disabled = False
 
 if __name__ == "__main__":
     logging.info(f"application started in {configs.app_environment_mode.lower()} mode")
-
 if __name__ != "__main__":
     logging.info(f"application reloaded in {configs.app_environment_mode.lower()} mode")
 

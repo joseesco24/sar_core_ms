@@ -34,6 +34,7 @@ class CustomLogger:
     _extras: Dict[str, str] = {
         "internalId": "397d4343-2855-4c92-b64b-58ee82006e0b",
         "externalId": "397d4343-2855-4c92-b64b-58ee82006e0b",
+        "version": "v1.3.1",
     }
 
     @classmethod
@@ -44,7 +45,7 @@ class CustomLogger:
         """
 
         fmt: str = (
-            "[<fg #66a3ff>{time:YYYY-MM-DD HH:mm:ss.SSSSSS!UTC}</fg #66a3ff>:<fg #fc03cf>{extra[internalId]}</fg #fc03cf>] <level>{level}</level>: {message}"
+            "[{extra[version]}][<fg #66a3ff>{time:YYYY-MM-DD HH:mm:ss.SSSSSS!UTC}</fg #66a3ff>:<fg #fc03cf>{extra[internalId]}</fg #fc03cf>] <level>{level}</level>: {message}"
         )
 
         # ** info: overwriting all the loggers configs with the new one
@@ -113,6 +114,7 @@ class CustomLogger:
             "message": record["message"],
             "externalId": record["extra"]["externalId"],
             "internalId": record["extra"]["internalId"],
+            "version": record["extra"]["version"],
         }
 
         if record["exception"] is not None:

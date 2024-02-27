@@ -40,7 +40,7 @@ find . | grep -E "(/__pycache__$|\.pyc$|\.pyo$)" | xargs rm -rf
 
 # ** info: formatting files
 print_title "Formatting Files"
-black ./src --line-length=150
+black ./src --line-length=180
 
 # ** info: exporting dependencies if needed
 if [[ " ${staged_files[@]} " =~ " poetry.lock " ]]; then
