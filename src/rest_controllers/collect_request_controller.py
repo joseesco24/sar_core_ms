@@ -49,9 +49,7 @@ class CollectRequestController:
         wastes_ids = await self._store_collect_request_wastes(collect_request_id=collect_request_id, request_create_request=request_create_request)
         collect_request_info: CollectRequest = await self._search_collect_request_by_id(collect_request_id=collect_request_id)
         wastes_info: List[Waste] = await self._search_wastes_by_ids(wastes_ids=wastes_ids)
-        request_create_response: CollectRequestCreateResponseDto = await self._map_collect_response(
-            collect_request_info=collect_request_info, wastes_info=wastes_info
-        )
+        request_create_response: CollectRequestCreateResponseDto = await self._map_collect_response(collect_request_info=collect_request_info, wastes_info=wastes_info)
         return request_create_response
 
     async def _validate_wastes_domains(self: Self, request_create_request: CollectRequestCreateRequestDto) -> None:
