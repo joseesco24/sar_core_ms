@@ -3,6 +3,7 @@
 
 # ** info: typing imports
 from typing import List
+from typing import Self
 from typing import Any
 
 # ** info: sqlmodel imports
@@ -12,6 +13,9 @@ from sqlmodel import select
 # ** info: users entity
 from src.entities.parameter_entity import Parameter
 
+# ** info: artifacts imports
+from src.artifacts.env.configs import configs
+
 # ** info: session managers imports
 from src.database.session_managers.mysql_sar_manager import MySQLSarManager
 
@@ -19,9 +23,19 @@ __all__: list[str] = ["ParameterProvider"]
 
 
 class ParameterProvider:
-    @staticmethod
-    def search_parameters_by_domain(domain: str) -> List[Parameter]:
-        session: Session = MySQLSarManager.obtain_session()
+    def __init__(self: Self) -> None:
+        self._session_manager: MySQLSarManager = MySQLSarManager(
+            password=configs.database_password,
+            database=configs.database_name,
+            username=configs.database_user,
+            drivername=r"mysql+pymysql",
+            host=configs.database_host,
+            port=configs.database_port,
+            query={"charset": "utf8"},
+        )
+
+    def search_parameters_by_domain(self: Self, domain: str) -> List[Parameter]:
+        session: Session = self._session_manager.obtain_session()
         query: Any = select(Parameter).where(Parameter.domain == domain)
         search_one_collect_request_result: List[Parameter] = session.exec(statement=query).fetchall()
         return search_one_collect_request_result

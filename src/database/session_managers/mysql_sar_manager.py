@@ -5,85 +5,100 @@
 import logging
 import gc
 
+# ** info: typing imports
+from typing import Self
+
 # **info: sqlalchemy imports
 from sqlalchemy import text
 from sqlalchemy import URL
-
 
 # ** info: sqlmodel imports
 from sqlmodel import create_engine
 from sqlmodel import Session
 
 # ** info: artifacts imports
+from src.artifacts.uuid.uuid_provider import uuid_provider
+
+# ** info: artifacts imports
+from src.artifacts.datetime.datetime_provider import datetime_provider
 from src.artifacts.env.configs import configs
 
 __all__: list[str] = ["MySQLSarManager"]
 
 
 class MySQLSarManager:
-    _url = URL(
-        password=configs.database_password,
-        database=configs.database_name,
-        username=configs.database_user,
-        drivername=r"mysql+pymysql",
-        host=configs.database_host,
-        port=configs.database_port,
-        query={"charset": "utf8"},
-    )
-    _engine = create_engine(_url, echo=configs.database_logs)
-    _session = Session(bind=_engine)
+    instances: set = set()
 
-    @classmethod
-    def _start_session_and_engine(cls) -> None:
-        logging.warning("starting a new connection")
-        if cls._engine is None:
-            cls._engine = create_engine(cls._url, echo=configs.database_logs)
-        if cls._session is None:
-            cls._session = Session(bind=cls._engine)
-        logging.warning("new connection started")
+    def __init__(self: Self, password: str, database: str, username: str, drivername: str, host: str, port: int, query: dict) -> None:
+        self._url = URL(
+            drivername=drivername,
+            password=password,
+            database=database,
+            username=username,
+            query=query,
+            host=host,
+            port=port,
+        )
+        self._engine = create_engine(url=self._url, echo=configs.database_logs)
+        self._session_creation: str = datetime_provider.get_utc_iso_string()
+        self._connection_id: str = uuid_provider.get_str_uuid()
+        self._session = Session(bind=self._engine)
+        self._post_init()
 
-    @classmethod
-    def _end_session_and_engine(cls) -> None:
-        logging.warning("ending connection")
+    def obtain_session(self: Self) -> Session:
+        instanes_ids: str = r",".join(str(s) for s in MySQLSarManager.instances)
+        instances_count: int = MySQLSarManager.instances.__len__()
+        logging.info("obtaining connection")
+        logging.debug(f"instances count: {instances_count}")
+        logging.debug(f"instances ids: {instanes_ids}")
+        self._check_session_health()
+        return self._session
 
-        if cls._session is not None:
-            cls._session.close()
-            del cls._session
-            gc.collect()
-            cls._session = None
-
-        if cls._engine is not None:
-            cls._engine.dispose()
-            del cls._engine
-            gc.collect()
-            cls._engine = None
-        logging.warning("connection ended")
-
-    @classmethod
-    def _restart_session(cls) -> None:
-        logging.warning("restarting connection")
-        cls._end_session_and_engine()
-        cls._start_session_and_engine()
-        logging.warning("connection restarted")
-
-    @classmethod
-    def _check_session_health(cls) -> None:
+    def _check_session_health(self: Self) -> None:
         is_connection_healthy: bool
         try:
-            cls._session.exec(text(r"select 1"))
+            self._session.exec(text(r"select 1"))
             is_connection_healthy = True
         except Exception as e:
             print(e)
             is_connection_healthy = False
         if is_connection_healthy is False:
-            logging.critical("connection is unhealthy")
-            cls._restart_session()
-            logging.info(f"new connection is healthy: {cls._session.is_active}")
+            logging.critical(f"connection {self._connection_id} is unhealthy")
+            self._restart_session()
+            logging.info(f"new connection {self._connection_id} is healthy")
         else:
-            logging.info("connection is healthy")
+            logging.info(f"connection {self._connection_id} is healthy")
 
-    @classmethod
-    def obtain_session(cls) -> Session:
-        logging.info("obtaining connection")
-        cls._check_session_health()
-        return cls._session
+    def _restart_session(self: Self) -> None:
+        logging.warning("restarting connection")
+        self._end_session_and_engine()
+        self._start_session_and_engine()
+        logging.warning("connection restarted")
+
+    def _end_session_and_engine(self: Self) -> None:
+        logging.warning(f"ending connection {self._connection_id}")
+        if self._session is not None:
+            self._session.close()
+            del self._session
+            gc.collect()
+            self._session = None
+        if self._engine is not None:
+            self._engine.dispose()
+            del self._engine
+            gc.collect()
+            self._engine = None
+        logging.warning(f"connection {self._connection_id} ended")
+        MySQLSarManager.instances.remove(self._connection_id)
+
+    def _start_session_and_engine(self: Self) -> None:
+        self._connection_id = uuid_provider.get_str_uuid()
+        logging.warning(f"starting new connection {self._connection_id}")
+        if self._engine is None:
+            self._engine = create_engine(self._url, echo=configs.database_logs)
+        if self._session is None:
+            self._session = Session(bind=self._engine)
+        logging.warning(f"new connection {self._connection_id} started")
+
+    def _post_init(self: Self) -> None:
+        logging.info(f"connection started with id {self._connection_id}")
+        MySQLSarManager.instances.add(self._connection_id)

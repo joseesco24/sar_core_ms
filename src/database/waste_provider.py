@@ -3,6 +3,7 @@
 
 # ** info: typing imports
 from typing import Union
+from typing import Self
 from typing import Any
 
 # ** info: sqlmodel imports
@@ -14,6 +15,7 @@ from entities.waste_entity import Waste
 
 # ** info: artifacts imports
 from src.artifacts.uuid.uuid_provider import uuid_provider
+from src.artifacts.env.configs import configs
 
 # ** info: session managers imports
 from src.database.session_managers.mysql_sar_manager import MySQLSarManager
@@ -22,15 +24,25 @@ __all__: list[str] = ["WasteProvider"]
 
 
 class WasteProvider:
-    @staticmethod
-    def search_waste_by_id(uuid: str) -> Waste:
-        session: Session = MySQLSarManager.obtain_session()
+    def __init__(self: Self) -> None:
+        self._session_manager: MySQLSarManager = MySQLSarManager(
+            password=configs.database_password,
+            database=configs.database_name,
+            username=configs.database_user,
+            drivername=r"mysql+pymysql",
+            host=configs.database_host,
+            port=configs.database_port,
+            query={"charset": "utf8"},
+        )
+
+    def search_waste_by_id(self: Self, uuid: str) -> Waste:
+        session: Session = self._session_manager.obtain_session()
         query: Any = select(Waste).where(Waste.uuid == uuid)
         search_waste_by_id_result: Waste = session.exec(statement=query).first()
         return search_waste_by_id_result
 
-    @staticmethod
     def store_waste(
+        self: Self,
         request_uuid: str,
         type: int,
         packaging: int,
@@ -39,7 +51,7 @@ class WasteProvider:
         description: str,
         note: Union[str, None] = None,
     ) -> str:
-        session: Session = MySQLSarManager.obtain_session()
+        session: Session = self._session_manager.obtain_session()
         uuid: str = uuid_provider.get_str_uuid()
         new_waste: Waste = Waste(
             uuid=uuid,
