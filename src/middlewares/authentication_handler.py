@@ -13,10 +13,10 @@ from typing import Dict
 
 # ** info: starlette imports
 from starlette.responses import StreamingResponse
-from starlette.responses import ContentStream
 from starlette.requests import Request
 
 # ** info: fastapi imports
+from fastapi.responses import JSONResponse
 from fastapi import status
 
 
@@ -60,11 +60,7 @@ class AuthenticationHandler:
             response: StreamingResponse = await call_next(request)
         else:
             logging.error(f"the request with id {internal_id} was not successfully authorized")
-            response_stream: ContentStream = iter([r"Not Authorized"])
-            response: StreamingResponse = StreamingResponse(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                content=response_stream,
-            )
+            return JSONResponse(status_code=status.HTTP_401_UNAUTHORIZED, content={r"detail": r"Internal Server Error"})
 
         logging.debug("authentication middleware ended")
 

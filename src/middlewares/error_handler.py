@@ -13,10 +13,10 @@ from typing import Dict
 
 # ** info: starlette imports
 from starlette.responses import StreamingResponse
-from starlette.responses import ContentStream
 from starlette.requests import Request
 
 # ** info: fastapi imports
+from fastapi.responses import JSONResponse
 from fastapi import status
 
 
@@ -48,11 +48,7 @@ class ErrorHandler:
             response = await call_next(request)
         except Exception:
             logging.exception(f"an error has occurred while processing the request {internal_id}")
-            response_stream: ContentStream = iter([r"Internal Server Error"])
-            response = StreamingResponse(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                content=response_stream,
-            )
+            return JSONResponse(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, content={r"detail": r"Internal Server Error"})
 
         logging.debug("error handler middleware ended")
 
