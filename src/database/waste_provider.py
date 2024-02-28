@@ -54,3 +54,6 @@ class WasteProvider:
         session.add(new_waste)
         session.commit()
         return uuid
+
+
+# ** info: editar esto al trabajar la tajada de los residuos

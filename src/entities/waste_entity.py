@@ -24,3 +24,6 @@ class Waste(SQLModel, table=True):
     volume_in_l: Decimal = Field(max_digits=10, decimal_places=2, nullable=False)
     description: str = Field(max_length=65535, nullable=False)
     note: Optional[str] = Field(max_length=65535, nullable=False)
+
+
+# ** info: editar esto al trabajar la tajada de los residuos
