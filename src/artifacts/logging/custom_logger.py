@@ -34,7 +34,7 @@ class CustomLogger:
     _extras: Dict[str, str] = {
         "internalId": "397d4343-2855-4c92-b64b-58ee82006e0b",
         "externalId": "397d4343-2855-4c92-b64b-58ee82006e0b",
-        "version": "v1.3.1",
+        "version": "v1.4.0",
     }
 
     @classmethod
