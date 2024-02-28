@@ -98,7 +98,7 @@ class CollectRequestControllerDtos:
         @classmethod
         def date_validator(cls, value: int, info: ValidationInfo) -> int:
             try:
-                value = datetime_provider.pretty_date_string_to_date(value)
+                datetime_provider.pretty_date_string_to_date(value)
             except ValueError:
                 raise ValueError(f"{info.field_name} is not a valid dd/mm/yyyy date")
             return value
