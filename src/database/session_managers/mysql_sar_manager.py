@@ -84,7 +84,7 @@ class MySQLSarManager:
         self._end_session_and_engine()
         logging.critical("connection shuted down")
         logging.critical("a new attempt to restart the connection is going to be executed on the next request")
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE)
 
     def _test_qeury(self: Self) -> bool:
         if self._connection_id is None:
