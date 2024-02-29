@@ -21,7 +21,7 @@ from src.rest_controllers.waste_controller import WasteController
 __all__: list[str] = ["waste_router"]
 
 # ** info: building class router
-waste_router: APIRouter = APIRouter(prefix=generator.build_posix_path("waste"), tags=["waste"])
+waste_router: APIRouter = APIRouter(prefix=generator.build_posix_path("waste"), tags=["Waste"])
 
 # ** info: building router controllers
 waste_controller: WasteController = WasteController()
