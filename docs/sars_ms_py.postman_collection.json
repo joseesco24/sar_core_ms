@@ -16,7 +16,13 @@
 							"name": "search",
 							"request": {
 								"method": "POST",
-								"header": [],
+								"header": [
+									{
+										"key": "request-id",
+										"value": "joseesco24",
+										"type": "text"
+									}
+								],
 								"body": {
 									"mode": "raw",
 									"raw": "{\n    \"domain\": \"wasteType\"\n}",
@@ -52,7 +58,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"request\": {\n        \"productionCenterId\": 123456789,\n        \"collectDate\": \"24/12/2024\"\n    },\n    \"waste\": [\n        {\n            \"type\": 1,\n            \"weightInKg\": 18.2,\n            \"volumeInL\": 18.4,\n            \"packaging\": 1,\n            \"description\": \"aaaa\",\n            \"note\": \"aaaa\"\n        }\n    ]\n}",
+									"raw": "{\n  \"request\": {\n    \"collectDate\": \"12/12/2024\",\n    \"productionCenterId\": 123456789\n  },\n  \"waste\": [\n    {\n      \"description\": \"nuclear wastes\",\n      \"note\": \"this is a note\",\n      \"packaging\": 4,\n      \"type\": 1,\n      \"volumeInL\": 19,\n      \"weightInKg\": 18.2\n    },\n    {\n      \"description\": \"bone scan wastes\",\n      \"packaging\": 4,\n      \"type\": 2,\n      \"volumeInL\": 18.4,\n      \"weightInKg\": 18.9\n    }\n  ]\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -68,6 +74,45 @@
 										"rest",
 										"request",
 										"create"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "waste",
+					"item": [
+						{
+							"name": "clasification",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "request-id",
+										"value": "joseesco24",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"stateWaste\": \"liquid\",\n    \"weightInKg\": 100,\n    \"isotopesNumber\": 31\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/rest/waste/clasification",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"rest",
+										"waste",
+										"clasification"
 									]
 								}
 							},
@@ -111,7 +156,7 @@
 		},
 		{
 			"key": "CLOUD_HOST",
-			"value": "http://13.92.28.33:10048",
+			"value": "http://lbResiduos-2128918802.us-east-2.elb.amazonaws.com:80",
 			"type": "string"
 		}
 	]
