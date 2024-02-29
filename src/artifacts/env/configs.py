@@ -11,6 +11,7 @@ from typing import Set
 
 # ** info: pydantic imports
 from pydantic_settings import BaseSettings
+from pydantic import HttpUrl
 from pydantic import Field
 
 __all__: list[str] = ["configs"]
@@ -43,6 +44,9 @@ class Configs(BaseSettings):
     database_name: str = Field(..., env="DATABASE_NAME")
     database_user: str = Field(..., env="DATABASE_USER")
     database_port: int = Field(..., env="DATABASE_PORT")
+
+    # ** info: external microservices base urls
+    sar_brms_base_url: HttpUrl = Field(..., env="SAR_BRMS_BASE_URL")
 
 
 load_dotenv(override=True, verbose=True, dotenv_path=find_dotenv(".env"))
