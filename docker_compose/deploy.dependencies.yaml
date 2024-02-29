@@ -15,6 +15,16 @@ services:
         source: sar_bd_mysql_disc
         target: /var/lib/mysql
 
+  sar_brms:
+    container_name: sar_brms
+    image: ghcr.io/joseesco24/sar_brms:v1.0.0
+    networks:
+      - sar_system_network
+    ports:
+      - target: 8080
+        published: 5438
+        protocol: tcp
+
 networks:
   sar_system_network:
     name: sar_system_network

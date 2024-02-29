@@ -1,6 +1,19 @@
 version: "3.8"
 
 services:
+  sar_ms_py:
+    container_name: sar_ms_py
+    image: ghcr.io/joseesco24/sar_ms_py:v1.4.0
+    networks:
+      - sar_system_network
+    ports:
+      - target: 10048
+        published: 10048
+        protocol: tcp
+    depends_on:
+      - sar_bd_mysql
+      - sar_brms
+
   sar_bd_mysql:
     container_name: sar_bd_mysql
     image: ghcr.io/joseesco24/sar_bd_mysql:v1.0.2
@@ -15,17 +28,15 @@ services:
         source: sar_bd_mysql_disc
         target: /var/lib/mysql
 
-  sar_ms_py:
-    container_name: sar_ms_py
-    image: ghcr.io/joseesco24/sar_ms_py:v1.4.0
+  sar_brms:
+    container_name: sar_brms
+    image: ghcr.io/joseesco24/sar_brms:v1.0.0
     networks:
       - sar_system_network
     ports:
-      - target: 10048
-        published: 10048
+      - target: 8080
+        published: 5438
         protocol: tcp
-    depends_on:
-      - sar_bd_mysql
 
   portainer:
     container_name: portainer
@@ -44,6 +55,10 @@ services:
       - type: bind
         source: /var/run/docker.sock
         target: /var/run/docker.sock
+    depends_on:
+      - sar_bd_mysql
+      - sar_brms
+      - sar_ms_py
 
 networks:
   sar_system_network:
