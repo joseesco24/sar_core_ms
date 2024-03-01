@@ -27,10 +27,10 @@ from loguru._recattrs import RecordException
 from src.sidecards.artifacts.datetime_provider import DatetimeProvider
 
 
-__all__: list[str] = ["CustomLogger"]
+__all__: list[str] = ["LoggingProvider"]
 
 
-class CustomLogger:
+class LoggingProvider:
     _extras: Dict[str, str] = {
         "internalId": "397d4343-2855-4c92-b64b-58ee82006e0b",
         "externalId": "397d4343-2855-4c92-b64b-58ee82006e0b",

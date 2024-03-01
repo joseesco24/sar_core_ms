@@ -31,7 +31,7 @@ from src.modules.parameter.rest_routers.parameter_router import parameter_router
 from src.modules.waste.rest_routers.waster_router import waste_router
 
 # ** info: artifacts imports
-from src.sidecards.logging.custom_logger import CustomLogger
+from sidecards.artifacts.logging_provider import LoggingProvider
 from src.sidecards.path.generator import generator
 from src.sidecards.artifacts.env_provider import EnvProvider
 
@@ -51,10 +51,10 @@ env_provider: EnvProvider = EnvProvider()
 # ---------------------------------------------------------------------------------------------------------------------
 
 if env_provider.app_logging_mode == "structured":
-    CustomLogger.setup_structured_logging()
+    LoggingProvider.setup_structured_logging()
     logging.info(f"logger setup on {env_provider.app_logging_mode.lower()} mode")
 else:
-    CustomLogger.setup_pretty_logging()
+    LoggingProvider.setup_pretty_logging()
     logging.info(f"logger setup on {env_provider.app_logging_mode.lower()} mode")
 
 # ---------------------------------------------------------------------------------------------------------------------
