@@ -24,7 +24,7 @@ from loguru import logger
 from loguru._recattrs import RecordException
 
 # ** info: artifacts imports
-from src.artifacts.datetime.datetime_provider import datetime_provider
+from src.sidecard.datetime.datetime_provider import datetime_provider
 
 
 __all__: list[str] = ["CustomLogger"]

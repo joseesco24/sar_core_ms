@@ -16,7 +16,7 @@ CollectRequestCreateRequestDto = CollectRequestControllerDtos.CollectRequestCrea
 from src.core.collect_request_core import CollectRequestCore
 
 # ** info: artifacts imports
-from src.artifacts.path.generator import generator
+from src.sidecard.path.generator import generator
 
 __all__: list[str] = ["collect_request_router"]
 

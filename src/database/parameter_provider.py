@@ -14,7 +14,7 @@ from sqlmodel import select
 from src.entities.parameter_entity import Parameter
 
 # ** info: artifacts imports
-from src.artifacts.env.configs import configs
+from src.sidecard.env.configs import configs
 
 # ** info: session managers imports
 from src.database.session_managers.mysql_sar_manager import MySQLSarManager

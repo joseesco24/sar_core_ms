@@ -31,7 +31,7 @@ from src.database.parameter_provider import ParameterProvider
 from src.database.waste_provider import WasteProvider
 
 # ** info: artifacts imports
-from src.artifacts.datetime.datetime_provider import datetime_provider
+from src.sidecard.datetime.datetime_provider import datetime_provider
 
 __all__: list[str] = ["CollectRequestCore"]
 

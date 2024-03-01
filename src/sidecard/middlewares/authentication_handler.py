@@ -20,7 +20,7 @@ from fastapi.responses import JSONResponse
 from fastapi import status
 
 
-from src.artifacts.env.configs import configs
+from src.sidecard.env.configs import configs
 
 __all__: list[str] = ["authentication_handler"]
 

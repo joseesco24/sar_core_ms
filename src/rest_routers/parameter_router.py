@@ -16,7 +16,7 @@ ParameterSearchRequestDto = ParameterDtos.ParameterSearchRequestDto
 from src.core.parameter_core import ParameterCore
 
 # ** info: artifacts imports
-from src.artifacts.path.generator import generator
+from src.sidecard.path.generator import generator
 
 __all__: list[str] = ["parameter_router"]
 

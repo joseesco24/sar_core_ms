@@ -19,7 +19,7 @@ WasteClasificationRequestDto = WasteDtos.WasteClasificationRequestDto
 from src.core.waste_core import WasteCore
 
 # ** info: artifacts imports
-from src.artifacts.path.generator import generator
+from src.sidecard.path.generator import generator
 
 __all__: list[str] = ["waste_router"]
 

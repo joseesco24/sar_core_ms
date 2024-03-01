@@ -31,14 +31,14 @@ from src.rest_routers.parameter_router import parameter_router
 from src.rest_routers.waster_router import waste_router
 
 # ** info: artifacts imports
-from src.artifacts.logging.custom_logger import CustomLogger
-from src.artifacts.path.generator import generator
-from src.artifacts.env.configs import configs
+from src.sidecard.logging.custom_logger import CustomLogger
+from src.sidecard.path.generator import generator
+from src.sidecard.env.configs import configs
 
 # ** info: middlewares imports
-from src.middlewares.authentication_handler import authentication_handler
-from src.middlewares.logger_contextualizer import logger_contextualizer
-from src.middlewares.error_handler import error_handler
+from src.sidecard.middlewares.authentication_handler import authentication_handler
+from src.sidecard.middlewares.logger_contextualizer import logger_contextualizer
+from src.sidecard.middlewares.error_handler import error_handler
 
 # ---------------------------------------------------------------------------------------------------------------------
 # ** info: setting up global app logging
