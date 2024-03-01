@@ -20,12 +20,16 @@ from fastapi.responses import JSONResponse
 from fastapi import status
 
 
-from src.sidecards.env.configs import configs
+from sidecards.artifacts.env_provider import EnvProvider
 
 __all__: list[str] = ["AuthenticationHandlerMiddleware"]
 
 
 class AuthenticationHandlerMiddleware:
+
+    def __init__(self: Self) -> None:
+        self._env_provider: EnvProvider = EnvProvider()
+
     async def __call__(
         self: Self,
         request: Request,
@@ -48,7 +52,7 @@ class AuthenticationHandlerMiddleware:
 
         internal_id = logger_kwargs[r"internalId"]
 
-        if endpoint_url in configs.app_authentication_handler_middleware_exclude:
+        if endpoint_url in self._env_provider.app_authentication_handler_middleware_exclude:
             logging.info("jumping authentication middleware validations")
             is_authenticated = True
         else:

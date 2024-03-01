@@ -33,7 +33,7 @@ from src.modules.waste.rest_routers.waster_router import waste_router
 # ** info: artifacts imports
 from src.sidecards.logging.custom_logger import CustomLogger
 from src.sidecards.path.generator import generator
-from src.sidecards.env.configs import configs
+from src.sidecards.artifacts.env_provider import EnvProvider
 
 # ** info: middlewares imports
 from src.sidecards.middlewares.authentication_handler_middleware import AuthenticationHandlerMiddleware
@@ -41,15 +41,21 @@ from src.sidecards.middlewares.logger_contextualizer_middleware import LoggerCon
 from src.sidecards.middlewares.error_handler_middleware import ErrorHandlerMiddleware
 
 # ---------------------------------------------------------------------------------------------------------------------
+# ** info: building needed artifacts
+# ---------------------------------------------------------------------------------------------------------------------
+
+env_provider: EnvProvider = EnvProvider()
+
+# ---------------------------------------------------------------------------------------------------------------------
 # ** info: setting up global app logging
 # ---------------------------------------------------------------------------------------------------------------------
 
-if configs.app_logging_mode == "structured":
+if env_provider.app_logging_mode == "structured":
     CustomLogger.setup_structured_logging()
-    logging.info(f"logger setup on {configs.app_logging_mode.lower()} mode")
+    logging.info(f"logger setup on {env_provider.app_logging_mode.lower()} mode")
 else:
     CustomLogger.setup_pretty_logging()
-    logging.info(f"logger setup on {configs.app_logging_mode.lower()} mode")
+    logging.info(f"logger setup on {env_provider.app_logging_mode.lower()} mode")
 
 # ---------------------------------------------------------------------------------------------------------------------
 # ** info: initializing app metadata and documentation
@@ -63,7 +69,7 @@ metadata: Dict[str, Any] = {
 }
 
 sar_ms_py: FastAPI
-if configs.app_swagger_docs is True:
+if env_provider.app_swagger_docs is True:
     sar_ms_py = FastAPI(swagger_ui_parameters={"defaultModelsExpandDepth": -1}, redoc_url=None, **metadata)
     logging.warning("swagger docs active")
 else:
@@ -94,7 +100,7 @@ sar_ms_py.include_router(rest_router)
 # ** info: setting up app middlewares
 # ---------------------------------------------------------------------------------------------------------------------
 
-if configs.app_use_authentication_handler_middleware is True:
+if env_provider.app_use_authentication_handler_middleware is True:
     logging.info("authentication middleware active")
     sar_ms_py.add_middleware(middleware_class=BaseHTTPMiddleware, dispatch=AuthenticationHandlerMiddleware())
 else:
@@ -109,27 +115,27 @@ sar_ms_py.add_middleware(CORSMiddleware, allow_credentials=True, allow_origins=[
 # ---------------------------------------------------------------------------------------------------------------------
 
 if __name__ == "__main__":
-    logging.info(f"application started in {configs.app_environment_mode.lower()} mode")
+    logging.info(f"application started in {env_provider.app_environment_mode.lower()} mode")
 if __name__ != "__main__":
-    logging.info(f"application reloaded in {configs.app_environment_mode.lower()} mode")
+    logging.info(f"application reloaded in {env_provider.app_environment_mode.lower()} mode")
 
 # ---------------------------------------------------------------------------------------------------------------------
 # ** info: setting up uvicorn asgi server with fast api app
 # ---------------------------------------------------------------------------------------------------------------------
 
 uvicorn_server_configs: Dict[str, Any] = {
-    "app": sar_ms_py if configs.app_environment_mode == "production" else "sar_ms_py:sar_ms_py",
-    "log_level": "debug" if configs.app_environment_mode != "production" else "error",
-    "use_colors": False if configs.app_environment_mode == "production" else True,
-    "reload": False if configs.app_environment_mode == "production" else True,
+    "app": sar_ms_py if env_provider.app_environment_mode == "production" else "sar_ms_py:sar_ms_py",
+    "log_level": "debug" if env_provider.app_environment_mode != "production" else "error",
+    "use_colors": False if env_provider.app_environment_mode == "production" else True,
+    "reload": False if env_provider.app_environment_mode == "production" else True,
     "reload_excludes": ["**/*.pyc", "**/*.pyc.*", "**/*.pyo"],
     "reload_includes": ["**/*.py", "**/*.graphql"],
-    "port": configs.app_server_port,
+    "port": env_provider.app_server_port,
     "access_log": False,
     "host": "0.0.0.0",
 }
 
-logging.info(f"application starting on port {configs.app_server_port}")
+logging.info(f"application starting on port {env_provider.app_server_port}")
 
 # ---------------------------------------------------------------------------------------------------------------------
 # ** info: running app using the previous uvicorn asgi server settings
@@ -138,5 +144,5 @@ logging.info(f"application starting on port {configs.app_server_port}")
 if __name__ == "__main__":
     uvicorn.run(**uvicorn_server_configs)
 
-if configs.app_environment_mode == "production":
+if env_provider.app_environment_mode == "production":
     logging.debug("application ended")

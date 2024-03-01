@@ -14,7 +14,7 @@ from pydantic_settings import BaseSettings
 from pydantic import HttpUrl
 from pydantic import Field
 
-__all__: list[str] = ["configs"]
+__all__: list[str] = ["EnvProvider"]
 
 
 class EnvironmentMode(str, Enum):
@@ -28,7 +28,7 @@ class LoggingMode(str, Enum):
     pretty: str = "pretty"
 
 
-class Configs(BaseSettings):
+class EnvProvider(BaseSettings):
     # ** info: app configs
     app_environment_mode: EnvironmentMode = Field(..., validation_alias="APP_ENVIRONMENT_MODE")
     app_logging_mode: LoggingMode = Field(..., validation_alias="APP_LOGGING_MODE")
@@ -50,4 +50,3 @@ class Configs(BaseSettings):
 
 
 load_dotenv(override=True, verbose=True, dotenv_path=find_dotenv(".env"))
-configs: Configs = Configs()

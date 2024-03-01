@@ -17,7 +17,7 @@ from fastapi import HTTPException
 from fastapi import status
 
 # ** info: artifacts imports
-from src.sidecards.env.configs import configs
+from sidecards.artifacts.env_provider import EnvProvider
 
 
 __all__: list[str] = ["BrmsPort"]
@@ -25,7 +25,8 @@ __all__: list[str] = ["BrmsPort"]
 
 class BrmsPort:
     def __init__(self: Self):
-        self.base_url: str = str(configs.sar_brms_base_url)
+        self._env_provider: EnvProvider = EnvProvider()
+        self.base_url: str = str(self._env_provider.sar_brms_base_url)
 
     def obtain_waste_clasification(self: Self, state_waste: str, weight_in_kg: float, isotopes_number: float) -> int:
         data: dict[str, str] = {"stateWaste": state_waste, "weightInKg": weight_in_kg, "isotopesNumber": isotopes_number}
