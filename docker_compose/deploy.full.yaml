@@ -3,7 +3,7 @@ version: "3.8"
 services:
   sar_ms_py:
     container_name: sar_ms_py
-    image: ghcr.io/joseesco24/sar_ms_py:v1.6.1
+    image: ghcr.io/joseesco24/sar_ms_py:v2.0.0
     networks:
       - sar_system_network
     ports:
