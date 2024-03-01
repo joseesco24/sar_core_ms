@@ -11,7 +11,7 @@ from sqlmodel import Session
 from sqlmodel import select
 
 # ** info: users entity
-from entities.waste_entity import Waste
+from src.entities.waste_entity import Waste
 
 # ** info: artifacts imports
 from src.artifacts.uuid.uuid_provider import uuid_provider
