@@ -30,7 +30,7 @@ from src.modules.collect_request.cores.collect_request_core import CollectReques
 
 # ** info: entities imports
 from src.modules.collect_request.entities.collect_request_entity import CollectRequest
-from src.modules.entities.parameter_entity import Parameter
+from src.modules.parameter.entities.parameter_entity import Parameter
 from src.modules.waste.entities.waste_entity import Waste
 
 # ** info: artifacts imports

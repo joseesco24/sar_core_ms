@@ -11,8 +11,8 @@ from pydantic import Field
 from typing import List
 
 # **info: metadata for the model imports
-from src.modules.dtos.parameter_dtos_metadata import parameter_searc_req_ex
-from src.modules.dtos.parameter_dtos_metadata import parameter_searc_res_ex
+from src.modules.parameter.dtos.parameter_dtos_metadata import parameter_searc_req_ex
+from src.modules.parameter.dtos.parameter_dtos_metadata import parameter_searc_res_ex
 
 __all__: list[str] = ["ParameterDtos"]
 

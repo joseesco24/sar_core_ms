@@ -11,7 +11,7 @@ from sqlmodel import Session
 from sqlmodel import select
 
 # ** info: users entity
-from src.modules.entities.parameter_entity import Parameter
+from src.modules.parameter.entities.parameter_entity import Parameter
 
 # ** info: artifacts imports
 from src.sidecards.env.configs import configs

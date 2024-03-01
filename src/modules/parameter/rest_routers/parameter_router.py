@@ -7,13 +7,13 @@ from fastapi import status
 from fastapi import Body
 
 # ** info: dtos imports
-from src.modules.dtos.parameter_dtos import ParameterDtos
+from src.modules.parameter.dtos.parameter_dtos import ParameterDtos
 
 ParameterSearchResponseDto = ParameterDtos.ParameterSearchResponseDto
 ParameterSearchRequestDto = ParameterDtos.ParameterSearchRequestDto
 
 # ** info: rest controllers imports
-from src.modules.core.parameter_core import ParameterCore
+from src.modules.parameter.cores.parameter_core import ParameterCore
 
 # ** info: artifacts imports
 from src.sidecards.path.generator import generator

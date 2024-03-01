@@ -27,7 +27,7 @@ from starlette.middleware.base import BaseHTTPMiddleware
 
 # ** info: rest based routers imports
 from src.modules.collect_request.rest_routers.collect_request_router import collect_request_router
-from src.modules.rest_routers.parameter_router import parameter_router
+from src.modules.parameter.rest_routers.parameter_router import parameter_router
 from src.modules.waste.rest_routers.waster_router import waste_router
 
 # ** info: artifacts imports
