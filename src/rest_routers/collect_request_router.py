@@ -6,9 +6,6 @@ from fastapi import APIRouter
 from fastapi import status
 from fastapi import Body
 
-# ** info: artifacts imports
-from src.artifacts.path.generator import generator
-
 # ** info: dtos imports
 from src.dtos.collect_request_dtos import CollectRequestControllerDtos
 
@@ -17,6 +14,9 @@ CollectRequestCreateRequestDto = CollectRequestControllerDtos.CollectRequestCrea
 
 # ** info: rest controllers imports
 from src.rest_controllers.collect_request_controller import CollectRequestController
+
+# ** info: artifacts imports
+from src.artifacts.path.generator import generator
 
 __all__: list[str] = ["collect_request_router"]
 
@@ -34,6 +34,6 @@ collect_request_controller: CollectRequestController = CollectRequestController(
     response_model=CollectRequestCreateResponseDto,
     status_code=status.HTTP_200_OK,
 )
-async def api_request_create(request_create_request: CollectRequestCreateRequestDto = Body(...)) -> CollectRequestCreateResponseDto:
-    request_create_response: CollectRequestCreateResponseDto = await collect_request_controller.driver_request_create(request_create_request)
+async def api_create_request(request_create_request: CollectRequestCreateRequestDto = Body(...)) -> CollectRequestCreateResponseDto:
+    request_create_response: CollectRequestCreateResponseDto = await collect_request_controller.driver_create_request(request_create_request)
     return request_create_response

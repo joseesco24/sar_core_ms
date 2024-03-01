@@ -20,15 +20,15 @@ CollectRequestCreateRequestDto = CollectRequestControllerDtos.CollectRequestCrea
 ResponseRequestDataDto = CollectRequestControllerDtos.ResponseRequestDataDto
 ResponseWasteDataDto = CollectRequestControllerDtos.ResponseWasteDataDto
 
-# ** info: providers imports
-from src.database.collect_request_provider import CollectRequestProvider
-from src.database.parameter_provider import ParameterProvider
-from src.database.waste_provider import WasteProvider
-
 # ** info: entities imports
 from src.entities.collect_request_entity import CollectRequest
 from src.entities.parameter_entity import Parameter
 from src.entities.waste_entity import Waste
+
+# ** info: providers imports
+from src.database.collect_request_provider import CollectRequestProvider
+from src.database.parameter_provider import ParameterProvider
+from src.database.waste_provider import WasteProvider
 
 # ** info: artifacts imports
 from src.artifacts.datetime.datetime_provider import datetime_provider
@@ -37,13 +37,24 @@ __all__: list[str] = ["CollectRequestController"]
 
 
 class CollectRequestController:
+
+    # !------------------------------------------------------------------------
+    # ! info: core atributtes and constructor section start
+    # !------------------------------------------------------------------------
+
     def __init__(self: Self):
-        # ** info: building controller needed providers
+        # ** info: providers building
         self.collect_request_provider: CollectRequestProvider = CollectRequestProvider()
         self.parameter_provider: ParameterProvider = ParameterProvider()
         self.waste_provider: WasteProvider = WasteProvider()
 
-    async def driver_request_create(self: Self, request_create_request: CollectRequestCreateRequestDto) -> CollectRequestCreateResponseDto:
+    # !------------------------------------------------------------------------
+    # ! info: driver methods section start
+    # ! warning: all the methods in this section are the ones that are going to be called from the routers layer
+    # ! warning: a method only can be declared in this section if it is going to be called from the routers layer
+    # !------------------------------------------------------------------------
+
+    async def driver_create_request(self: Self, request_create_request: CollectRequestCreateRequestDto) -> CollectRequestCreateResponseDto:
         await self._validate_wastes_domains(request_create_request=request_create_request)
         collect_request_id: str = await self._store_collect_request(request_create_request=request_create_request)
         wastes_ids = await self._store_collect_request_wastes(collect_request_id=collect_request_id, request_create_request=request_create_request)
@@ -51,6 +62,18 @@ class CollectRequestController:
         wastes_info: List[Waste] = await self._search_wastes_by_ids(wastes_ids=wastes_ids)
         request_create_response: CollectRequestCreateResponseDto = await self._map_collect_response(collect_request_info=collect_request_info, wastes_info=wastes_info)
         return request_create_response
+
+    # !------------------------------------------------------------------------
+    # ! info: core methods section start
+    # ! warning: all the methods in this section are the ones that are going to be called from another core or from a driver method
+    # ! warning: a method only can be declared in this section if it is going to be called from another core or from a driver method
+    # !------------------------------------------------------------------------
+
+    # !------------------------------------------------------------------------
+    # ! info: private class methods section start
+    # ! warning: all the methods in this section are the ones that are going to be called from inside this core
+    # ! warning: a method only can be declared in this section if it is going to be called from inside this core
+    # !------------------------------------------------------------------------
 
     async def _validate_wastes_domains(self: Self, request_create_request: CollectRequestCreateRequestDto) -> None:
         waste_packaging_types: List[Parameter] = self.parameter_provider.search_parameters_by_domain(domain=r"wastePackagingType")

@@ -1,73 +1,93 @@
 # !/usr/bin/python3
 # type: ignore
 
-# ** info: typing imports
-from typing import Self
-
-# ** info: dtos imports
-from src.dtos.waste_dtos import WasteDtos
-
-WasteClasificationResponseDto = WasteDtos.WasteClasificationResponseDto
-WasteClasificationRequestDto = WasteDtos.WasteClasificationRequestDto
-
-# ** info: ports imports
-from src.rest_ports.brms_port import BrmsPort
-
 # ** info: python imports
 import logging
+
+# ** info: typing imports
+from typing import List
+from typing import Self
 
 # ** info: fastapi imports
 from fastapi import HTTPException
 from fastapi import status
 
-# ** info: typing imports
-from typing import List
-
 # ** info: dtos imports
 from src.dtos.waste_dtos import WasteRequestControllerDtos
+from src.dtos.waste_dtos import WasteDtos
 
-WasteClassifyRequestDto = WasteRequestControllerDtos.WasteClassifyRequestDto
 WasteClassifyResponseDto = WasteRequestControllerDtos.WasteClassifyResponseDto
+WasteClassifyRequestDto = WasteRequestControllerDtos.WasteClassifyRequestDto
+WasteClasificationResponseDto = WasteDtos.WasteClasificationResponseDto
+WasteClasificationRequestDto = WasteDtos.WasteClasificationRequestDto
 
-# ** info: users entity
+# ** info: entities imports
 from src.entities.parameter_entity import Parameter
 
 # ** info: providers imports
-from src.database.waste_provider import WasteProvider
 from src.database.parameter_provider import ParameterProvider
+from src.database.waste_provider import WasteProvider
+
+# ** info: ports imports
+from src.rest_ports.brms_port import BrmsPort
+
 
 __all__: list[str] = ["WasteController"]
 
 
 class WasteController:
+
+    # !------------------------------------------------------------------------
+    # ! info: core atributtes and constructor section start
+    # !------------------------------------------------------------------------
+
     def __init__(self: Self):
-        # ** info: building controller needed providers
+        # ** info: providers building
+        self.parameter_provider: ParameterProvider = ParameterProvider()
+        self.waste_provider: WasteProvider = WasteProvider()
+        # ** info: ports building
         self.brms_port: BrmsPort = BrmsPort()
 
-    async def driver_waste_classify(self: Self, parameter_search_request: WasteClasificationRequestDto) -> WasteClasificationResponseDto:
-        clasification: int = self._obtain_waste_clasification(
+    # !------------------------------------------------------------------------
+    # ! info: driver methods section start
+    # ! warning: all the methods in this section are the ones that are going to be called from the routers layer
+    # ! warning: a method only can be declared in this section if it is going to be called from the routers layer
+    # !------------------------------------------------------------------------
+
+    async def driver_obtain_waste_classify(self: Self, parameter_search_request: WasteClasificationRequestDto) -> WasteClasificationResponseDto:
+        logging.info("starting driver_obtain_waste_classify")
+        clasification: int = await self._obtain_waste_clasification(
             state_waste=parameter_search_request.stateWaste, weight_in_kg=parameter_search_request.weightInKg, isotopes_number=parameter_search_request.isotopesNumber
         )
-        waste_classify_response: WasteClasificationResponseDto = self._map_waste_classify_response(clasification=clasification)
+        waste_classify_response: WasteClasificationResponseDto = await self._map_waste_classify_response(clasification=clasification)
+        logging.info("driver_obtain_waste_classify ended")
         return waste_classify_response
 
-    def _obtain_waste_clasification(self: Self, state_waste: str, weight_in_kg: float, isotopes_number: float) -> int:
-        return self.brms_port.obtain_waste_clasification(state_waste=state_waste, weight_in_kg=weight_in_kg, isotopes_number=isotopes_number)
-
-    def _map_waste_classify_response(self: Self, clasification: int) -> WasteClasificationResponseDto:
-        return WasteClasificationResponseDto(activityType=clasification)
-        self.waste_provider: WasteProvider = WasteProvider()
-        self.parameter_provider: ParameterProvider = ParameterProvider()
-
-    async def driver_waste_classify_save(self: Self, waste_classify_request: WasteClassifyRequestDto) -> WasteClassifyResponseDto:
+    async def driver_update_waste_classify(self: Self, waste_classify_request: WasteClassifyRequestDto) -> WasteClassifyResponseDto:
+        logging.info("starting driver_update_waste_classify")
         await self._validate_wastes_state(waste_classify_request=waste_classify_request)
         code: int = await self._waste_classify_request(waste_classify_request=waste_classify_request)
-        if code == 1:
-            message: str = "Exitoso"
-        else:
-            message: str = "Fallido"
-        waste_classify_response: WasteClassifyResponseDto = await self._map_classify_response(code=code, message=message)
+        waste_classify_response: WasteClassifyResponseDto = await self._map_classify_response(code=code)
+        logging.info("driver_update_waste_classify ended")
         return waste_classify_response
+
+    # !------------------------------------------------------------------------
+    # ! info: core methods section start
+    # ! warning: all the methods in this section are the ones that are going to be called from another core or from a driver method
+    # ! warning: a method only can be declared in this section if it is going to be called from another core or from a driver method
+    # !------------------------------------------------------------------------
+
+    # !------------------------------------------------------------------------
+    # ! info: private class methods section start
+    # ! warning: all the methods in this section are the ones that are going to be called from inside this core
+    # ! warning: a method only can be declared in this section if it is going to be called from inside this core
+    # !------------------------------------------------------------------------
+
+    async def _obtain_waste_clasification(self: Self, state_waste: str, weight_in_kg: float, isotopes_number: float) -> int:
+        return self.brms_port.obtain_waste_clasification(state_waste=state_waste, weight_in_kg=weight_in_kg, isotopes_number=isotopes_number)
+
+    async def _map_waste_classify_response(self: Self, clasification: int) -> WasteClasificationResponseDto:
+        return WasteClasificationResponseDto(activityType=clasification)
 
     async def _validate_wastes_state(self: Self, waste_classify_request: WasteClassifyRequestDto) -> None:
         waste_states: List[Parameter] = self.parameter_provider.search_parameters_by_domain(domain=r"stateWaste")
@@ -86,8 +106,5 @@ class WasteController:
         )
         return code
 
-    async def _map_classify_response(self: Self, code: int, message: str) -> WasteClassifyResponseDto:
-        return WasteClassifyResponseDto(code=code, message=message)
-
-
-# ** info: editar esto al trabajar la tajada de los residuos
+    async def _map_classify_response(self: Self, code: int) -> WasteClassifyResponseDto:
+        return WasteClassifyResponseDto(code=code, message="Exitoso" if code == 1 else "Fallido")

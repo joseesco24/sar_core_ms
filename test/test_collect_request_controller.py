@@ -277,8 +277,8 @@ async def test_map_collect_response_1() -> None:
 
 
 @mark.asyncio
-async def test_driver_request_create_1() -> None:
+async def test_driver_create_request_1() -> None:
     collect_request_controller.waste_provider.store_waste = MagicMock(side_effect=wastes_ids_fixture_1)
     collect_request_controller.waste_provider.search_waste_by_id = MagicMock(side_effect=wastes_list)
-    request_create_response: CollectRequestCreateResponseDto = await collect_request_controller.driver_request_create(request_create_request=request_create_request_fixture_1)
+    request_create_response: CollectRequestCreateResponseDto = await collect_request_controller.driver_create_request(request_create_request=request_create_request_fixture_1)
     assert request_create_response == request_create_response_fixture_1
