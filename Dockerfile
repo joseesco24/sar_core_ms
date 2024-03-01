@@ -31,6 +31,11 @@ COPY ["test", "$WORKDIR/test"]
 # ** info: copying the source code of the application from the building context to the working directory
 COPY ["src", "$WORKDIR/src"]
 
+# ** info: copying environment file from the building context to the working directory
+# ! warning: the environment file shouldnt be copid directly from the building context to the production image this is just a final resource
+# todo: remove this and use external environment tools
+COPY [".env", "$WORKDIR/.env"]
+
 # ** info: running the application tests
 RUN python -m pytest
 
@@ -74,16 +79,16 @@ RUN pip check
 # ** info: copying source code of the application from the testing image
 COPY --from=testing ["/home/testing/src", "$WORKDIR/src"]
 
+# ** info: copying en file of the application from the testing image
+# ! warning: the environment file shouldnt be copid directly from the building context to the production image this is just a final resource
+# todo: remove this and use external environment tools
+COPY --from=testing ["/home/testing/.env", "$WORKDIR/.env"]
+
 # ** info: cleaning the python __pycache__ files
 RUN find . | grep -E "(/__pycache__$|\.pyc$|\.pyo$)" | xargs rm -rf
 
 # ** info: removing the app requirements file
 RUN rm -r app.txt
-
-# ** info: copying environment file from the building context to the working directory
-# ! warning: the environment file shouldnt be copid directly from the building context to the production image this is just a final resource
-# todo: remove this and use external environment tools
-COPY [".env", "$WORKDIR/.env"]
 
 # ** info: establishing the default user inside the production image
 USER $USERNAME
