@@ -32,10 +32,10 @@ from src.database.waste_provider import WasteProvider
 from src.rest_ports.brms_port import BrmsPort
 
 
-__all__: list[str] = ["WasteController"]
+__all__: list[str] = ["WasteCore"]
 
 
-class WasteController:
+class WasteCore:
 
     # !------------------------------------------------------------------------
     # ! info: core atributtes and constructor section start

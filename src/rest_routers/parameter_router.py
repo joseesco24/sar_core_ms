@@ -13,7 +13,7 @@ ParameterSearchResponseDto = ParameterDtos.ParameterSearchResponseDto
 ParameterSearchRequestDto = ParameterDtos.ParameterSearchRequestDto
 
 # ** info: rest controllers imports
-from src.rest_controllers.parameter_controller import ParameterController
+from src.core.parameter_core import ParameterCore
 
 # ** info: artifacts imports
 from src.artifacts.path.generator import generator
@@ -24,7 +24,7 @@ __all__: list[str] = ["parameter_router"]
 parameter_router: APIRouter = APIRouter(prefix=generator.build_posix_path("parameter"), tags=["Parameters"])
 
 # ** info: building router controllers
-parameter_controller: ParameterController = ParameterController()
+parameter_core: ParameterCore = ParameterCore()
 
 
 @parameter_router.post(
@@ -35,5 +35,5 @@ parameter_controller: ParameterController = ParameterController()
     status_code=status.HTTP_200_OK,
 )
 async def api_search_parameter(parameter_search_request: ParameterSearchRequestDto = Body(...)) -> ParameterSearchResponseDto:
-    parameter_search_response: ParameterSearchResponseDto = await parameter_controller.driver_search_parameter(parameter_search_request)
+    parameter_search_response: ParameterSearchResponseDto = await parameter_core.driver_search_parameter(parameter_search_request)
     return parameter_search_response

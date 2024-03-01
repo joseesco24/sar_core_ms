@@ -16,7 +16,7 @@ WasteClasificationResponseDto = WasteDtos.WasteClasificationResponseDto
 WasteClasificationRequestDto = WasteDtos.WasteClasificationRequestDto
 
 # ** info: rest controllers imports
-from src.rest_controllers.waste_controller import WasteController
+from src.core.waste_core import WasteCore
 
 # ** info: artifacts imports
 from src.artifacts.path.generator import generator
@@ -27,7 +27,7 @@ __all__: list[str] = ["waste_router"]
 waste_router: APIRouter = APIRouter(prefix=generator.build_posix_path("waste"), tags=["Wastes"])
 
 # ** info: building router controllers
-waste_controller: WasteController = WasteController()
+waste_core: WasteCore = WasteCore()
 
 
 @waste_router.post(
@@ -38,7 +38,7 @@ waste_controller: WasteController = WasteController()
     status_code=status.HTTP_200_OK,
 )
 async def api_obtain_waste_classify(parameter_search_request: WasteClasificationRequestDto = Body(...)) -> WasteClasificationResponseDto:
-    waste_classify_response: WasteClasificationResponseDto = await waste_controller.driver_obtain_waste_classify(parameter_search_request)
+    waste_classify_response: WasteClasificationResponseDto = await waste_core.driver_obtain_waste_classify(parameter_search_request)
     return waste_classify_response
 
 
@@ -50,5 +50,5 @@ async def api_obtain_waste_classify(parameter_search_request: WasteClasification
     status_code=status.HTTP_200_OK,
 )
 async def api_update_waste_classify(waste_classify_request: WasteClassifyRequestDto = Body(...)) -> WasteClassifyResponseDto:
-    waste_classify_response: WasteClassifyResponseDto = await waste_controller.driver_update_waste_classify(waste_classify_request)
+    waste_classify_response: WasteClassifyResponseDto = await waste_core.driver_update_waste_classify(waste_classify_request)
     return waste_classify_response

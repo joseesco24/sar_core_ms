@@ -33,10 +33,10 @@ from src.database.waste_provider import WasteProvider
 # ** info: artifacts imports
 from src.artifacts.datetime.datetime_provider import datetime_provider
 
-__all__: list[str] = ["CollectRequestController"]
+__all__: list[str] = ["CollectRequestCore"]
 
 
-class CollectRequestController:
+class CollectRequestCore:
 
     # !------------------------------------------------------------------------
     # ! info: core atributtes and constructor section start

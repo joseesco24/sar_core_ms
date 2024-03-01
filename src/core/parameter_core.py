@@ -21,10 +21,10 @@ from src.entities.parameter_entity import Parameter
 # ** info: providers imports
 from src.database.parameter_provider import ParameterProvider
 
-__all__: list[str] = ["ParameterController"]
+__all__: list[str] = ["ParameterCore"]
 
 
-class ParameterController:
+class ParameterCore:
 
     # !------------------------------------------------------------------------
     # ! info: core atributtes and constructor section start

@@ -13,7 +13,7 @@ CollectRequestCreateResponseDto = CollectRequestControllerDtos.CollectRequestCre
 CollectRequestCreateRequestDto = CollectRequestControllerDtos.CollectRequestCreateRequestDto
 
 # ** info: rest controllers imports
-from src.rest_controllers.collect_request_controller import CollectRequestController
+from src.core.collect_request_core import CollectRequestCore
 
 # ** info: artifacts imports
 from src.artifacts.path.generator import generator
@@ -24,7 +24,7 @@ __all__: list[str] = ["collect_request_router"]
 collect_request_router: APIRouter = APIRouter(prefix=generator.build_posix_path("collect-request"), tags=["Collect Requests"])
 
 # ** info: building router controllers
-collect_request_controller: CollectRequestController = CollectRequestController()
+collect_request_core: CollectRequestCore = CollectRequestCore()
 
 
 @collect_request_router.post(
@@ -35,5 +35,5 @@ collect_request_controller: CollectRequestController = CollectRequestController(
     status_code=status.HTTP_200_OK,
 )
 async def api_create_request(request_create_request: CollectRequestCreateRequestDto = Body(...)) -> CollectRequestCreateResponseDto:
-    request_create_response: CollectRequestCreateResponseDto = await collect_request_controller.driver_create_request(request_create_request)
+    request_create_response: CollectRequestCreateResponseDto = await collect_request_core.driver_create_request(request_create_request)
     return request_create_response
