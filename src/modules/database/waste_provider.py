@@ -11,14 +11,14 @@ from sqlmodel import Session
 from sqlmodel import select
 
 # ** info: users entity
-from src.entities.waste_entity import Waste
+from src.modules.entities.waste_entity import Waste
 
 # ** info: artifacts imports
-from src.sidecard.uuid.uuid_provider import uuid_provider
-from src.sidecard.env.configs import configs
+from src.sidecards.uuid.uuid_provider import uuid_provider
+from src.sidecards.env.configs import configs
 
 # ** info: session managers imports
-from src.database.session_managers.mysql_sar_manager import MySQLSarManager
+from src.modules.database.session_managers.mysql_sar_manager import MySQLSarManager
 
 __all__: list[str] = ["WasteProvider"]
 

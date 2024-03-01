@@ -17,7 +17,7 @@ from fastapi import HTTPException
 from fastapi import status
 
 # ** info: artifacts imports
-from src.sidecard.env.configs import configs
+from src.sidecards.env.configs import configs
 
 
 __all__: list[str] = ["BrmsPort"]

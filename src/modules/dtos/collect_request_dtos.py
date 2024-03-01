@@ -12,11 +12,11 @@ from typing import Optional
 from typing import List
 
 # **info: metadata for the model imports
-from src.dtos.collect_request_dtos_metadata import collect_request_creation_req_ex
-from src.dtos.collect_request_dtos_metadata import collect_request_creation_res_ex
+from src.modules.dtos.collect_request_dtos_metadata import collect_request_creation_req_ex
+from src.modules.dtos.collect_request_dtos_metadata import collect_request_creation_res_ex
 
 # ** info: artifacts imports
-from src.sidecard.datetime.datetime_provider import datetime_provider
+from src.sidecards.datetime.datetime_provider import datetime_provider
 
 __all__: list[str] = ["CollectRequestControllerDtos"]
 

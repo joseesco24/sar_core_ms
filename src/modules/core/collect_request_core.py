@@ -13,7 +13,7 @@ from fastapi import HTTPException
 from fastapi import status
 
 # ** info: dtos imports
-from src.dtos.collect_request_dtos import CollectRequestControllerDtos
+from src.modules.dtos.collect_request_dtos import CollectRequestControllerDtos
 
 CollectRequestCreateResponseDto = CollectRequestControllerDtos.CollectRequestCreateResponseDto
 CollectRequestCreateRequestDto = CollectRequestControllerDtos.CollectRequestCreateRequestDto
@@ -21,17 +21,17 @@ ResponseRequestDataDto = CollectRequestControllerDtos.ResponseRequestDataDto
 ResponseWasteDataDto = CollectRequestControllerDtos.ResponseWasteDataDto
 
 # ** info: entities imports
-from src.entities.collect_request_entity import CollectRequest
-from src.entities.parameter_entity import Parameter
-from src.entities.waste_entity import Waste
+from src.modules.entities.collect_request_entity import CollectRequest
+from src.modules.entities.parameter_entity import Parameter
+from src.modules.entities.waste_entity import Waste
 
 # ** info: providers imports
-from src.database.collect_request_provider import CollectRequestProvider
-from src.database.parameter_provider import ParameterProvider
-from src.database.waste_provider import WasteProvider
+from src.modules.database.collect_request_provider import CollectRequestProvider
+from src.modules.database.parameter_provider import ParameterProvider
+from src.modules.database.waste_provider import WasteProvider
 
 # ** info: artifacts imports
-from src.sidecard.datetime.datetime_provider import datetime_provider
+from src.sidecards.datetime.datetime_provider import datetime_provider
 
 __all__: list[str] = ["CollectRequestCore"]
 

@@ -16,7 +16,7 @@ from fastapi import HTTPException
 sys.path.append(join(path.dirname(path.realpath(__file__)), "..", "..", "."))
 
 # ** info: dtos imports
-from src.dtos.collect_request_dtos import CollectRequestControllerDtos
+from src.modules.dtos.collect_request_dtos import CollectRequestControllerDtos
 
 CollectRequestCreateResponseDto = CollectRequestControllerDtos.CollectRequestCreateResponseDto
 CollectRequestCreateRequestDto = CollectRequestControllerDtos.CollectRequestCreateRequestDto
@@ -26,15 +26,15 @@ ResponseWasteDataDto = CollectRequestControllerDtos.ResponseWasteDataDto
 RequestWasteDataDto = CollectRequestControllerDtos.RequestWasteDataDto
 
 # ** info: core imports
-from src.core.collect_request_core import CollectRequestCore
+from src.modules.core.collect_request_core import CollectRequestCore
 
 # ** info: entities imports
-from src.entities.collect_request_entity import CollectRequest
-from src.entities.parameter_entity import Parameter
-from src.entities.waste_entity import Waste
+from src.modules.entities.collect_request_entity import CollectRequest
+from src.modules.entities.parameter_entity import Parameter
+from src.modules.entities.waste_entity import Waste
 
 # ** info: artifacts imports
-from src.sidecard.datetime.datetime_provider import datetime_provider
+from src.sidecards.datetime.datetime_provider import datetime_provider
 
 # ---------------------------------------------------------------------------------------------------------------------
 # ** info: create request fixtures declaration

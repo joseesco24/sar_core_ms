@@ -7,16 +7,16 @@ from fastapi import status
 from fastapi import Body
 
 # ** info: dtos imports
-from src.dtos.parameter_dtos import ParameterDtos
+from src.modules.dtos.parameter_dtos import ParameterDtos
 
 ParameterSearchResponseDto = ParameterDtos.ParameterSearchResponseDto
 ParameterSearchRequestDto = ParameterDtos.ParameterSearchRequestDto
 
 # ** info: rest controllers imports
-from src.core.parameter_core import ParameterCore
+from src.modules.core.parameter_core import ParameterCore
 
 # ** info: artifacts imports
-from src.sidecard.path.generator import generator
+from src.sidecards.path.generator import generator
 
 __all__: list[str] = ["parameter_router"]
 

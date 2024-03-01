@@ -21,11 +21,11 @@ from sqlmodel import create_engine
 from sqlmodel import Session
 
 # ** info: artifacts imports
-from src.sidecard.uuid.uuid_provider import uuid_provider
+from src.sidecards.uuid.uuid_provider import uuid_provider
 
 # ** info: artifacts imports
-from src.sidecard.datetime.datetime_provider import datetime_provider
-from src.sidecard.env.configs import configs
+from src.sidecards.datetime.datetime_provider import datetime_provider
+from src.sidecards.env.configs import configs
 
 __all__: list[str] = ["MySQLSarManager"]
 

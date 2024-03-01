@@ -13,8 +13,8 @@ from fastapi import HTTPException
 from fastapi import status
 
 # ** info: dtos imports
-from src.dtos.waste_dtos import WasteRequestControllerDtos
-from src.dtos.waste_dtos import WasteDtos
+from src.modules.dtos.waste_dtos import WasteRequestControllerDtos
+from src.modules.dtos.waste_dtos import WasteDtos
 
 WasteClassifyResponseDto = WasteRequestControllerDtos.WasteClassifyResponseDto
 WasteClassifyRequestDto = WasteRequestControllerDtos.WasteClassifyRequestDto
@@ -22,14 +22,14 @@ WasteClasificationResponseDto = WasteDtos.WasteClasificationResponseDto
 WasteClasificationRequestDto = WasteDtos.WasteClasificationRequestDto
 
 # ** info: entities imports
-from src.entities.parameter_entity import Parameter
+from src.modules.entities.parameter_entity import Parameter
 
 # ** info: providers imports
-from src.database.parameter_provider import ParameterProvider
-from src.database.waste_provider import WasteProvider
+from src.modules.database.parameter_provider import ParameterProvider
+from src.modules.database.waste_provider import WasteProvider
 
 # ** info: ports imports
-from src.rest_ports.brms_port import BrmsPort
+from src.modules.rest_ports.brms_port import BrmsPort
 
 
 __all__: list[str] = ["WasteCore"]
