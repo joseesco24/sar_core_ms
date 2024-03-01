@@ -65,9 +65,8 @@ print_title "Linting Files"
 flake8 ./src --max-line-length=180 --verbose
 
 # ** info: validating typos
-# todo: enable typo validation
-# print_title "Validating Typos"
-# mypy --explicit-package-bases ./src
+print_title "Validating Typos"
+mypy --explicit-package-bases ./src
 
 # ** info: linting files
 print_title "Commit Sucessfully"
