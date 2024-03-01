@@ -21,7 +21,7 @@ from sqlmodel import create_engine
 from sqlmodel import Session
 
 # ** info: artifacts imports
-from src.sidecards.uuid.uuid_provider import uuid_provider
+from src.sidecards.artifacts.uuid_provider import UuidProvider
 
 # ** info: artifacts imports
 from src.sidecards.artifacts.datetime_provider import DatetimeProvider
@@ -35,6 +35,7 @@ class MySQLManager:
 
     def __init__(self: Self, password: str, database: str, username: str, drivername: str, host: str, port: int, query: dict) -> None:
         self.env_provider: EnvProvider = EnvProvider()
+        self._uuid_provider: UuidProvider = UuidProvider()
         self._url = URL(
             drivername=drivername,
             password=password,
@@ -47,7 +48,7 @@ class MySQLManager:
         self._date_time_provider: DatetimeProvider = DatetimeProvider()
         self._engine = create_engine(url=self._url, echo=self.env_provider.database_logs)
         self._session_creation: str = self._date_time_provider.get_utc_iso_string()
-        self._connection_id: str = uuid_provider.get_str_uuid()
+        self._connection_id: str = self._uuid_provider.get_str_uuid()
         self._session = Session(bind=self._engine)
         self._post_init()
 
@@ -136,7 +137,7 @@ class MySQLManager:
         logging.warning("starting new connection")
 
         if self._connection_id is None:
-            self._connection_id = uuid_provider.get_str_uuid()
+            self._connection_id = self._uuid_provider.get_str_uuid()
             MySQLManager.instances.add(self._connection_id)
 
         if self._engine is None:

@@ -8,12 +8,9 @@ import uuid
 from typing import Self
 
 
-__all__: list[str] = ["uuid_provider"]
+__all__: list[str] = ["UuidProvider"]
 
 
 class UuidProvider:
     def get_str_uuid(self: Self) -> str:
         return str(uuid.uuid4())
-
-
-uuid_provider: UuidProvider = UuidProvider()

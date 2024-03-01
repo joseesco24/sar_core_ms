@@ -14,8 +14,8 @@ from sqlmodel import select
 from src.modules.waste.entities.waste_entity import Waste
 
 # ** info: artifacts imports
-from src.sidecards.uuid.uuid_provider import uuid_provider
-from sidecards.artifacts.env_provider import EnvProvider
+from src.sidecards.artifacts.uuid_provider import UuidProvider
+from src.sidecards.artifacts.env_provider import EnvProvider
 
 # ** info: session managers imports
 from src.sidecards.database_managers.mysql_manager import MySQLManager
@@ -26,6 +26,7 @@ __all__: list[str] = ["WasteProvider"]
 class WasteProvider:
     def __init__(self: Self) -> None:
         self._env_provider: EnvProvider = EnvProvider()
+        self._uuid_provider: UuidProvider = UuidProvider()
         self._session_manager: MySQLManager = MySQLManager(
             password=self._env_provider.database_password,
             database=self._env_provider.database_name,
@@ -53,7 +54,7 @@ class WasteProvider:
         note: Union[str, None] = None,
     ) -> str:
         session: Session = self._session_manager.obtain_session()
-        uuid: str = uuid_provider.get_str_uuid()
+        uuid: str = self._uuid_provider.get_str_uuid()
         new_waste: Waste = Waste(
             uuid=uuid,
             request_uuid=request_uuid,

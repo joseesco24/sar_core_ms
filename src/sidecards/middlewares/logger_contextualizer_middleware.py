@@ -16,13 +16,17 @@ from starlette.responses import StreamingResponse
 from starlette.requests import Request
 
 # ** info: artifacts imports
-from src.sidecards.uuid.uuid_provider import uuid_provider
+from src.sidecards.artifacts.uuid_provider import UuidProvider
 
 
 __all__: list[str] = ["LoggerContextualizerMiddleware"]
 
 
 class LoggerContextualizerMiddleware:
+
+    def __init__(self: Self) -> None:
+        self._uuid_provider: UuidProvider = UuidProvider()
+
     async def __call__(
         self: Self,
         request: Request,
@@ -30,7 +34,7 @@ class LoggerContextualizerMiddleware:
     ) -> StreamingResponse:
 
         external_id: str = request.headers[r"request-id"] if r"request-id" in request.headers else r"unknown"
-        internal_id: str = uuid_provider.get_str_uuid()
+        internal_id: str = self._uuid_provider.get_str_uuid()
         full_url: str = str(request.url)
 
         response: StreamingResponse

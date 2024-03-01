@@ -13,8 +13,8 @@ from sqlmodel import select
 from src.modules.collect_request.entities.collect_request_entity import CollectRequest
 
 # ** info: artifacts imports
-from src.sidecards.uuid.uuid_provider import uuid_provider
-from sidecards.artifacts.env_provider import EnvProvider
+from src.sidecards.artifacts.uuid_provider import UuidProvider
+from src.sidecards.artifacts.env_provider import EnvProvider
 
 # ** info: session managers imports
 from src.sidecards.database_managers.mysql_manager import MySQLManager
@@ -25,6 +25,7 @@ __all__: list[str] = ["CollectRequestProvider"]
 class CollectRequestProvider:
     def __init__(self: Self) -> None:
         self._env_provider: EnvProvider = EnvProvider()
+        self._uuid_provider: UuidProvider = UuidProvider()
         self._session_manager: MySQLManager = MySQLManager(
             password=self._env_provider.database_password,
             database=self._env_provider.database_name,
@@ -43,7 +44,7 @@ class CollectRequestProvider:
 
     def store_collect_request(self: Self, collect_date: str, production_center_id: int) -> str:
         session: Session = self._session_manager.obtain_session()
-        uuid: str = uuid_provider.get_str_uuid()
+        uuid: str = self._uuid_provider.get_str_uuid()
         new_collect_request: CollectRequest = CollectRequest(uuid=uuid, collect_date=collect_date, production_center_id=production_center_id)
         session.add(new_collect_request)
         session.commit()
