@@ -5,11 +5,9 @@
 from unittest.mock import MagicMock
 from unittest.mock import call
 from os.path import join
+from pytest import mark
 from os import path
 import sys
-
-# ** info: pytest imports
-from pytest import mark
 
 # ** info: fastapi imports
 from fastapi import HTTPException
@@ -27,7 +25,7 @@ RequestRequestDataDto = CollectRequestControllerDtos.RequestRequestDataDto
 ResponseWasteDataDto = CollectRequestControllerDtos.ResponseWasteDataDto
 RequestWasteDataDto = CollectRequestControllerDtos.RequestWasteDataDto
 
-# ** info: controllers imports
+# ** info: core imports
 from src.core.collect_request_core import CollectRequestCore
 
 # ** info: entities imports
