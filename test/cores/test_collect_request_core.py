@@ -34,7 +34,13 @@ from src.modules.parameter.entities.parameter_entity import Parameter
 from src.modules.waste.entities.waste_entity import Waste
 
 # ** info: artifacts imports
-from src.sidecards.datetime.datetime_provider import datetime_provider
+from src.sidecards.artifacts.datetime_provider import DatetimeProvider
+
+# ---------------------------------------------------------------------------------------------------------------------
+# ** info: create needed artifcts
+# ---------------------------------------------------------------------------------------------------------------------
+
+datetime_provider: DatetimeProvider = DatetimeProvider()
 
 # ---------------------------------------------------------------------------------------------------------------------
 # ** info: create request fixtures declaration

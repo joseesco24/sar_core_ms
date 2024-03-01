@@ -42,6 +42,3 @@ class DatetimeProvider:
         delta_seconds: int = time_delta_obj.seconds % 3600 % 60
 
         return f"{delta_days} days {delta_houres} houres {delta_minutes} minutes {delta_seconds} seconds"
-
-
-datetime_provider: DatetimeProvider = DatetimeProvider()

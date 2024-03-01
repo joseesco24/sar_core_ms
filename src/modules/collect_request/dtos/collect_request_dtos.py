@@ -16,12 +16,15 @@ from src.modules.collect_request.dtos.collect_request_dtos_metadata import colle
 from src.modules.collect_request.dtos.collect_request_dtos_metadata import collect_request_creation_res_ex
 
 # ** info: artifacts imports
-from src.sidecards.datetime.datetime_provider import datetime_provider
+from src.sidecards.artifacts.datetime_provider import DatetimeProvider
 
 __all__: list[str] = ["CollectRequestControllerDtos"]
 
 
 class CollectRequestControllerDtos:
+
+    datetime_provider: DatetimeProvider = DatetimeProvider()
+
     class CollectRequestCreateRequestDto(BaseModel):
         waste: List["CollectRequestControllerDtos.RequestWasteDataDto"] = Field(...)
         request: "CollectRequestControllerDtos.RequestRequestDataDto" = Field(...)
@@ -44,7 +47,7 @@ class CollectRequestControllerDtos:
         @classmethod
         def date_validator(cls, value: int, info: ValidationInfo) -> int:
             try:
-                value = datetime_provider.pretty_date_string_to_date(value)
+                value = CollectRequestControllerDtos.datetime_provider.pretty_date_string_to_date(value)
             except ValueError:
                 raise ValueError(f"{info.field_name} is not a valid dd/mm/yyyy date")
             return value
@@ -98,7 +101,7 @@ class CollectRequestControllerDtos:
         @classmethod
         def date_validator(cls, value: int, info: ValidationInfo) -> int:
             try:
-                datetime_provider.pretty_date_string_to_date(value)
+                CollectRequestControllerDtos.datetime_provider.pretty_date_string_to_date(value)
             except ValueError:
                 raise ValueError(f"{info.field_name} is not a valid dd/mm/yyyy date")
             return value

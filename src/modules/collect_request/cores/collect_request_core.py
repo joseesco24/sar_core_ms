@@ -31,7 +31,7 @@ from src.modules.parameter.database_providers.parameter_provider import Paramete
 from src.modules.waste.database_providers.waste_provider import WasteProvider
 
 # ** info: artifacts imports
-from src.sidecards.datetime.datetime_provider import datetime_provider
+from src.sidecards.artifacts.datetime_provider import DatetimeProvider
 
 __all__: list[str] = ["CollectRequestCore"]
 
@@ -47,6 +47,8 @@ class CollectRequestCore:
         self.collect_request_provider: CollectRequestProvider = CollectRequestProvider()
         self.parameter_provider: ParameterProvider = ParameterProvider()
         self.waste_provider: WasteProvider = WasteProvider()
+        # ** info: artifacts building
+        self.datetime_provider: DatetimeProvider = DatetimeProvider()
 
     # !------------------------------------------------------------------------
     # ! info: driver methods section start
@@ -134,7 +136,7 @@ class CollectRequestCore:
 
     async def _map_collect_response_request_info(self: Self, collect_request_info: CollectRequest) -> ResponseRequestDataDto:
         return ResponseRequestDataDto(
-            collectDate=datetime_provider.prettify_date_obj(collect_request_info.collect_date),
+            collectDate=self.datetime_provider.prettify_date_obj(collect_request_info.collect_date),
             productionCenterId=collect_request_info.production_center_id,
             id=collect_request_info.uuid,
         )

@@ -24,7 +24,7 @@ from sqlmodel import Session
 from src.sidecards.uuid.uuid_provider import uuid_provider
 
 # ** info: artifacts imports
-from src.sidecards.datetime.datetime_provider import datetime_provider
+from src.sidecards.artifacts.datetime_provider import DatetimeProvider
 from src.sidecards.env.configs import configs
 
 __all__: list[str] = ["MySQLManager"]
@@ -43,8 +43,9 @@ class MySQLManager:
             host=host,
             port=port,
         )
+        self._date_time_provider: DatetimeProvider = DatetimeProvider()
         self._engine = create_engine(url=self._url, echo=configs.database_logs)
-        self._session_creation: str = datetime_provider.get_utc_iso_string()
+        self._session_creation: str = self._date_time_provider.get_utc_iso_string()
         self._connection_id: str = uuid_provider.get_str_uuid()
         self._session = Session(bind=self._engine)
         self._post_init()

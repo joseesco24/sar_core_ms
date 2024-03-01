@@ -24,7 +24,7 @@ from loguru import logger
 from loguru._recattrs import RecordException
 
 # ** info: artifacts imports
-from src.sidecards.datetime.datetime_provider import datetime_provider
+from src.sidecards.artifacts.datetime_provider import DatetimeProvider
 
 
 __all__: list[str] = ["CustomLogger"]
@@ -36,9 +36,10 @@ class CustomLogger:
         "externalId": "397d4343-2855-4c92-b64b-58ee82006e0b",
         "version": "v1.6.1",
     }
+    _datetime_provider: DatetimeProvider = DatetimeProvider()
 
     @classmethod
-    def setup_pretty_logging(self: Self) -> None:
+    def setup_pretty_logging(cls) -> None:
         """setup pretty logging
         this function overwrites the python root logger with a custom logger, so all the logs are
         written with the new overwritten configuration
@@ -49,7 +50,7 @@ class CustomLogger:
         )
 
         # ** info: overwriting all the loggers configs with the new one
-        logging.root.handlers = [self._CustomInterceptHandler()]
+        logging.root.handlers = [cls._CustomInterceptHandler()]
         logging.root.setLevel(logging.DEBUG)
 
         for name in logging.root.manager.loggerDict.keys():
@@ -64,10 +65,10 @@ class CustomLogger:
             "format": fmt,
         }
 
-        logger.configure(patcher=lambda record: self._pretty_record_patcher(record), extra=self._extras, handlers=[loguru_configs])
+        logger.configure(patcher=lambda record: cls._pretty_record_patcher(record), extra=cls._extras, handlers=[loguru_configs])
 
     @classmethod
-    def setup_structured_logging(self: Self) -> None:
+    def setup_structured_logging(cls) -> None:
         """setup structured logging
         this function overwrites the python root logger with a custom logger, so all the logs are
         written with the new overwritten configuration
@@ -76,7 +77,7 @@ class CustomLogger:
         fmt: str = "{message}"
 
         # ** info: overwriting all the loggers configs with the new one
-        logging.root.handlers = [self._CustomInterceptHandler()]
+        logging.root.handlers = [cls._CustomInterceptHandler()]
         logging.root.setLevel(logging.DEBUG)
 
         for name in logging.root.manager.loggerDict.keys():
@@ -85,32 +86,32 @@ class CustomLogger:
 
         # ** info: loguru configs
         loguru_configs: dict = {
-            "sink": self._pretty_log_sink,
+            "sink": cls._pretty_log_sink,
             "serialize": True,
             "colorize": False,
             "format": fmt,
         }
 
-        logger.configure(extra=self._extras, handlers=[loguru_configs])
+        logger.configure(extra=cls._extras, handlers=[loguru_configs])
 
     @classmethod
-    def _pretty_record_patcher(self: Self, record: logging.LogRecord) -> logging.LogRecord:
+    def _pretty_record_patcher(cls, record: logging.LogRecord) -> logging.LogRecord:
         if record["level"].name == "INFO" or record["level"].name == "DEBUG":
             record["message"] = str(record["message"]).replace("\n", " ")
         return record
 
     @classmethod
-    def _pretty_log_sink(self: Self, message: str) -> None:
-        serialized = self._custom_serializer(message.record)
+    def _pretty_log_sink(cls, message: str) -> None:
+        serialized = cls._custom_serializer(message.record)
         sys.stdout.write(serialized)
         sys.stdout.write("\n")
         sys.stdout.flush()
 
     @classmethod
-    def _custom_serializer(self: Self, record) -> str:
+    def _custom_serializer(cls, record) -> str:
         subset: Dict[str, Any] = {
             "severity": record["level"].name,
-            "timestamp": datetime_provider.get_utc_pretty_string(),
+            "timestamp": cls._datetime_provider.get_utc_pretty_string(),
             "message": record["message"],
             "externalId": record["extra"]["externalId"],
             "internalId": record["extra"]["internalId"],
