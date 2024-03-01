@@ -17,7 +17,7 @@ from src.modules.parameter.entities.parameter_entity import Parameter
 from src.sidecards.env.configs import configs
 
 # ** info: session managers imports
-from src.modules.database.session_managers.mysql_sar_manager import MySQLSarManager
+from src.sidecards.database.mysql_sar_manager import MySQLSarManager
 
 __all__: list[str] = ["ParameterProvider"]
 
