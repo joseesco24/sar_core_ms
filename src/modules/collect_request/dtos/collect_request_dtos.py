@@ -12,8 +12,8 @@ from typing import Optional
 from typing import List
 
 # **info: metadata for the model imports
-from src.modules.dtos.collect_request_dtos_metadata import collect_request_creation_req_ex
-from src.modules.dtos.collect_request_dtos_metadata import collect_request_creation_res_ex
+from src.modules.collect_request.dtos.collect_request_dtos_metadata import collect_request_creation_req_ex
+from src.modules.collect_request.dtos.collect_request_dtos_metadata import collect_request_creation_res_ex
 
 # ** info: artifacts imports
 from src.sidecards.datetime.datetime_provider import datetime_provider

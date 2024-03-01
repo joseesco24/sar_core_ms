@@ -7,13 +7,13 @@ from fastapi import status
 from fastapi import Body
 
 # ** info: dtos imports
-from src.modules.dtos.collect_request_dtos import CollectRequestControllerDtos
+from src.modules.collect_request.dtos.collect_request_dtos import CollectRequestControllerDtos
 
 CollectRequestCreateResponseDto = CollectRequestControllerDtos.CollectRequestCreateResponseDto
 CollectRequestCreateRequestDto = CollectRequestControllerDtos.CollectRequestCreateRequestDto
 
 # ** info: rest controllers imports
-from src.modules.core.collect_request_core import CollectRequestCore
+from src.modules.collect_request.cores.collect_request_core import CollectRequestCore
 
 # ** info: artifacts imports
 from src.sidecards.path.generator import generator
