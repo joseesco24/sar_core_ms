@@ -22,6 +22,9 @@ class Waste(SQLModel, table=True):
     packaging: int = Field(nullable=False)
     weight_in_kg: Decimal = Field(max_digits=10, decimal_places=2, nullable=False)
     volume_in_l: Decimal = Field(max_digits=10, decimal_places=2, nullable=False)
+    isotopes_number: Decimal = Field(max_digits=10, decimal_places=2, nullable=True)
+    state_waste: int = Field(nullable=True)
+    store: int = Field(nullable=True)
     description: str = Field(max_length=65535, nullable=False)
     note: Optional[str] = Field(max_length=65535, nullable=False)
 

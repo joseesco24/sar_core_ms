@@ -67,5 +67,20 @@ class WasteProvider:
         session.commit()
         return uuid
 
+    def classify_waste(self: Self, uuid: str, isotopes_number: float, state_waste: int, store: int) -> str:
+        session: Session = self._session_manager.obtain_session()
+        query: Any = select(Waste).where(Waste.uuid == uuid)
+        wasteResult = session.exec(statement=query).first()
+        print("Residuo:", wasteResult)
+        wasteResult.isotopes_number = isotopes_number
+        wasteResult.state_waste = state_waste
+        wasteResult.store = store
+        session.add(wasteResult)
+        session.commit()
+        session.refresh(wasteResult)
+        print("Updated Residuo:", wasteResult)
+        code: int = 1
+        return code
+
 
 # ** info: editar esto al trabajar la tajada de los residuos
