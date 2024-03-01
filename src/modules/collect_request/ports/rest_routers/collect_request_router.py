@@ -13,10 +13,10 @@ CollectRequestCreateResponseDto = CollectRequestControllerDtos.CollectRequestCre
 CollectRequestCreateRequestDto = CollectRequestControllerDtos.CollectRequestCreateRequestDto
 
 # ** info: rest controllers imports
-from modules.collect_request.cores.business.collect_request_core import CollectRequestCore
+from src.modules.collect_request.cores.business.collect_request_core import CollectRequestCore
 
 # ** info: artifacts imports
-from sidecards.artifacts.path_provider import PathProvider
+from src.sidecards.artifacts.path_provider import PathProvider
 
 __all__: list[str] = ["collect_request_router"]
 

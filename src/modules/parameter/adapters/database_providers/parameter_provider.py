@@ -14,7 +14,7 @@ from sqlmodel import select
 from src.modules.parameter.adapters.database_providers_entities.parameter_entity import Parameter
 
 # ** info: artifacts imports
-from sidecards.artifacts.env_provider import EnvProvider
+from src.sidecards.artifacts.env_provider import EnvProvider
 
 # ** info: session managers imports
 from src.sidecards.database_managers.mysql_manager import MySQLManager

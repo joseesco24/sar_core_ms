@@ -31,9 +31,9 @@ from src.modules.parameter.ports.rest_routers.parameter_router import parameter_
 from src.modules.waste.ports.rest_routers.waster_router import waste_router
 
 # ** info: artifacts imports
-from sidecards.artifacts.logging_provider import LoggingProvider
+from src.sidecards.artifacts.logging_provider import LoggingProvider
 from src.sidecards.artifacts.env_provider import EnvProvider
-from sidecards.artifacts.path_provider import PathProvider
+from src.sidecards.artifacts.path_provider import PathProvider
 
 # ** info: middlewares imports
 from src.sidecards.middlewares.authentication_handler_middleware import AuthenticationHandlerMiddleware

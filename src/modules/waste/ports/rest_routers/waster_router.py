@@ -16,10 +16,10 @@ WasteClasificationResponseDto = WasteDtos.WasteClasificationResponseDto
 WasteClasificationRequestDto = WasteDtos.WasteClasificationRequestDto
 
 # ** info: rest controllers imports
-from modules.waste.cores.business.waste_core import WasteCore
+from src.modules.waste.cores.business.waste_core import WasteCore
 
 # ** info: artifacts imports
-from sidecards.artifacts.path_provider import PathProvider
+from src.sidecards.artifacts.path_provider import PathProvider
 
 __all__: list[str] = ["waste_router"]
 

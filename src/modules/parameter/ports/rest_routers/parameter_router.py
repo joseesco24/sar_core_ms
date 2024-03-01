@@ -13,10 +13,10 @@ ParameterSearchResponseDto = ParameterDtos.ParameterSearchResponseDto
 ParameterSearchRequestDto = ParameterDtos.ParameterSearchRequestDto
 
 # ** info: rest controllers imports
-from modules.parameter.cores.business.parameter_core import ParameterCore
+from src.modules.parameter.cores.business.parameter_core import ParameterCore
 
 # ** info: artifacts imports
-from sidecards.artifacts.path_provider import PathProvider
+from src.sidecards.artifacts.path_provider import PathProvider
 
 __all__: list[str] = ["parameter_router"]
 

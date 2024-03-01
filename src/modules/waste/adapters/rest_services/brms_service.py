@@ -17,7 +17,7 @@ from fastapi import HTTPException
 from fastapi import status
 
 # ** info: artifacts imports
-from sidecards.artifacts.env_provider import EnvProvider
+from src.sidecards.artifacts.env_provider import EnvProvider
 
 
 __all__: list[str] = ["BrmsService"]

@@ -26,7 +26,7 @@ ResponseWasteDataDto = CollectRequestControllerDtos.ResponseWasteDataDto
 RequestWasteDataDto = CollectRequestControllerDtos.RequestWasteDataDto
 
 # ** info: core imports
-from modules.collect_request.cores.business.collect_request_core import CollectRequestCore
+from src.modules.collect_request.cores.business.collect_request_core import CollectRequestCore
 
 # ** info: entities imports
 from src.modules.collect_request.adapters.database_providers_entities.collect_request_entity import CollectRequest

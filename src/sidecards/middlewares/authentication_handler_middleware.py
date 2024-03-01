@@ -19,8 +19,8 @@ from starlette.requests import Request
 from fastapi.responses import JSONResponse
 from fastapi import status
 
-
-from sidecards.artifacts.env_provider import EnvProvider
+# ** info: artifacts imports
+from src.sidecards.artifacts.env_provider import EnvProvider
 
 __all__: list[str] = ["AuthenticationHandlerMiddleware"]
 

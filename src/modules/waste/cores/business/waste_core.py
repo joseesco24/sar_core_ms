@@ -29,7 +29,7 @@ from src.modules.parameter.adapters.database_providers.parameter_provider import
 from src.modules.waste.adapters.database_providers.waste_provider import WasteProvider
 
 # ** info: ports imports
-from modules.waste.adapters.rest_services.brms_service import BrmsService
+from src.modules.waste.adapters.rest_services.brms_service import BrmsService
 
 
 __all__: list[str] = ["WasteCore"]
