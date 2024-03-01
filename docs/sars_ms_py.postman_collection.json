@@ -49,7 +49,7 @@
 					]
 				},
 				{
-					"name": "request",
+					"name": "collect-request",
 					"item": [
 						{
 							"name": "create",
@@ -66,13 +66,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{HOST}}/rest/request/create",
+									"raw": "{{HOST}}/rest/collect-request/create",
 									"host": [
 										"{{HOST}}"
 									],
 									"path": [
 										"rest",
-										"request",
+										"collect-request",
 										"create"
 									]
 								}
@@ -86,37 +86,78 @@
 					"item": [
 						{
 							"name": "clasification",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "request-id",
-										"value": "joseesco24",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"stateWaste\": \"liquid\",\n    \"weightInKg\": 100,\n    \"isotopesNumber\": 31\n}",
-									"options": {
-										"raw": {
-											"language": "json"
+							"item": [
+								{
+									"name": "obtain",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "request-id",
+												"value": "joseesco24",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"stateWaste\": \"liquid\",\n    \"weightInKg\": 100.08,\n    \"isotopesNumber\": 31.01\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{HOST}}/rest/waste/clasification/obtain",
+											"host": [
+												"{{HOST}}"
+											],
+											"path": [
+												"rest",
+												"waste",
+												"clasification",
+												"obtain"
+											]
 										}
-									}
+									},
+									"response": []
 								},
-								"url": {
-									"raw": "{{HOST}}/rest/waste/clasification",
-									"host": [
-										"{{HOST}}"
-									],
-									"path": [
-										"rest",
-										"waste",
-										"clasification"
-									]
+								{
+									"name": "update",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "request-id",
+												"value": "joseesco24",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"isotopesNumber\": 1942,\n  \"stateWaste\": 7,\n  \"storeId\": 4,\n  \"wasteId\": \"157b3446-52d8-44b7-838e-17575ac63d41\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{HOST}}/rest/waste/clasification/update",
+											"host": [
+												"{{HOST}}"
+											],
+											"path": [
+												"rest",
+												"waste",
+												"clasification",
+												"update"
+											]
+										}
+									},
+									"response": []
 								}
-							},
-							"response": []
+							]
 						}
 					]
 				}
