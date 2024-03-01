@@ -30,23 +30,23 @@ class LoggingMode(str, Enum):
 
 class Configs(BaseSettings):
     # ** info: app configs
-    app_environment_mode: EnvironmentMode = Field(..., env="APP_ENVIRONMENT_MODE")
-    app_logging_mode: LoggingMode = Field(..., env="APP_LOGGING_MODE")
-    app_server_port: int = Field(..., env="APP_SERVER_PORT")
-    app_authentication_handler_middleware_exclude: Set[str] = Field(..., env="APP_AUTHENTICATION_HANDLER_MIDDLEWARE_EXCLUDE")
-    app_use_authentication_handler_middleware: bool = Field(..., env="APP_USE_AUTHENTICATION_HANDLER_MIDDLEWARE")
-    app_swagger_docs: bool = Field(..., env="APP_SWAGGER_DOCS")
+    app_environment_mode: EnvironmentMode = Field(..., validation_alias="APP_ENVIRONMENT_MODE")
+    app_logging_mode: LoggingMode = Field(..., validation_alias="APP_LOGGING_MODE")
+    app_server_port: int = Field(..., validation_alias="APP_SERVER_PORT")
+    app_authentication_handler_middleware_exclude: Set[str] = Field(..., validation_alias="APP_AUTHENTICATION_HANDLER_MIDDLEWARE_EXCLUDE")
+    app_use_authentication_handler_middleware: bool = Field(..., validation_alias="APP_USE_AUTHENTICATION_HANDLER_MIDDLEWARE")
+    app_swagger_docs: bool = Field(..., validation_alias="APP_SWAGGER_DOCS")
 
     # ** info: users database credentials
-    database_password: str = Field(..., env="DATABASE_PASSWORD")
-    database_logs: bool = Field(..., env="DATABASE_LOGS")
-    database_host: str = Field(..., env="DATABASE_HOST")
-    database_name: str = Field(..., env="DATABASE_NAME")
-    database_user: str = Field(..., env="DATABASE_USER")
-    database_port: int = Field(..., env="DATABASE_PORT")
+    database_password: str = Field(..., validation_alias="DATABASE_PASSWORD")
+    database_logs: bool = Field(..., validation_alias="DATABASE_LOGS")
+    database_host: str = Field(..., validation_alias="DATABASE_HOST")
+    database_name: str = Field(..., validation_alias="DATABASE_NAME")
+    database_user: str = Field(..., validation_alias="DATABASE_USER")
+    database_port: int = Field(..., validation_alias="DATABASE_PORT")
 
     # ** info: external microservices base urls
-    sar_brms_base_url: HttpUrl = Field(..., env="SAR_BRMS_BASE_URL")
+    sar_brms_base_url: HttpUrl = Field(..., validation_alias="SAR_BRMS_BASE_URL")
 
 
 load_dotenv(override=True, verbose=True, dotenv_path=find_dotenv(".env"))
