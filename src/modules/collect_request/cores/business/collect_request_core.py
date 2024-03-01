@@ -13,7 +13,7 @@ from fastapi import HTTPException
 from fastapi import status
 
 # ** info: dtos imports
-from src.modules.collect_request.dtos.collect_request_dtos import CollectRequestControllerDtos
+from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestControllerDtos
 
 CollectRequestCreateResponseDto = CollectRequestControllerDtos.CollectRequestCreateResponseDto
 CollectRequestCreateRequestDto = CollectRequestControllerDtos.CollectRequestCreateRequestDto
@@ -21,12 +21,12 @@ ResponseRequestDataDto = CollectRequestControllerDtos.ResponseRequestDataDto
 ResponseWasteDataDto = CollectRequestControllerDtos.ResponseWasteDataDto
 
 # ** info: entities imports
-from src.modules.collect_request.entities.collect_request_entity import CollectRequest
+from src.modules.collect_request.adapters.database_providers_entities.collect_request_entity import CollectRequest
 from src.modules.parameter.adapters.database_providers_entities.parameter_entity import Parameter
 from src.modules.waste.adapters.database_providers_entities.waste_entity import Waste
 
 # ** info: providers imports
-from src.modules.collect_request.database_providers.collect_request_provider import CollectRequestProvider
+from src.modules.collect_request.adapters.database_providers.collect_request_provider import CollectRequestProvider
 from src.modules.parameter.adapters.database_providers.parameter_provider import ParameterProvider
 from src.modules.waste.adapters.database_providers.waste_provider import WasteProvider
 

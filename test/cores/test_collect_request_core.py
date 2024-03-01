@@ -16,7 +16,7 @@ from fastapi import HTTPException
 sys.path.append(join(path.dirname(path.realpath(__file__)), "..", "..", "."))
 
 # ** info: dtos imports
-from src.modules.collect_request.dtos.collect_request_dtos import CollectRequestControllerDtos
+from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestControllerDtos
 
 CollectRequestCreateResponseDto = CollectRequestControllerDtos.CollectRequestCreateResponseDto
 CollectRequestCreateRequestDto = CollectRequestControllerDtos.CollectRequestCreateRequestDto
@@ -26,10 +26,10 @@ ResponseWasteDataDto = CollectRequestControllerDtos.ResponseWasteDataDto
 RequestWasteDataDto = CollectRequestControllerDtos.RequestWasteDataDto
 
 # ** info: core imports
-from src.modules.collect_request.cores.collect_request_core import CollectRequestCore
+from modules.collect_request.cores.business.collect_request_core import CollectRequestCore
 
 # ** info: entities imports
-from src.modules.collect_request.entities.collect_request_entity import CollectRequest
+from src.modules.collect_request.adapters.database_providers_entities.collect_request_entity import CollectRequest
 from src.modules.parameter.adapters.database_providers_entities.parameter_entity import Parameter
 from src.modules.waste.adapters.database_providers_entities.waste_entity import Waste
 

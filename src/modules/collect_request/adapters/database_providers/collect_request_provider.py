@@ -10,7 +10,7 @@ from sqlmodel import Session
 from sqlmodel import select
 
 # ** info: users entity
-from src.modules.collect_request.entities.collect_request_entity import CollectRequest
+from src.modules.collect_request.adapters.database_providers_entities.collect_request_entity import CollectRequest
 
 # ** info: artifacts imports
 from src.sidecards.artifacts.uuid_provider import UuidProvider
