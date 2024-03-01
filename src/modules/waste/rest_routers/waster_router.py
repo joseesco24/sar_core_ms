@@ -19,12 +19,15 @@ WasteClasificationRequestDto = WasteDtos.WasteClasificationRequestDto
 from src.modules.waste.cores.waste_core import WasteCore
 
 # ** info: artifacts imports
-from src.sidecards.path.generator import generator
+from sidecards.artifacts.path_provider import PathProvider
 
 __all__: list[str] = ["waste_router"]
 
+# ** info: building artifacts
+path_provider: PathProvider = PathProvider()
+
 # ** info: building class router
-waste_router: APIRouter = APIRouter(prefix=generator.build_posix_path("waste"), tags=["Wastes"])
+waste_router: APIRouter = APIRouter(prefix=path_provider.build_posix_path("waste"), tags=["Wastes"])
 
 # ** info: building router controllers
 waste_core: WasteCore = WasteCore()
@@ -33,7 +36,7 @@ waste_core: WasteCore = WasteCore()
 @waste_router.post(
     description="classifies the waste according to its attributes",
     summary="classifies the waste according to its attributes",
-    path=generator.build_posix_path("clasification", "obtain"),
+    path=path_provider.build_posix_path("clasification", "obtain"),
     response_model=WasteClasificationResponseDto,
     status_code=status.HTTP_200_OK,
 )
@@ -45,7 +48,7 @@ async def api_obtain_waste_classify(parameter_search_request: WasteClasification
 @waste_router.post(
     description="classify a waste by id request description",
     summary="classify a waste by id request summary",
-    path=generator.build_posix_path("clasification", "update"),
+    path=path_provider.build_posix_path("clasification", "update"),
     response_model=WasteClassifyResponseDto,
     status_code=status.HTTP_200_OK,
 )

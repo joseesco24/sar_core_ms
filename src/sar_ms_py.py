@@ -32,8 +32,8 @@ from src.modules.waste.rest_routers.waster_router import waste_router
 
 # ** info: artifacts imports
 from sidecards.artifacts.logging_provider import LoggingProvider
-from src.sidecards.path.generator import generator
 from src.sidecards.artifacts.env_provider import EnvProvider
+from sidecards.artifacts.path_provider import PathProvider
 
 # ** info: middlewares imports
 from src.sidecards.middlewares.authentication_handler_middleware import AuthenticationHandlerMiddleware
@@ -44,6 +44,7 @@ from src.sidecards.middlewares.error_handler_middleware import ErrorHandlerMiddl
 # ** info: building needed artifacts
 # ---------------------------------------------------------------------------------------------------------------------
 
+path_provider: PathProvider = PathProvider()
 env_provider: EnvProvider = EnvProvider()
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -80,7 +81,7 @@ else:
 # ** info: setting rest base router
 # ---------------------------------------------------------------------------------------------------------------------
 
-rest_router: APIRouter = APIRouter(prefix=generator.build_posix_path("rest"))
+rest_router: APIRouter = APIRouter(prefix=path_provider.build_posix_path("rest"))
 
 # ---------------------------------------------------------------------------------------------------------------------
 # ** info: setting rest routers

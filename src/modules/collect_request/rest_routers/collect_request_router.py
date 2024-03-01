@@ -16,12 +16,15 @@ CollectRequestCreateRequestDto = CollectRequestControllerDtos.CollectRequestCrea
 from src.modules.collect_request.cores.collect_request_core import CollectRequestCore
 
 # ** info: artifacts imports
-from src.sidecards.path.generator import generator
+from sidecards.artifacts.path_provider import PathProvider
 
 __all__: list[str] = ["collect_request_router"]
 
+# ** info: building artifacts
+path_provider: PathProvider = PathProvider()
+
 # ** info: building class router
-collect_request_router: APIRouter = APIRouter(prefix=generator.build_posix_path("collect-request"), tags=["Collect Requests"])
+collect_request_router: APIRouter = APIRouter(prefix=path_provider.build_posix_path("collect-request"), tags=["Collect Requests"])
 
 # ** info: building router controllers
 collect_request_core: CollectRequestCore = CollectRequestCore()
@@ -30,7 +33,7 @@ collect_request_core: CollectRequestCore = CollectRequestCore()
 @collect_request_router.post(
     description="create a new collect request description",
     summary="create a new collect request summary",
-    path=generator.build_posix_path("create"),
+    path=path_provider.build_posix_path("create"),
     response_model=CollectRequestCreateResponseDto,
     status_code=status.HTTP_200_OK,
 )
