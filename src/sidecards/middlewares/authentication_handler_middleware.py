@@ -22,10 +22,10 @@ from fastapi import status
 
 from src.sidecards.env.configs import configs
 
-__all__: list[str] = ["authentication_handler"]
+__all__: list[str] = ["AuthenticationHandlerMiddleware"]
 
 
-class AuthenticationHandler:
+class AuthenticationHandlerMiddleware:
     async def __call__(
         self: Self,
         request: Request,
@@ -65,6 +65,3 @@ class AuthenticationHandler:
         logging.debug("authentication middleware ended")
 
         return response
-
-
-authentication_handler: AuthenticationHandler = AuthenticationHandler()

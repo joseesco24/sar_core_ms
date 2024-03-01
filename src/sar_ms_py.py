@@ -36,9 +36,9 @@ from src.sidecards.path.generator import generator
 from src.sidecards.env.configs import configs
 
 # ** info: middlewares imports
-from src.sidecards.middlewares.authentication_handler import authentication_handler
-from src.sidecards.middlewares.logger_contextualizer import logger_contextualizer
-from src.sidecards.middlewares.error_handler import error_handler
+from src.sidecards.middlewares.authentication_handler_middleware import AuthenticationHandlerMiddleware
+from src.sidecards.middlewares.logger_contextualizer_middleware import LoggerContextualizerMiddleware
+from src.sidecards.middlewares.error_handler_middleware import ErrorHandlerMiddleware
 
 # ---------------------------------------------------------------------------------------------------------------------
 # ** info: setting up global app logging
@@ -96,12 +96,12 @@ sar_ms_py.include_router(rest_router)
 
 if configs.app_use_authentication_handler_middleware is True:
     logging.info("authentication middleware active")
-    sar_ms_py.add_middleware(middleware_class=BaseHTTPMiddleware, dispatch=authentication_handler)
+    sar_ms_py.add_middleware(middleware_class=BaseHTTPMiddleware, dispatch=AuthenticationHandlerMiddleware())
 else:
     logging.warning("authentication middleware inactive")
 
-sar_ms_py.add_middleware(middleware_class=BaseHTTPMiddleware, dispatch=error_handler)
-sar_ms_py.add_middleware(middleware_class=BaseHTTPMiddleware, dispatch=logger_contextualizer)
+sar_ms_py.add_middleware(middleware_class=BaseHTTPMiddleware, dispatch=ErrorHandlerMiddleware())
+sar_ms_py.add_middleware(middleware_class=BaseHTTPMiddleware, dispatch=LoggerContextualizerMiddleware())
 sar_ms_py.add_middleware(CORSMiddleware, allow_credentials=True, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
 # ---------------------------------------------------------------------------------------------------------------------

@@ -19,10 +19,10 @@ from starlette.requests import Request
 from src.sidecards.uuid.uuid_provider import uuid_provider
 
 
-__all__: list[str] = ["logger_contextualizer"]
+__all__: list[str] = ["LoggerContextualizerMiddleware"]
 
 
-class LoggerContextualizer:
+class LoggerContextualizerMiddleware:
     async def __call__(
         self: Self,
         request: Request,
@@ -50,6 +50,3 @@ class LoggerContextualizer:
             logging.debug("request ended sucessfully")
 
         return response
-
-
-logger_contextualizer: LoggerContextualizer = LoggerContextualizer()

@@ -20,10 +20,10 @@ from fastapi.responses import JSONResponse
 from fastapi import status
 
 
-__all__: list[str] = ["error_handler"]
+__all__: list[str] = ["ErrorHandlerMiddleware"]
 
 
-class ErrorHandler:
+class ErrorHandlerMiddleware:
     async def __call__(
         self: Self,
         request: Request,
@@ -53,6 +53,3 @@ class ErrorHandler:
         logging.debug("error handler middleware ended")
 
         return response
-
-
-error_handler: ErrorHandler = ErrorHandler()

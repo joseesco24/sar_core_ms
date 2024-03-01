@@ -17,14 +17,14 @@ from src.sidecards.uuid.uuid_provider import uuid_provider
 from src.sidecards.env.configs import configs
 
 # ** info: session managers imports
-from src.sidecards.database.mysql_sar_manager import MySQLSarManager
+from src.sidecards.database_managers.mysql_manager import MySQLManager
 
 __all__: list[str] = ["CollectRequestProvider"]
 
 
 class CollectRequestProvider:
     def __init__(self: Self) -> None:
-        self._session_manager: MySQLSarManager = MySQLSarManager(
+        self._session_manager: MySQLManager = MySQLManager(
             password=configs.database_password,
             database=configs.database_name,
             username=configs.database_user,

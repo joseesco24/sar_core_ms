@@ -27,10 +27,10 @@ from src.sidecards.uuid.uuid_provider import uuid_provider
 from src.sidecards.datetime.datetime_provider import datetime_provider
 from src.sidecards.env.configs import configs
 
-__all__: list[str] = ["MySQLSarManager"]
+__all__: list[str] = ["MySQLManager"]
 
 
-class MySQLSarManager:
+class MySQLManager:
     instances: set = set()
 
     def __init__(self: Self, password: str, database: str, username: str, drivername: str, host: str, port: int, query: dict) -> None:
@@ -56,8 +56,8 @@ class MySQLSarManager:
 
         logging.info("connection obtained")
 
-        instanes_ids: str = r",".join(str(s) for s in MySQLSarManager.instances)
-        instances_count: int = MySQLSarManager.instances.__len__()
+        instanes_ids: str = r",".join(str(s) for s in MySQLManager.instances)
+        instances_count: int = MySQLManager.instances.__len__()
         logging.debug(f"instances count: {instances_count}")
         logging.debug(f"instances ids: {instanes_ids}")
 
@@ -122,7 +122,7 @@ class MySQLSarManager:
             self._engine = None
 
         if self._connection_id is not None:
-            MySQLSarManager.instances.remove(self._connection_id)
+            MySQLManager.instances.remove(self._connection_id)
             self._connection_id = None
 
         logging.warning("connection ended")
@@ -135,7 +135,7 @@ class MySQLSarManager:
 
         if self._connection_id is None:
             self._connection_id = uuid_provider.get_str_uuid()
-            MySQLSarManager.instances.add(self._connection_id)
+            MySQLManager.instances.add(self._connection_id)
 
         if self._engine is None:
             self._engine = create_engine(self._url, echo=configs.database_logs)
@@ -146,4 +146,4 @@ class MySQLSarManager:
         logging.warning(f"new connection {self._connection_id} started")
 
     def _post_init(self: Self) -> None:
-        MySQLSarManager.instances.add(self._connection_id)
+        MySQLManager.instances.add(self._connection_id)
