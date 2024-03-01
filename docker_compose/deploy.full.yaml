@@ -16,7 +16,7 @@ services:
 
   sar_bd_mysql:
     container_name: sar_bd_mysql
-    image: ghcr.io/joseesco24/sar_bd_mysql:v1.0.2
+    image: ghcr.io/joseesco24/sar_bd_mysql:v1.1.1
     networks:
       - sar_system_network
     ports:
