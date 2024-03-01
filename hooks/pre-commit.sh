@@ -40,13 +40,13 @@ find . | grep -E "(/__pycache__$|\.pyc$|\.pyo$)" | xargs rm -rf
 
 # ** info: formatting files
 print_title "Formatting Files"
-black ./src --line-length=180
+black ./src --line-length=180 && black ./test --line-length=180
 
 # ** info: exporting dependencies if needed
 if [[ " ${staged_files[@]} " =~ " poetry.lock " ]]; then
     print_title "Exporting Dependencies"
-    poetry export --without-hashes --only dev --format=requirements.txt > ./requirements/dev.txt
-    poetry export --without-hashes --format=requirements.txt > ./requirements/app.txt
+    poetry export --without-hashes --only dev --format=requirements.txt >./requirements/dev.txt
+    poetry export --without-hashes --format=requirements.txt >./requirements/app.txt
     git add ./requirements/app.txt
     git add ./requirements/dev.txt
 fi
@@ -70,3 +70,7 @@ mypy --explicit-package-bases ./src
 
 # ** info: linting files
 print_title "Commit Sucessfully"
+
+# ** info: cleaning cache
+print_title "Cleaning Cache"
+find . | grep -E "(/__pycache__$|\.pyc$|\.pyo$)" | xargs rm -rf

@@ -17,13 +17,13 @@
 		"docker-image-push": "docker push ghcr.io/joseesco24/sar_ms_py --all-tags",
 		"docker-full-stop": "docker compose -f docker_compose/deploy.full.yaml down",
 		"docker-full-start": "docker compose -f docker_compose/deploy.full.yaml up",
-		"start-dev": "cp -f ./env/development.env .env & python src/sar_ms_py.py",
-		"start-app": "cp -f ./env/production.env .env & python src/sar_ms_py.py",
-		"format": "black ./src --line-length=180",
+		"format": "black ./src --line-length=180 && black ./test --line-length=180",
+		"start-dev": "cp -f ./env/development.env .env && python src/sar_ms_py.py",
+		"start-app": "cp -f ./env/production.env .env && python src/sar_ms_py.py",
 		"commitmsg": "bash hooks/commit-msg.sh",
 		"precommit": "bash hooks/pre-commit.sh",
 		"postinstall": "npx husky install",
-		"test": "pytest"
+		"test": "pytest --verbose"
 	},
 	"devDependencies": {
 		"@commitlint/cli": "^18.6.1",
