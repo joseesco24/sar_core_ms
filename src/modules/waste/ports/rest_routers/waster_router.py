@@ -7,8 +7,8 @@ from fastapi import status
 from fastapi import Body
 
 # ** info: dtos imports
-from src.modules.waste.dtos.waste_dtos import WasteRequestControllerDtos
-from src.modules.waste.dtos.waste_dtos import WasteDtos
+from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteRequestControllerDtos
+from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteDtos
 
 WasteClassifyResponseDto = WasteRequestControllerDtos.WasteClassifyResponseDto
 WasteClassifyRequestDto = WasteRequestControllerDtos.WasteClassifyRequestDto
@@ -16,7 +16,7 @@ WasteClasificationResponseDto = WasteDtos.WasteClasificationResponseDto
 WasteClasificationRequestDto = WasteDtos.WasteClasificationRequestDto
 
 # ** info: rest controllers imports
-from src.modules.waste.cores.waste_core import WasteCore
+from modules.waste.cores.business.waste_core import WasteCore
 
 # ** info: artifacts imports
 from sidecards.artifacts.path_provider import PathProvider

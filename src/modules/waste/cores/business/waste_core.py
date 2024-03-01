@@ -13,8 +13,8 @@ from fastapi import HTTPException
 from fastapi import status
 
 # ** info: dtos imports
-from src.modules.waste.dtos.waste_dtos import WasteRequestControllerDtos
-from src.modules.waste.dtos.waste_dtos import WasteDtos
+from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteRequestControllerDtos
+from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteDtos
 
 WasteClassifyResponseDto = WasteRequestControllerDtos.WasteClassifyResponseDto
 WasteClassifyRequestDto = WasteRequestControllerDtos.WasteClassifyRequestDto
@@ -26,10 +26,10 @@ from src.modules.parameter.entities.parameter_entity import Parameter
 
 # ** info: providers imports
 from src.modules.parameter.database_providers.parameter_provider import ParameterProvider
-from src.modules.waste.database_providers.waste_provider import WasteProvider
+from src.modules.waste.adapters.database_providers.waste_provider import WasteProvider
 
 # ** info: ports imports
-from modules.waste.rest_ports.brms_port import BrmsPort
+from modules.waste.adapters.rest_services.brms_service import BrmsService
 
 
 __all__: list[str] = ["WasteCore"]
@@ -45,8 +45,8 @@ class WasteCore:
         # ** info: providers building
         self.parameter_provider: ParameterProvider = ParameterProvider()
         self.waste_provider: WasteProvider = WasteProvider()
-        # ** info: ports building
-        self.brms_port: BrmsPort = BrmsPort()
+        # ** info: rest services building
+        self.brms_service: BrmsService = BrmsService()
 
     # !------------------------------------------------------------------------
     # ! info: driver methods section start
@@ -84,7 +84,7 @@ class WasteCore:
     # !------------------------------------------------------------------------
 
     async def _obtain_waste_clasification(self: Self, state_waste: str, weight_in_kg: float, isotopes_number: float) -> int:
-        return self.brms_port.obtain_waste_clasification(state_waste=state_waste, weight_in_kg=weight_in_kg, isotopes_number=isotopes_number)
+        return self.brms_service.obtain_waste_clasification(state_waste=state_waste, weight_in_kg=weight_in_kg, isotopes_number=isotopes_number)
 
     async def _map_waste_classify_response(self: Self, clasification: int) -> WasteClasificationResponseDto:
         return WasteClasificationResponseDto(activityType=clasification)

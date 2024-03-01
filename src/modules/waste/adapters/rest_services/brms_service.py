@@ -20,10 +20,10 @@ from fastapi import status
 from sidecards.artifacts.env_provider import EnvProvider
 
 
-__all__: list[str] = ["BrmsPort"]
+__all__: list[str] = ["BrmsService"]
 
 
-class BrmsPort:
+class BrmsService:
     def __init__(self: Self):
         self._env_provider: EnvProvider = EnvProvider()
         self.base_url: str = str(self._env_provider.sar_brms_base_url)

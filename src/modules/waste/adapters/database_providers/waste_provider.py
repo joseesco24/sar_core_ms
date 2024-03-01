@@ -11,7 +11,7 @@ from sqlmodel import Session
 from sqlmodel import select
 
 # ** info: users entity
-from src.modules.waste.entities.waste_entity import Waste
+from src.modules.waste.adapters.database_providers_entities.waste_entity import Waste
 
 # ** info: artifacts imports
 from src.sidecards.artifacts.uuid_provider import UuidProvider
