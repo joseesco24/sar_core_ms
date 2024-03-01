@@ -11,10 +11,10 @@ from pydantic import BaseModel
 from pydantic import Field
 
 # **info: metadata for the model imports
-from src.modules.dtos.waste_dtos_metadata import collect_request_classify_req_ex
-from src.modules.dtos.waste_dtos_metadata import collect_request_classify_res_ex
-from src.modules.dtos.waste_dtos_metadata import waste_clasification_req_ex
-from src.modules.dtos.waste_dtos_metadata import waste_clasification_res_ex
+from src.modules.waste.dtos.waste_dtos_metadata import collect_request_classify_req_ex
+from src.modules.waste.dtos.waste_dtos_metadata import collect_request_classify_res_ex
+from src.modules.waste.dtos.waste_dtos_metadata import waste_clasification_req_ex
+from src.modules.waste.dtos.waste_dtos_metadata import waste_clasification_res_ex
 
 __all__: list[str] = ["WasteDtos", "WasteRequestControllerDtos"]
 

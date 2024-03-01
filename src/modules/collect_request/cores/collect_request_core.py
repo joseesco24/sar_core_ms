@@ -23,12 +23,12 @@ ResponseWasteDataDto = CollectRequestControllerDtos.ResponseWasteDataDto
 # ** info: entities imports
 from src.modules.collect_request.entities.collect_request_entity import CollectRequest
 from src.modules.entities.parameter_entity import Parameter
-from src.modules.entities.waste_entity import Waste
+from src.modules.waste.entities.waste_entity import Waste
 
 # ** info: providers imports
 from src.modules.collect_request.database_providers.collect_request_provider import CollectRequestProvider
 from src.modules.database.parameter_provider import ParameterProvider
-from src.modules.database.waste_provider import WasteProvider
+from src.modules.waste.database_providers.waste_provider import WasteProvider
 
 # ** info: artifacts imports
 from src.sidecards.datetime.datetime_provider import datetime_provider
