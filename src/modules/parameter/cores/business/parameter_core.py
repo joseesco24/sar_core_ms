@@ -9,17 +9,17 @@ from typing import Self
 from typing import List
 
 # ** info: dtos imports
-from src.modules.parameter.dtos.parameter_dtos import ParameterDtos
+from src.modules.parameter.ports.rest_routers_dtos.parameter_dtos import ParameterDtos
 
 ParameterSearchResponseDto = ParameterDtos.ParameterSearchResponseDto
 ParameterSearchRequestDto = ParameterDtos.ParameterSearchRequestDto
 ParameterDataDto = ParameterDtos.ParameterDataDto
 
 # ** info: entities imports
-from src.modules.parameter.entities.parameter_entity import Parameter
+from src.modules.parameter.adapters.database_providers_entities.parameter_entity import Parameter
 
 # ** info: providers imports
-from src.modules.parameter.database_providers.parameter_provider import ParameterProvider
+from src.modules.parameter.adapters.database_providers.parameter_provider import ParameterProvider
 
 __all__: list[str] = ["ParameterCore"]
 

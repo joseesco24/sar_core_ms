@@ -22,10 +22,10 @@ WasteClasificationResponseDto = WasteDtos.WasteClasificationResponseDto
 WasteClasificationRequestDto = WasteDtos.WasteClasificationRequestDto
 
 # ** info: entities imports
-from src.modules.parameter.entities.parameter_entity import Parameter
+from src.modules.parameter.adapters.database_providers_entities.parameter_entity import Parameter
 
 # ** info: providers imports
-from src.modules.parameter.database_providers.parameter_provider import ParameterProvider
+from src.modules.parameter.adapters.database_providers.parameter_provider import ParameterProvider
 from src.modules.waste.adapters.database_providers.waste_provider import WasteProvider
 
 # ** info: ports imports
