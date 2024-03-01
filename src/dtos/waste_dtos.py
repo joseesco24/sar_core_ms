@@ -5,6 +5,8 @@
 from enum import Enum
 
 # ** info: pydantic imports
+from pydantic import field_validator
+from pydantic import ValidationInfo
 from pydantic import BaseModel
 from pydantic import Field
 
@@ -19,9 +21,18 @@ class WasteDtos:
 
     class WasteClasificationRequestDto(BaseModel):
         stateWaste: "WasteDtos.stateWasteOptions" = Field(...)
-        isotopesNumber: int = Field(...)
-        weightInKg: int = Field(...)
+        isotopesNumber: float = Field(...)
+        weightInKg: float = Field(...)
         model_config = waste_clasification_req_ex
+
+        @field_validator("isotopesNumber", "weightInKg")
+        @classmethod
+        def int_validator(cls, value: float, info: ValidationInfo) -> int:
+            if isinstance(value, float):
+                value = float(value)
+            else:
+                raise ValueError(f"{info.field_name} is not a double input")
+            return value
 
     class stateWasteOptions(str, Enum):
         gaseous: str = "gaseous"

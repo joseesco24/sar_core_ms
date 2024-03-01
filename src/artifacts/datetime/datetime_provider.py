@@ -4,6 +4,7 @@
 # ** info: python imports
 from datetime import timedelta
 from datetime import datetime
+from datetime import UTC
 
 # ** info: typing imports
 from typing import Self
@@ -14,7 +15,7 @@ __all__: list[str] = ["DatetimeProvider"]
 
 class DatetimeProvider:
     def get_utc_time(self: Self) -> datetime:
-        return datetime.utcnow()
+        return datetime.now(UTC)
 
     def get_utc_pretty_string(self: Self) -> str:
         return self.prettify_date_time_obj(date_time_obj=self.get_utc_time())

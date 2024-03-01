@@ -28,7 +28,7 @@ class WasteController:
         waste_classify_response: WasteClasificationResponseDto = self._map_waste_classify_response(clasification=clasification)
         return waste_classify_response
 
-    def _obtain_waste_clasification(self: Self, state_waste: str, weight_in_kg: int, isotopes_number: int) -> int:
+    def _obtain_waste_clasification(self: Self, state_waste: str, weight_in_kg: float, isotopes_number: float) -> int:
         return self.brms_port.obtain_waste_clasification(state_waste=state_waste, weight_in_kg=weight_in_kg, isotopes_number=isotopes_number)
 
     def _map_waste_classify_response(self: Self, clasification: int) -> WasteClasificationResponseDto:

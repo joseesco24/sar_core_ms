@@ -37,7 +37,7 @@ class CollectRequestControllerDtos:
             if isinstance(value, int):
                 value = int(value)
             else:
-                raise ValueError(f"{info.field_name} packaging is not a integer input")
+                raise ValueError(f"{info.field_name} is not a integer input")
             return value
 
         @field_validator("collectDate")
@@ -63,7 +63,7 @@ class CollectRequestControllerDtos:
             if isinstance(value, float):
                 value = float(value)
             else:
-                raise ValueError(f"{info.field_name} packaging is not a float input")
+                raise ValueError(f"{info.field_name} is not a float input")
             return value
 
         @field_validator("packaging", "type")
@@ -72,7 +72,7 @@ class CollectRequestControllerDtos:
             if isinstance(value, int):
                 value = int(value)
             else:
-                raise ValueError(f"{info.field_name} packaging is not a integer input")
+                raise ValueError(f"{info.field_name} is not a integer input")
             return value
 
     class CollectRequestCreateResponseDto(BaseModel):
@@ -91,7 +91,7 @@ class CollectRequestControllerDtos:
             if isinstance(value, int):
                 value = int(value)
             else:
-                raise ValueError(f"{info.field_name} packaging is not a integer input")
+                raise ValueError(f"{info.field_name} is not a integer input")
             return value
 
         @field_validator("collectDate")
@@ -119,7 +119,7 @@ class CollectRequestControllerDtos:
             if isinstance(value, float):
                 value = float(value)
             else:
-                raise ValueError(f"{info.field_name} packaging is not a float input")
+                raise ValueError(f"{info.field_name} is not a float input")
             return value
 
         @field_validator("packaging", "type")
@@ -128,5 +128,5 @@ class CollectRequestControllerDtos:
             if isinstance(value, int):
                 value = int(value)
             else:
-                raise ValueError(f"{info.field_name} packaging is not a integer input")
+                raise ValueError(f"{info.field_name} is not a integer input")
             return value

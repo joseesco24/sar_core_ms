@@ -37,5 +37,5 @@ class ParameterDtos:
             if isinstance(value, int):
                 value = int(value)
             else:
-                raise ValueError(f"{info.field_name} packaging is not a integer input")
+                raise ValueError(f"{info.field_name} is not a integer input")
             return value

@@ -27,7 +27,7 @@ class BrmsPort:
     def __init__(self: Self):
         self.base_url: str = str(configs.sar_brms_base_url)
 
-    def obtain_waste_clasification(self: Self, state_waste: str, weight_in_kg: int, isotopes_number: int) -> int:
+    def obtain_waste_clasification(self: Self, state_waste: str, weight_in_kg: float, isotopes_number: float) -> int:
         data: dict[str, str] = {"stateWaste": state_waste, "weightInKg": weight_in_kg, "isotopesNumber": isotopes_number}
         url: str = urljoin(self.base_url, r"/brms/waste/clasification")
         raw_response: Response = httpx.post(url, json=data)
