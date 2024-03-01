@@ -21,7 +21,7 @@ from src.artifacts.path.generator import generator
 __all__: list[str] = ["collect_request_router"]
 
 # ** info: building class router
-collect_request_router: APIRouter = APIRouter(prefix=generator.build_posix_path("request"), tags=["Collect Requests"])
+collect_request_router: APIRouter = APIRouter(prefix=generator.build_posix_path("collect-request"), tags=["Collect Requests"])
 
 # ** info: building router controllers
 collect_request_controller: CollectRequestController = CollectRequestController()

@@ -24,7 +24,6 @@ from src.artifacts.path.generator import generator
 __all__: list[str] = ["waste_router"]
 
 # ** info: building class router
-waste_router: APIRouter = APIRouter(prefix=generator.build_posix_path("waste"), tags=["Waste"])
 waste_router: APIRouter = APIRouter(prefix=generator.build_posix_path("waste"), tags=["Wastes"])
 
 # ** info: building router controllers
