@@ -15,7 +15,7 @@ from pytest import mark
 from fastapi import HTTPException
 
 # **info: appending src path to the system paths for absolute imports from src path
-sys.path.append(join(path.dirname(path.realpath(__file__)), "..", "."))
+sys.path.append(join(path.dirname(path.realpath(__file__)), "..", "..", "."))
 
 # ** info: dtos imports
 from src.dtos.collect_request_dtos import CollectRequestControllerDtos
