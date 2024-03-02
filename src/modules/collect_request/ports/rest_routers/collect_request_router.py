@@ -7,10 +7,8 @@ from fastapi import status
 from fastapi import Body
 
 # ** info: dtos imports
-from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestControllerDtos
-
-CollectRequestCreateResponseDto = CollectRequestControllerDtos.CollectRequestCreateResponseDto
-CollectRequestCreateRequestDto = CollectRequestControllerDtos.CollectRequestCreateRequestDto
+from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestCreateResponseDto
+from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestCreateRequestDto
 
 # ** info: rest controllers imports
 from src.modules.collect_request.cores.business.collect_request_core import CollectRequestCore

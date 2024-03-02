@@ -16,14 +16,12 @@ from fastapi import HTTPException
 sys.path.append(join(path.dirname(path.realpath(__file__)), "..", "..", "."))
 
 # ** info: dtos imports
-from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestControllerDtos
-
-CollectRequestCreateResponseDto = CollectRequestControllerDtos.CollectRequestCreateResponseDto
-CollectRequestCreateRequestDto = CollectRequestControllerDtos.CollectRequestCreateRequestDto
-ResponseRequestDataDto = CollectRequestControllerDtos.ResponseRequestDataDto
-RequestRequestDataDto = CollectRequestControllerDtos.RequestRequestDataDto
-ResponseWasteDataDto = CollectRequestControllerDtos.ResponseWasteDataDto
-RequestWasteDataDto = CollectRequestControllerDtos.RequestWasteDataDto
+from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestCreateResponseDto
+from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestCreateRequestDto
+from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import ResponseRequestDataDto
+from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import RequestRequestDataDto
+from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import ResponseWasteDataDto
+from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import RequestWasteDataDto
 
 # ** info: core imports
 from src.modules.collect_request.cores.business.collect_request_core import CollectRequestCore

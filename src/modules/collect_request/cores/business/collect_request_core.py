@@ -1,5 +1,4 @@
 # !/usr/bin/python3
-# type: ignore
 
 # ** info: python imports
 import logging
@@ -7,31 +6,30 @@ import logging
 # ** info: typing imports
 from typing import Self
 from typing import List
+from typing import Set
 
 # ** info: fastapi imports
 from fastapi import HTTPException
 from fastapi import status
 
 # ** info: dtos imports
-from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestControllerDtos
-
-CollectRequestCreateResponseDto = CollectRequestControllerDtos.CollectRequestCreateResponseDto
-CollectRequestCreateRequestDto = CollectRequestControllerDtos.CollectRequestCreateRequestDto
-ResponseRequestDataDto = CollectRequestControllerDtos.ResponseRequestDataDto
-ResponseWasteDataDto = CollectRequestControllerDtos.ResponseWasteDataDto
+from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestCreateResponseDto  # type: ignore
+from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestCreateRequestDto  # type: ignore
+from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import ResponseRequestDataDto  # type: ignore
+from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import ResponseWasteDataDto  # type: ignore
 
 # ** info: entities imports
-from src.modules.collect_request.adapters.database_providers_entities.collect_request_entity import CollectRequest
-from src.modules.parameter.adapters.database_providers_entities.parameter_entity import Parameter
-from src.modules.waste.adapters.database_providers_entities.waste_entity import Waste
+from src.modules.collect_request.adapters.database_providers_entities.collect_request_entity import CollectRequest  # type: ignore
+from src.modules.parameter.adapters.database_providers_entities.parameter_entity import Parameter  # type: ignore
+from src.modules.waste.adapters.database_providers_entities.waste_entity import Waste  # type: ignore
 
 # ** info: providers imports
-from src.modules.collect_request.adapters.database_providers.collect_request_provider import CollectRequestProvider
-from src.modules.parameter.adapters.database_providers.parameter_provider import ParameterProvider
-from src.modules.waste.adapters.database_providers.waste_provider import WasteProvider
+from src.modules.collect_request.adapters.database_providers.collect_request_provider import CollectRequestProvider  # type: ignore
+from src.modules.parameter.adapters.database_providers.parameter_provider import ParameterProvider  # type: ignore
+from src.modules.waste.adapters.database_providers.waste_provider import WasteProvider  # type: ignore
 
 # ** info: artifacts imports
-from src.sidecards.artifacts.datetime_provider import DatetimeProvider
+from src.sidecards.artifacts.datetime_provider import DatetimeProvider  # type: ignore
 
 __all__: list[str] = ["CollectRequestCore"]
 
@@ -80,8 +78,8 @@ class CollectRequestCore:
     async def _validate_wastes_domains(self: Self, request_create_request: CollectRequestCreateRequestDto) -> None:
         waste_packaging_types: List[Parameter] = self.parameter_provider.search_parameters_by_domain(domain=r"wastePackagingType")
         waste_types: List[Parameter] = self.parameter_provider.search_parameters_by_domain(domain=r"wasteType")
-        waste_packaging_types_ids: set(int) = set([waste_packaging_type.id for waste_packaging_type in waste_packaging_types])
-        waste_types_ids: set(int) = set([waste_type.id for waste_type in waste_types])
+        waste_packaging_types_ids: Set[int] = set([waste_packaging_type.id for waste_packaging_type in waste_packaging_types])
+        waste_types_ids: Set[int] = set([waste_type.id for waste_type in waste_types])
         for waste in request_create_request.waste:
             if waste.packaging not in waste_packaging_types_ids:
                 valid_waste_types: str = r",".join(str(s) for s in waste_packaging_types_ids)
@@ -101,7 +99,7 @@ class CollectRequestCore:
     async def _store_collect_request_wastes(self: Self, collect_request_id: str, request_create_request: CollectRequestCreateRequestDto) -> List[str]:
         wastes_ids: List[str] = list()
         for waste in request_create_request.waste:
-            waste_id: Waste = self.waste_provider.store_waste(
+            waste_id: str = self.waste_provider.store_waste(
                 request_uuid=collect_request_id,
                 weight_in_kg=waste.weightInKg,
                 description=waste.description,
