@@ -31,12 +31,19 @@ class BrmsService:
     def obtain_waste_clasification(self: Self, state_waste: str, weight_in_kg: float, isotopes_number: float) -> int:
         data: dict[str, str] = {"stateWaste": state_waste, "weightInKg": weight_in_kg, "isotopesNumber": isotopes_number}
         url: str = urljoin(self.base_url, r"/brms/waste/clasification")
-        raw_response: Response = httpx.post(url, json=data)
+
+        logging.debug(f"brms url: {url}")
+
+        try:
+            raw_response: Response = httpx.post(url, json=data)
+        except Exception:
+            logging.critical("error unable to connect to brms")
+            raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE)
 
         logging.debug(f"brms url: {url}")
 
         if raw_response.status_code != status.HTTP_200_OK:
-            logging.error("error while trying to connect to brms")
+            logging.critical("the brms service didnt respond correctly")
             raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE)
 
         response: int
@@ -44,10 +51,10 @@ class BrmsService:
         try:
             response = int(raw_response.text)
         except Exception:
-            logging.error("error parsing response from brms")
+            logging.critical("error parsing response from brms")
             raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
         if response == 0:
-            logging.error("the waste was not classified by brms")
-            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            logging.critical("the waste was not classified by the brms")
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)
 
         return response
