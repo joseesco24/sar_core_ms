@@ -10,6 +10,10 @@ from typing import Any
 from sqlmodel import Session
 from sqlmodel import select
 
+# ** info: fastapi imports
+from fastapi import HTTPException
+from fastapi import status
+
 # ** info: users entity
 from src.modules.waste.adapters.database_providers_entities.waste_entity import Waste
 
@@ -69,20 +73,16 @@ class WasteProvider:
         session.commit()
         return uuid
 
-    def classify_waste(self: Self, uuid: str, isotopes_number: float, state_waste: int, store: int) -> str:
+    def classify_waste(self: Self, uuid: str, isotopes_number: float, state_waste: int, store: int) -> int:
         session: Session = self._session_manager.obtain_session()
         query: Any = select(Waste).where(Waste.uuid == uuid)
         wasteResult = session.exec(statement=query).first()
-        print("Residuo:", wasteResult)
+        if wasteResult is None:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="waste not found")
         wasteResult.isotopes_number = isotopes_number
         wasteResult.state_waste = state_waste
         wasteResult.store = store
         session.add(wasteResult)
         session.commit()
-        session.refresh(wasteResult)
-        print("Updated Residuo:", wasteResult)
         code: int = 1
         return code
-
-
-# ** info: editar esto al trabajar la tajada de los residuos
