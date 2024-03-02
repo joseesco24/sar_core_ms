@@ -9,17 +9,15 @@ from typing import Self
 from typing import List
 
 # ** info: dtos imports
-from src.modules.parameter.ports.rest_routers_dtos.parameter_dtos import ParameterDtos
-
-ParameterSearchResponseDto = ParameterDtos.ParameterSearchResponseDto
-ParameterSearchRequestDto = ParameterDtos.ParameterSearchRequestDto
-ParameterDataDto = ParameterDtos.ParameterDataDto
+from src.modules.parameter.ports.rest_routers_dtos.parameter_dtos import ParameterSearchResponseDto  # type: ignore
+from src.modules.parameter.ports.rest_routers_dtos.parameter_dtos import ParameterSearchRequestDto  # type: ignore
+from src.modules.parameter.ports.rest_routers_dtos.parameter_dtos import ParameterDataDto  # type: ignore
 
 # ** info: entities imports
-from src.modules.parameter.adapters.database_providers_entities.parameter_entity import Parameter
+from src.modules.parameter.adapters.database_providers_entities.parameter_entity import Parameter  # type: ignore
 
 # ** info: providers imports
-from src.modules.parameter.adapters.database_providers.parameter_provider import ParameterProvider
+from src.modules.parameter.adapters.database_providers.parameter_provider import ParameterProvider  # type: ignore
 
 __all__: list[str] = ["ParameterCore"]
 
@@ -59,7 +57,7 @@ class ParameterCore:
     # ! warning: a method only can be declared in this section if it is going to be called from inside this core
     # !------------------------------------------------------------------------
 
-    async def _search_by_domain(self: Self, domain: str) -> Parameter:
+    async def _search_by_domain(self: Self, domain: str) -> List[Parameter]:
         parameters: List[Parameter] = self.parameter_provider.search_parameters_by_domain(domain=domain)
         return parameters
 

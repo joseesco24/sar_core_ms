@@ -7,10 +7,8 @@ from fastapi import status
 from fastapi import Body
 
 # ** info: dtos imports
-from src.modules.parameter.ports.rest_routers_dtos.parameter_dtos import ParameterDtos
-
-ParameterSearchResponseDto = ParameterDtos.ParameterSearchResponseDto
-ParameterSearchRequestDto = ParameterDtos.ParameterSearchRequestDto
+from src.modules.parameter.ports.rest_routers_dtos.parameter_dtos import ParameterSearchResponseDto
+from src.modules.parameter.ports.rest_routers_dtos.parameter_dtos import ParameterSearchRequestDto
 
 # ** info: rest controllers imports
 from src.modules.parameter.cores.business.parameter_core import ParameterCore
