@@ -26,9 +26,9 @@ from fastapi import FastAPI
 from starlette.middleware.base import BaseHTTPMiddleware
 
 # ** info: rest based routers imports
-from src.modules.collect_request.ports.rest_routers.collect_request_router import collect_request_router
-from src.modules.parameter.ports.rest_routers.parameter_router import parameter_router
-from src.modules.waste.ports.rest_routers.waster_router import waste_router
+from src.modules.collect_request.ports.rest_routers.collect_request_router import CollectRequestRouter
+from src.modules.parameter.ports.rest_routers.parameter_router import ParameterRouter
+from src.modules.waste.ports.rest_routers.waster_router import WasteRouter
 
 # ** info: artifacts imports
 from src.sidecards.artifacts.logging_provider import LoggingProvider
@@ -87,9 +87,13 @@ rest_router: APIRouter = APIRouter(prefix=path_provider.build_posix_path("rest")
 # ** info: setting rest routers
 # ---------------------------------------------------------------------------------------------------------------------
 
-rest_router.include_router(collect_request_router)
-rest_router.include_router(parameter_router)
-rest_router.include_router(waste_router)
+collect_request_router: CollectRequestRouter = CollectRequestRouter()
+parameter_router: ParameterRouter = ParameterRouter()
+waste_router: WasteRouter = WasteRouter()
+
+rest_router.include_router(collect_request_router.router)
+rest_router.include_router(parameter_router.router)
+rest_router.include_router(waste_router.router)
 
 # ---------------------------------------------------------------------------------------------------------------------
 # ** info: mounting rest based routers
