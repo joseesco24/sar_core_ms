@@ -34,7 +34,7 @@ class LoggingProvider:
     _extras: Dict[str, str] = {
         "internalId": "397d4343-2855-4c92-b64b-58ee82006e0b",
         "externalId": "397d4343-2855-4c92-b64b-58ee82006e0b",
-        "version": "v2.0.1",
+        "version": "v2.0.2",
     }
     _datetime_provider: DatetimeProvider = DatetimeProvider()
 
