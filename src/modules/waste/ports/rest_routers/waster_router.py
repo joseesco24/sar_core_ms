@@ -9,16 +9,16 @@ from fastapi import APIRouter
 from fastapi import status
 from fastapi import Body
 
-# ** info: dtos imports
+# ** info: port dtos imports
 from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteClasificationResponseDto
 from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteClasificationRequestDto
 from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteClassifyResponseDto
 from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteClassifyRequestDto
 
-# ** info: rest controllers imports
+# ** info: app core imports
 from src.modules.waste.cores.business.waste_core import WasteCore
 
-# ** info: artifacts imports
+# ** info: sidecards imports
 from src.sidecards.artifacts.path_provider import PathProvider
 
 __all__: list[str] = ["WasteRouter"]

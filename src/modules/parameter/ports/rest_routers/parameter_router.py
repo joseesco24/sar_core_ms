@@ -9,14 +9,14 @@ from fastapi import APIRouter
 from fastapi import status
 from fastapi import Body
 
-# ** info: dtos imports
+# ** info: port dtos imports
 from src.modules.parameter.ports.rest_routers_dtos.parameter_dtos import ParameterSearchResponseDto
 from src.modules.parameter.ports.rest_routers_dtos.parameter_dtos import ParameterSearchRequestDto
 
-# ** info: rest controllers imports
+# ** info: app core imports
 from src.modules.parameter.cores.business.parameter_core import ParameterCore
 
-# ** info: artifacts imports
+# ** info: sidecards imports
 from src.sidecards.artifacts.path_provider import PathProvider
 
 __all__: list[str] = ["ParameterRouter"]

@@ -9,14 +9,14 @@ from fastapi import APIRouter
 from fastapi import status
 from fastapi import Body
 
-# ** info: dtos imports
+# ** info: port dtos imports
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestCreateResponseDto
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestCreateRequestDto
 
-# ** info: rest controllers imports
+# ** info: app core imports
 from src.modules.collect_request.cores.business.collect_request_core import CollectRequestCore
 
-# ** info: artifacts imports
+# ** info: sidecards imports
 from src.sidecards.artifacts.path_provider import PathProvider
 
 __all__: list[str] = ["CollectRequestRouter"]
