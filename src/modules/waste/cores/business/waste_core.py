@@ -1,5 +1,4 @@
 # !/usr/bin/python3
-# type: ignore
 
 # ** info: python imports
 import logging
@@ -7,29 +6,27 @@ import logging
 # ** info: typing imports
 from typing import List
 from typing import Self
+from typing import Set
 
 # ** info: fastapi imports
 from fastapi import HTTPException
 from fastapi import status
 
 # ** info: dtos imports
-from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteRequestControllerDtos
-from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteDtos
-
-WasteClassifyResponseDto = WasteRequestControllerDtos.WasteClassifyResponseDto
-WasteClassifyRequestDto = WasteRequestControllerDtos.WasteClassifyRequestDto
-WasteClasificationResponseDto = WasteDtos.WasteClasificationResponseDto
-WasteClasificationRequestDto = WasteDtos.WasteClasificationRequestDto
+from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteClasificationResponseDto  # type: ignore
+from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteClasificationRequestDto  # type: ignore
+from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteClassifyResponseDto  # type: ignore
+from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteClassifyRequestDto  # type: ignore
 
 # ** info: entities imports
-from src.modules.parameter.adapters.database_providers_entities.parameter_entity import Parameter
+from src.modules.parameter.adapters.database_providers_entities.parameter_entity import Parameter  # type: ignore
 
 # ** info: providers imports
-from src.modules.parameter.adapters.database_providers.parameter_provider import ParameterProvider
-from src.modules.waste.adapters.database_providers.waste_provider import WasteProvider
+from src.modules.parameter.adapters.database_providers.parameter_provider import ParameterProvider  # type: ignore
+from src.modules.waste.adapters.database_providers.waste_provider import WasteProvider  # type: ignore
 
 # ** info: ports imports
-from src.modules.waste.adapters.rest_services.brms_service import BrmsService
+from src.modules.waste.adapters.rest_services.brms_service import BrmsService  # type: ignore
 
 
 __all__: list[str] = ["WasteCore"]
@@ -91,7 +88,7 @@ class WasteCore:
 
     async def _validate_wastes_state(self: Self, waste_classify_request: WasteClassifyRequestDto) -> None:
         waste_states: List[Parameter] = self.parameter_provider.search_parameters_by_domain(domain=r"stateWaste")
-        waste_state_ids: set(int) = set([waste_state.id for waste_state in waste_states])
+        waste_state_ids: Set[int] = set([waste_state.id for waste_state in waste_states])
         if waste_classify_request.stateWaste not in waste_state_ids:
             valid_state_waste: str = r",".join(str(s) for s in waste_state_ids)
             logging.error(f"state type {waste_classify_request.stateWaste} is not valid valid types are {valid_state_waste}")
