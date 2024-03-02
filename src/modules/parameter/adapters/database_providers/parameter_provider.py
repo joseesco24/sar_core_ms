@@ -14,6 +14,7 @@ from sqlmodel import select
 from src.modules.parameter.adapters.database_providers_entities.parameter_entity import Parameter
 
 # ** info: artifacts imports
+from src.sidecards.artifacts.datetime_provider import DatetimeProvider
 from src.sidecards.artifacts.env_provider import EnvProvider
 
 # ** info: session managers imports
@@ -25,6 +26,7 @@ __all__: list[str] = ["ParameterProvider"]
 class ParameterProvider:
     def __init__(self: Self) -> None:
         self._env_provider: EnvProvider = EnvProvider()
+        self._datetime_provider: DatetimeProvider = DatetimeProvider()
         self._session_manager: MySQLManager = MySQLManager(
             password=self._env_provider.database_password,
             database=self._env_provider.database_name,
@@ -37,6 +39,6 @@ class ParameterProvider:
 
     def search_parameters_by_domain(self: Self, domain: str) -> List[Parameter]:
         session: Session = self._session_manager.obtain_session()
-        query: Any = select(Parameter).where(Parameter.domain == domain)
+        query: Any = select(Parameter).where(Parameter.domain == domain).order_by(Parameter.order)
         search_one_collect_request_result: List[Parameter] = session.exec(statement=query).fetchall()
         return search_one_collect_request_result

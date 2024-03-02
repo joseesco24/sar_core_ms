@@ -1,6 +1,9 @@
 # !/usr/bin/python3
 # type: ignore
 
+# ** info: python imports
+from datetime import datetime
+
 # ** info: typing imports
 from typing import Self
 from typing import Any
@@ -10,9 +13,12 @@ from sqlmodel import Session
 from sqlmodel import select
 
 # ** info: users entity
-from src.modules.collect_request.adapters.database_providers_entities.collect_request_entity import CollectRequest
+from src.modules.collect_request.adapters.database_providers_entities.collect_request_entity import (
+    CollectRequest,
+)
 
 # ** info: artifacts imports
+from src.sidecards.artifacts.datetime_provider import DatetimeProvider
 from src.sidecards.artifacts.uuid_provider import UuidProvider
 from src.sidecards.artifacts.env_provider import EnvProvider
 
@@ -26,6 +32,7 @@ class CollectRequestProvider:
     def __init__(self: Self) -> None:
         self._env_provider: EnvProvider = EnvProvider()
         self._uuid_provider: UuidProvider = UuidProvider()
+        self._datetime_provider: DatetimeProvider = DatetimeProvider()
         self._session_manager: MySQLManager = MySQLManager(
             password=self._env_provider.database_password,
             database=self._env_provider.database_name,
@@ -45,7 +52,15 @@ class CollectRequestProvider:
     def store_collect_request(self: Self, collect_date: str, production_center_id: int) -> str:
         session: Session = self._session_manager.obtain_session()
         uuid: str = self._uuid_provider.get_str_uuid()
-        new_collect_request: CollectRequest = CollectRequest(uuid=uuid, collect_date=collect_date, production_center_id=production_center_id)
+        date_time: datetime = self._datetime_provider.get_current_time()
+        new_collect_request: CollectRequest = CollectRequest(
+            uuid=uuid,
+            collect_date=collect_date,
+            process_status=9,
+            production_center_id=production_center_id,
+            create=date_time,
+            update=date_time,
+        )
         session.add(new_collect_request)
         session.commit()
         return uuid

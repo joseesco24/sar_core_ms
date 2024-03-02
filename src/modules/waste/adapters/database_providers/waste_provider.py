@@ -1,6 +1,9 @@
 # !/usr/bin/python3
 # type: ignore
 
+# ** info: python imports
+from datetime import datetime
+
 # ** info: typing imports
 from typing import Union
 from typing import Self
@@ -18,6 +21,7 @@ from fastapi import status
 from src.modules.waste.adapters.database_providers_entities.waste_entity import Waste
 
 # ** info: artifacts imports
+from src.sidecards.artifacts.datetime_provider import DatetimeProvider
 from src.sidecards.artifacts.uuid_provider import UuidProvider
 from src.sidecards.artifacts.env_provider import EnvProvider
 
@@ -31,6 +35,7 @@ class WasteProvider:
     def __init__(self: Self) -> None:
         self._env_provider: EnvProvider = EnvProvider()
         self._uuid_provider: UuidProvider = UuidProvider()
+        self._datetime_provider: DatetimeProvider = DatetimeProvider()
         self._session_manager: MySQLManager = MySQLManager(
             password=self._env_provider.database_password,
             database=self._env_provider.database_name,
@@ -59,15 +64,19 @@ class WasteProvider:
     ) -> str:
         session: Session = self._session_manager.obtain_session()
         uuid: str = self._uuid_provider.get_str_uuid()
+        date_time: datetime = self._datetime_provider.get_current_time()
         new_waste: Waste = Waste(
             uuid=uuid,
             request_uuid=request_uuid,
             type=type,
             packaging=packaging,
+            process_status=9,
             weight_in_kg=weight_in_kg,
             volume_in_l=volume_in_l,
             description=description,
             note=note,
+            create=date_time,
+            update=date_time,
         )
         session.add(new_waste)
         session.commit()

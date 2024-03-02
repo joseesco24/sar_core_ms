@@ -14,6 +14,9 @@ __all__: list[str] = ["DatetimeProvider"]
 
 
 class DatetimeProvider:
+    def get_current_time(self: Self) -> datetime:
+        return self.get_utc_time()
+
     def get_utc_time(self: Self) -> datetime:
         return datetime.now(UTC)
 

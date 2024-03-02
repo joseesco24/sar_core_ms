@@ -2,6 +2,7 @@
 # type: ignore
 
 # ** info: python imports
+from datetime import datetime
 from decimal import Decimal
 
 # ** info: typing imports
@@ -20,6 +21,7 @@ class Waste(SQLModel, table=True):
     request_uuid: str = Field(max_length=36, nullable=False)
     type: int = Field(nullable=False)
     packaging: int = Field(nullable=False)
+    process_status: int = Field(nullable=False)
     weight_in_kg: Decimal = Field(max_digits=10, decimal_places=2, nullable=False)
     volume_in_l: Decimal = Field(max_digits=10, decimal_places=2, nullable=False)
     isotopes_number: Decimal = Field(max_digits=10, decimal_places=2, nullable=True)
@@ -27,6 +29,5 @@ class Waste(SQLModel, table=True):
     store: int = Field(nullable=True)
     description: str = Field(max_length=65535, nullable=False)
     note: Optional[str] = Field(max_length=65535, nullable=False)
-
-
-# ** info: editar esto al trabajar la tajada de los residuos
+    create: datetime = Field(nullable=False)
+    update: datetime = Field(nullable=False)

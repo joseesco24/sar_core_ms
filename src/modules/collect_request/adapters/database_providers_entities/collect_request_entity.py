@@ -17,4 +17,7 @@ class CollectRequest(SQLModel, table=True):
 
     uuid: str = Field(max_length=36, primary_key=True)
     collect_date: datetime = Field(nullable=False)
+    process_status: int = Field(nullable=False)
     production_center_id: int = Field(nullable=False)
+    create: datetime = Field(nullable=False)
+    update: datetime = Field(nullable=False)
