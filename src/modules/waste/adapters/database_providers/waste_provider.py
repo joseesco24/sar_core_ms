@@ -52,6 +52,12 @@ class WasteProvider:
         search_waste_by_id_result: Waste = session.exec(statement=query).first()
         return search_waste_by_id_result
 
+    def serch_wastes_by_process_status(self: Self, process_status: int) -> list[Waste]:
+        session: Session = self._session_manager.obtain_session()
+        query: Any = select(Waste).where(Waste.process_status == process_status)
+        search_waste_by_domain_result: list[Waste] = session.exec(statement=query).all()
+        return search_waste_by_domain_result
+
     def store_waste(
         self: Self,
         request_uuid: str,

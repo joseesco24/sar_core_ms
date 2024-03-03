@@ -14,12 +14,14 @@ from pydantic import Field
 from typing import Optional
 
 # **info: metadata for the model imports
+from src.modules.waste.ports.rest_routers_dtos.waste_dtos_metadata import waste_filter_by_status_request_dto
+from src.modules.waste.ports.rest_routers_dtos.waste_dtos_metadata import waste_full_data_response_list_ex
 from src.modules.waste.ports.rest_routers_dtos.waste_dtos_metadata import collect_request_classify_req_ex
 from src.modules.waste.ports.rest_routers_dtos.waste_dtos_metadata import collect_request_classify_res_ex
 from src.modules.waste.ports.rest_routers_dtos.waste_dtos_metadata import waste_clasification_req_ex
 from src.modules.waste.ports.rest_routers_dtos.waste_dtos_metadata import waste_clasification_res_ex
 
-__all__: list[str] = ["WasteClasificationRequestDto", "WasteClasificationResponseDto", "WasteClassifyRequestDto", "WasteClassifyResponseDto"]
+__all__: list[str] = ["WasteClasificationRequestDto", "WasteClasificationResponseDto", "WasteClassifyRequestDto", "WasteFullDataResponseDto", "WasteFilterByStatusRequestDto"]
 
 
 # !------------------------------------------------------------------------
@@ -86,6 +88,21 @@ class WasteClassifyRequestDto(BaseModel):
     model_config = collect_request_classify_req_ex
 
 
+class WasteFilterByStatusRequestDto(BaseModel):
+    processStatus: int = Field(...)
+
+    @field_validator("processStatus")
+    @classmethod
+    def int_validator(cls, value: int, info: ValidationInfo) -> int:
+        if isinstance(value, int):
+            value = int(value)
+        else:
+            raise ValueError(f"{info.field_name} is not a integer input")
+        return value
+
+    model_config = waste_filter_by_status_request_dto
+
+
 # !------------------------------------------------------------------------
 # ! info: response model section start
 # ! warning: all models in this section are the ones that are going to be used as response dto models
@@ -98,7 +115,7 @@ class WasteClasificationResponseDto(BaseModel):
     model_config = waste_clasification_res_ex
 
 
-class WasteClassifyResponseDto(BaseModel):
+class WasteFullDataResponseDto(BaseModel):
     id: str = Field(...)
     requestId: str = Field(...)
     type: int = Field(...)
@@ -106,12 +123,18 @@ class WasteClassifyResponseDto(BaseModel):
     processStatus: int = Field(...)
     weightInKg: float = Field(...)
     volumeInL: float = Field(...)
-    isotopesNumber: float = Field(...)
-    stateWaste: int = Field(...)
-    storeType: int = Field(...)
+    isotopesNumber: Optional[float] = None
+    stateWaste: Optional[int] = None
+    storeType: Optional[int] = None
     description: str = Field(...)
     note: Optional[str] = None
     create: str = Field(...)
     update: str = Field(...)
 
     model_config = collect_request_classify_res_ex
+
+
+class WasteFullDataResponseListDto(BaseModel):
+    values: list[WasteFullDataResponseDto] = Field(...)
+
+    model_config = waste_full_data_response_list_ex

@@ -14,8 +14,10 @@ from fastapi import status
 
 # ** info: dtos imports
 from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteClasificationResponseDto  # type: ignore
+from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteFilterByStatusRequestDto  # type: ignore
 from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteClasificationRequestDto  # type: ignore
-from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteClassifyResponseDto  # type: ignore
+from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteFullDataResponseListDto  # type: ignore
+from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteFullDataResponseDto  # type: ignore
 from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteClassifyRequestDto  # type: ignore
 
 # ** info: entities imports
@@ -66,11 +68,19 @@ class WasteCore:
         logging.info("driver_obtain_waste_classify ended")
         return waste_classify_response
 
-    async def driver_update_waste_classify(self: Self, waste_classify_request: WasteClassifyRequestDto) -> WasteClassifyResponseDto:
+    async def driver_update_waste_classify(self: Self, waste_classify_request: WasteClassifyRequestDto) -> WasteFullDataResponseDto:
         logging.info("starting driver_update_waste_classify")
         await self._validate_wastes_state(waste_classify_request=waste_classify_request)
         waste_info: Waste = await self._waste_classify_request(waste_classify_request=waste_classify_request)
-        waste_classify_response: WasteClassifyResponseDto = await self._map_classify_response(waste_info=waste_info)
+        waste_classify_response: WasteFullDataResponseDto = await self._map_full_data_response(waste_info=waste_info)
+        logging.info("driver_update_waste_classify ended")
+        return waste_classify_response
+
+    async def driver_filter_waste_by_status(self: Self, filter_waste_by_status_request: WasteFilterByStatusRequestDto) -> WasteFullDataResponseListDto:
+        logging.info("starting driver_update_waste_classify")
+        await self._validate_waste_process_status(process_status=filter_waste_by_status_request.processStatus)
+        wastes_info: List[Waste] = self._waste_provider.serch_wastes_by_process_status(process_status=filter_waste_by_status_request.processStatus)
+        waste_classify_response: WasteFullDataResponseListDto = await self._map_full_data_response_list(wastes_info=wastes_info)
         logging.info("driver_update_waste_classify ended")
         return waste_classify_response
 
@@ -92,6 +102,14 @@ class WasteCore:
     async def _map_waste_classify_response(self: Self, clasification: int) -> WasteClasificationResponseDto:
         return WasteClasificationResponseDto(storeType=clasification)
 
+    async def _validate_waste_process_status(self: Self, process_status: int) -> None:
+        waste_states: List[Parameter] = self._parameter_provider.search_parameters_by_domain(domain=r"wasteProcessStatus")
+        waste_state_ids: Set[int] = set([waste_state.id for waste_state in waste_states])
+        if process_status not in waste_state_ids:
+            valid_state_waste: str = r",".join(str(s) for s in waste_state_ids)
+            logging.error(f"process status {process_status} is not valid valid types are {valid_state_waste}")
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"process status {process_status} is not valid")
+
     async def _validate_wastes_state(self: Self, waste_classify_request: WasteClassifyRequestDto) -> None:
         waste_states: List[Parameter] = self._parameter_provider.search_parameters_by_domain(domain=r"stateWaste")
         waste_state_ids: Set[int] = set([waste_state.id for waste_state in waste_states])
@@ -109,10 +127,18 @@ class WasteCore:
         )
         return waste_info
 
-    async def _map_classify_response(self: Self, waste_info: Waste) -> WasteClassifyResponseDto:
+    async def _map_full_data_response_list(self: Self, wastes_info: List[Waste]) -> WasteFullDataResponseListDto:
+        return WasteFullDataResponseListDto(values=await self._map_full_data_responses(wastes_info=wastes_info))
+
+    async def _map_full_data_responses(self: Self, wastes_info: List[Waste]) -> List[WasteFullDataResponseDto]:
+        return [await self._map_full_data_response(waste_info=waste_info) for waste_info in wastes_info]
+
+    async def _map_full_data_response(self: Self, waste_info: Waste) -> WasteFullDataResponseDto:
+
         created: str = self._datetime_provider.prettify_date_time_obj(date_time_obj=waste_info.create)
         updated: str = self._datetime_provider.prettify_date_time_obj(date_time_obj=waste_info.update)
-        return WasteClassifyResponseDto(
+
+        waste_full_data_response: WasteFullDataResponseDto = WasteFullDataResponseDto(
             id=waste_info.uuid,
             requestId=waste_info.request_uuid,
             type=waste_info.type,
@@ -120,11 +146,19 @@ class WasteCore:
             processStatus=waste_info.process_status,
             weightInKg=float(waste_info.weight_in_kg),
             volumeInL=float(waste_info.volume_in_l),
-            isotopesNumber=float(waste_info.isotopes_number),
-            stateWaste=waste_info.state_waste,
-            storeType=waste_info.store,
             description=waste_info.description,
             note=waste_info.note,
             create=created,
             update=updated,
         )
+
+        if waste_info.isotopes_number is not None:
+            waste_full_data_response.isotopesNumber = float(waste_info.isotopes_number)
+
+        if waste_info.state_waste is not None:
+            waste_full_data_response.stateWaste = waste_info.state_waste
+
+        if waste_info.store is not None:
+            waste_full_data_response.storeType = waste_info.store
+
+        return waste_full_data_response

@@ -11,8 +11,10 @@ from fastapi import Body
 
 # ** info: port dtos imports
 from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteClasificationResponseDto
+from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteFilterByStatusRequestDto
+from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteFullDataResponseListDto
 from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteClasificationRequestDto
-from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteClassifyResponseDto
+from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteFullDataResponseDto
 from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteClassifyRequestDto
 
 # ** info: app core imports
@@ -50,9 +52,20 @@ class WasteRouter:
             description="classify a waste by id request description",
             summary="classify a waste by id request summary",
             path=self._path_provider.build_posix_path("clasification", "update"),
-            response_model=WasteClassifyResponseDto,
+            response_model=WasteFullDataResponseDto,
             status_code=status.HTTP_200_OK,
             endpoint=self._api_update_waste_classify,
+            methods=["POST"],
+        )
+
+        # ** info: bulding router endpoints
+        self.router.add_api_route(
+            description="filter all the wastes by its process status",
+            summary="filter all the wastes by its process status",
+            path=self._path_provider.build_posix_path("filter-by-status"),
+            response_model=WasteFullDataResponseListDto,
+            status_code=status.HTTP_200_OK,
+            endpoint=self._api_filter_waste_by_status,
             methods=["POST"],
         )
 
@@ -60,6 +73,10 @@ class WasteRouter:
         waste_classify_response: WasteClasificationResponseDto = await self._waste_core.driver_obtain_waste_classify(parameter_search_request)
         return waste_classify_response
 
-    async def _api_update_waste_classify(self: Self, waste_classify_request: WasteClassifyRequestDto = Body(...)) -> WasteClassifyResponseDto:
-        waste_classify_response: WasteClassifyResponseDto = await self._waste_core.driver_update_waste_classify(waste_classify_request)
+    async def _api_update_waste_classify(self: Self, waste_classify_request: WasteClassifyRequestDto = Body(...)) -> WasteFullDataResponseDto:
+        waste_classify_response: WasteFullDataResponseDto = await self._waste_core.driver_update_waste_classify(waste_classify_request)
         return waste_classify_response
+
+    async def _api_filter_waste_by_status(self: Self, filter_waste_by_status_request: WasteFilterByStatusRequestDto = Body(...)) -> WasteFullDataResponseListDto:
+        filtered_wastes_response: WasteFullDataResponseListDto = await self._waste_core.driver_filter_waste_by_status(filter_waste_by_status_request)
+        return filtered_wastes_response
