@@ -85,12 +85,13 @@ class WasteProvider:
     def classify_waste(self: Self, uuid: str, isotopes_number: float, state_waste: int, store: int) -> str:
         session: Session = self._session_manager.obtain_session()
         query: Any = select(Waste).where(Waste.uuid == uuid)
-        wasteResult = session.exec(statement=query).first()
-        if wasteResult is None:
+        waste_data: Waste = session.exec(statement=query).first()
+        if waste_data is None:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="waste not found")
-        wasteResult.isotopes_number = isotopes_number
-        wasteResult.state_waste = state_waste
-        wasteResult.store = store
-        session.add(wasteResult)
+        waste_data.update = self._datetime_provider.get_current_time()
+        waste_data.isotopes_number = isotopes_number
+        waste_data.state_waste = state_waste
+        waste_data.store = store
+        session.add(waste_data)
         session.commit()
         return uuid

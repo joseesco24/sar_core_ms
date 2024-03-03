@@ -2,17 +2,10 @@ collect_request_creation_req_ex = {
     "json_schema_extra": {
         "examples": [
             {
-                "request": {"productionCenterId": 123456789, "collectDate": "12/12/2024"},
+                "request": {"collectDate": "12/12/2024", "productionCenterId": 123456789},
                 "waste": [
-                    {
-                        "type": 1,
-                        "weightInKg": 18.2,
-                        "volumeInL": 19.0,
-                        "packaging": 1,
-                        "description": "nuclear wastes",
-                        "note": "this is a note",
-                    },
-                    {"type": 2, "weightInKg": 18.9, "volumeInL": 18.4, "packaging": 4, "description": "bone scan wastes"},
+                    {"description": "nuclear wastes", "note": "this is a note", "packaging": 4, "type": 1, "volumeInL": 19, "weightInKg": 18.2},
+                    {"description": "bone scan wastes", "packaging": 4, "type": 2, "volumeInL": 18.4, "weightInKg": 18.9},
                 ],
             }
         ]
@@ -23,29 +16,48 @@ collect_request_creation_res_ex = {
     "json_schema_extra": {
         "examples": [
             {
-                "request": {"productionCenterId": 123456789, "collectDate": "12/12/2024", "id": "e1899fe3-2ebf-4fcd-b168-922f75a34253"},
                 "waste": [
                     {
+                        "id": "1bf4296e-4ad9-49d9-96b0-4ca4af9a7fcb",
+                        "requestId": "f4cd1133-00ce-460a-a81c-e298a804a860",
+                        "type": 1,
+                        "packaging": 4,
+                        "processStatus": 9,
                         "weightInKg": 18.2,
                         "volumeInL": 19.0,
+                        "isotopesNumber": None,
+                        "stateWaste": None,
+                        "storeType": None,
                         "description": "nuclear wastes",
-                        "packaging": 1,
-                        "requestId": "e1899fe3-2ebf-4fcd-b168-922f75a34253",
-                        "note": "this is  a note",
-                        "type": 1,
-                        "id": "fa1934fa-56a8-4397-80d6-28913ff2927b",
+                        "note": "this is a note",
+                        "create": "2024-03-03 02:54:12.000000",
+                        "update": "2024-03-03 02:54:12.000000",
                     },
                     {
+                        "id": "a654077f-c7b3-426d-baa6-c9c251006f48",
+                        "requestId": "f4cd1133-00ce-460a-a81c-e298a804a860",
+                        "type": 2,
+                        "packaging": 4,
+                        "processStatus": 9,
                         "weightInKg": 18.9,
                         "volumeInL": 18.4,
+                        "isotopesNumber": None,
+                        "stateWaste": None,
+                        "storeType": None,
                         "description": "bone scan wastes",
-                        "packaging": 4,
-                        "requestId": "e1899fe3-2ebf-4fcd-b168-922f75a34253",
                         "note": None,
-                        "type": 2,
-                        "id": "ea16dbfd-44a4-4ecb-adb4-dcad64b9f23e",
+                        "create": "2024-03-03 02:54:12.000000",
+                        "update": "2024-03-03 02:54:12.000000",
                     },
                 ],
+                "request": {
+                    "id": "f4cd1133-00ce-460a-a81c-e298a804a860",
+                    "collectDate": "12/12/2024",
+                    "processStatus": 9,
+                    "productionCenterId": 123456789,
+                    "create": "2024-03-03 02:54:12.000000",
+                    "update": "2024-03-03 02:54:12.000000",
+                },
             }
         ]
     }
