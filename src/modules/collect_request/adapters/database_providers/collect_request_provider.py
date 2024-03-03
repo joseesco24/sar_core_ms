@@ -49,7 +49,7 @@ class CollectRequestProvider:
         search_collect_request_by_id_result: CollectRequest = session.exec(statement=query).first()
         return search_collect_request_by_id_result
 
-    def store_collect_request(self: Self, collect_date: str, production_center_id: int) -> str:
+    def store_collect_request(self: Self, collect_date: str, production_center_id: int) -> CollectRequest:
         session: Session = self._session_manager.obtain_session()
         uuid: str = self._uuid_provider.get_str_uuid()
         date_time: datetime = self._datetime_provider.get_current_time()
@@ -63,4 +63,5 @@ class CollectRequestProvider:
         )
         session.add(new_collect_request)
         session.commit()
-        return uuid
+        session.refresh(new_collect_request)
+        return new_collect_request

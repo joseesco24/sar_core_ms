@@ -69,8 +69,7 @@ class WasteCore:
     async def driver_update_waste_classify(self: Self, waste_classify_request: WasteClassifyRequestDto) -> WasteClassifyResponseDto:
         logging.info("starting driver_update_waste_classify")
         await self._validate_wastes_state(waste_classify_request=waste_classify_request)
-        waste_id: str = await self._waste_classify_request(waste_classify_request=waste_classify_request)
-        waste_info: Waste = self._waste_provider.search_waste_by_id(uuid=waste_id)
+        waste_info: Waste = await self._waste_classify_request(waste_classify_request=waste_classify_request)
         waste_classify_response: WasteClassifyResponseDto = await self._map_classify_response(waste_info=waste_info)
         logging.info("driver_update_waste_classify ended")
         return waste_classify_response
@@ -101,14 +100,14 @@ class WasteCore:
             logging.error(f"state type {waste_classify_request.stateWaste} is not valid valid types are {valid_state_waste}")
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"state type {waste_classify_request.stateWaste} is not valid")
 
-    async def _waste_classify_request(self: Self, waste_classify_request: WasteClassifyRequestDto) -> str:
-        waste_id: str = self._waste_provider.classify_waste(
+    async def _waste_classify_request(self: Self, waste_classify_request: WasteClassifyRequestDto) -> Waste:
+        waste_info: Waste = self._waste_provider.classify_waste(
             uuid=waste_classify_request.wasteId,
             isotopes_number=waste_classify_request.isotopesNumber,
             state_waste=waste_classify_request.stateWaste,
             store=waste_classify_request.storeId,
         )
-        return waste_id
+        return waste_info
 
     async def _map_classify_response(self: Self, waste_info: Waste) -> WasteClassifyResponseDto:
         created: str = self._datetime_provider.prettify_date_time_obj(date_time_obj=waste_info.create)

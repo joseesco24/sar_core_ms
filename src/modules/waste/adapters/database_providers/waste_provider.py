@@ -61,7 +61,7 @@ class WasteProvider:
         volume_in_l: float,
         description: str,
         note: Union[str, None] = None,
-    ) -> str:
+    ) -> Waste:
         session: Session = self._session_manager.obtain_session()
         uuid: str = self._uuid_provider.get_str_uuid()
         date_time: datetime = self._datetime_provider.get_current_time()
@@ -80,9 +80,10 @@ class WasteProvider:
         )
         session.add(new_waste)
         session.commit()
-        return uuid
+        session.refresh(new_waste)
+        return new_waste
 
-    def classify_waste(self: Self, uuid: str, isotopes_number: float, state_waste: int, store: int) -> str:
+    def classify_waste(self: Self, uuid: str, isotopes_number: float, state_waste: int, store: int) -> Waste:
         session: Session = self._session_manager.obtain_session()
         query: Any = select(Waste).where(Waste.uuid == uuid)
         waste_data: Waste = session.exec(statement=query).first()
@@ -94,4 +95,5 @@ class WasteProvider:
         waste_data.store = store
         session.add(waste_data)
         session.commit()
-        return uuid
+        session.refresh(waste_data)
+        return waste_data

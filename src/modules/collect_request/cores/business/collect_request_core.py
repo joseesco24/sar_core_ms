@@ -56,10 +56,8 @@ class CollectRequestCore:
 
     async def driver_create_request(self: Self, request_create_request: CollectRequestCreateRequestDto) -> CollectRequestCreateResponseDto:
         await self._validate_wastes_domains(request_create_request=request_create_request)
-        collect_request_id: str = await self._store_collect_request(request_create_request=request_create_request)
-        wastes_ids = await self._store_collect_request_wastes(collect_request_id=collect_request_id, request_create_request=request_create_request)
-        collect_request_info: CollectRequest = await self._search_collect_request_by_id(collect_request_id=collect_request_id)
-        wastes_info: List[Waste] = await self._search_wastes_by_ids(wastes_ids=wastes_ids)
+        collect_request_info: CollectRequest = await self._store_collect_request(request_create_request=request_create_request)
+        wastes_info: List[Waste] = await self._store_collect_request_wastes(collect_request_id=collect_request_info.uuid, request_create_request=request_create_request)
         request_create_response: CollectRequestCreateResponseDto = await self._map_collect_response(collect_request_info=collect_request_info, wastes_info=wastes_info)
         return request_create_response
 
@@ -90,16 +88,16 @@ class CollectRequestCore:
                 logging.error(f"waste type {waste.packaging} is not valid valid types are {valid_packaging_types}")
                 raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"waste type {waste.type} is not valid")
 
-    async def _store_collect_request(self: Self, request_create_request: CollectRequestCreateRequestDto) -> str:
-        collect_request_id: str = self._collect_request_provider.store_collect_request(
+    async def _store_collect_request(self: Self, request_create_request: CollectRequestCreateRequestDto) -> CollectRequest:
+        collect_request_info: CollectRequest = self._collect_request_provider.store_collect_request(
             collect_date=request_create_request.request.collectDate, production_center_id=request_create_request.request.productionCenterId
         )
-        return collect_request_id
+        return collect_request_info
 
-    async def _store_collect_request_wastes(self: Self, collect_request_id: str, request_create_request: CollectRequestCreateRequestDto) -> List[str]:
-        wastes_ids: List[str] = list()
+    async def _store_collect_request_wastes(self: Self, collect_request_id: str, request_create_request: CollectRequestCreateRequestDto) -> List[Waste]:
+        wastes: List[Waste] = list()
         for waste in request_create_request.waste:
-            waste_id: str = self._waste_provider.store_waste(
+            waste_info: Waste = self._waste_provider.store_waste(
                 request_uuid=collect_request_id,
                 weight_in_kg=waste.weightInKg,
                 description=waste.description,
@@ -108,23 +106,8 @@ class CollectRequestCore:
                 type=waste.type,
                 note=waste.note,
             )
-            wastes_ids.append(waste_id)
-        return wastes_ids
-
-    async def _search_collect_request_by_id(self: Self, collect_request_id: str) -> CollectRequest:
-        collect_request: CollectRequest = self._collect_request_provider.search_collect_request_by_id(uuid=collect_request_id)
-        return collect_request
-
-    async def _search_wastes_by_ids(self: Self, wastes_ids: List[str]) -> List[Waste]:
-        wastes: List[Waste] = list()
-        for waste_id in wastes_ids:
-            waste: Waste = await self._search_waste_by_id(waste_id=waste_id)
-            wastes.append(waste)
+            wastes.append(waste_info)
         return wastes
-
-    async def _search_waste_by_id(self: Self, waste_id: str) -> Waste:
-        waste: Waste = self._waste_provider.search_waste_by_id(uuid=waste_id)
-        return waste
 
     async def _map_collect_response(self: Self, collect_request_info: CollectRequest, wastes_info: List[Waste]) -> CollectRequestCreateResponseDto:
         return CollectRequestCreateResponseDto(

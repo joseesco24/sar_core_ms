@@ -207,11 +207,9 @@ request_create_response_fixture_1: CollectRequestCreateResponseDto = CollectRequ
 # ---------------------------------------------------------------------------------------------------------------------
 
 collect_request_core: CollectRequestCore = CollectRequestCore()
-collect_request_core._collect_request_provider.store_collect_request = MagicMock(return_value=collect_request_uuid_fixture_1)
+collect_request_core._collect_request_provider.store_collect_request = MagicMock(return_value=collect_request)
 collect_request_core._parameter_provider.search_parameters_by_domain = MagicMock(return_value=parameter_list_fixture_1)
-collect_request_core._waste_provider.store_waste = MagicMock(side_effect=wastes_ids_fixture_1)
-collect_request_core._collect_request_provider.search_collect_request_by_id = MagicMock(return_value=collect_request)
-collect_request_core._waste_provider.search_waste_by_id = MagicMock(side_effect=wastes_list)
+collect_request_core._waste_provider.store_waste = MagicMock(side_effect=wastes_list)
 
 # ---------------------------------------------------------------------------------------------------------------------
 # ** info: executing tests
@@ -238,8 +236,8 @@ async def test_validate_wastes_domains_2() -> None:
 
 @mark.asyncio
 async def test_store_collect_request_1() -> None:
-    collect_request_id: str = await collect_request_core._store_collect_request(request_create_request=request_create_request_fixture_1)
-    assert collect_request_id == collect_request_uuid_fixture_1
+    collect_request_return: str = await collect_request_core._store_collect_request(request_create_request=request_create_request_fixture_1)
+    assert collect_request_return == collect_request
     collect_request_core._collect_request_provider.store_collect_request.assert_called_with(
         collect_date=request_create_request_fixture_1.request.collectDate, production_center_id=request_create_request_fixture_1.request.productionCenterId
     )
@@ -247,10 +245,10 @@ async def test_store_collect_request_1() -> None:
 
 @mark.asyncio
 async def test_store_collect_request_wastes_1() -> None:
-    wastes_ids: list[str] = await collect_request_core._store_collect_request_wastes(
+    wastes: list[str] = await collect_request_core._store_collect_request_wastes(
         collect_request_id=collect_request_uuid_fixture_1, request_create_request=request_create_request_fixture_1
     )
-    assert wastes_ids == wastes_ids_fixture_1
+    assert wastes == wastes_list
     calls = [
         call(
             request_uuid=collect_request_uuid_fixture_1,
@@ -275,22 +273,6 @@ async def test_store_collect_request_wastes_1() -> None:
 
 
 @mark.asyncio
-async def test_search_collect_request_by_id_1() -> None:
-    await collect_request_core._search_collect_request_by_id(collect_request_id=collect_request_uuid_fixture_1)
-    collect_request_core._collect_request_provider.search_collect_request_by_id.assert_called_with(uuid=collect_request_uuid_fixture_1)
-
-
-@mark.asyncio
-async def test_search_wastes_by_ids_1() -> None:
-    await collect_request_core._search_wastes_by_ids(wastes_ids=wastes_ids_fixture_1)
-    calls = [
-        call(uuid=wastes_ids_fixture_1[0]),
-        call(uuid=wastes_ids_fixture_1[1]),
-    ]
-    collect_request_core._waste_provider.search_waste_by_id.assert_has_calls(calls)
-
-
-@mark.asyncio
 async def test_map_collect_response_1() -> None:
     request_create_response: CollectRequestCreateResponseDto = await collect_request_core._map_collect_response(collect_request_info=collect_request, wastes_info=wastes_list)
     assert request_create_response == request_create_response_fixture_1
@@ -298,7 +280,8 @@ async def test_map_collect_response_1() -> None:
 
 @mark.asyncio
 async def test_driver_create_request_1() -> None:
-    collect_request_core._waste_provider.store_waste = MagicMock(side_effect=wastes_ids_fixture_1)
-    collect_request_core._waste_provider.search_waste_by_id = MagicMock(side_effect=wastes_list)
+    collect_request_core._collect_request_provider.store_collect_request = MagicMock(return_value=collect_request)
+    collect_request_core._parameter_provider.search_parameters_by_domain = MagicMock(return_value=parameter_list_fixture_1)
+    collect_request_core._waste_provider.store_waste = MagicMock(side_effect=wastes_list)
     request_create_response: CollectRequestCreateResponseDto = await collect_request_core.driver_create_request(request_create_request=request_create_request_fixture_1)
     assert request_create_response == request_create_response_fixture_1

@@ -39,6 +39,6 @@ class ParameterProvider:
 
     def search_parameters_by_domain(self: Self, domain: str) -> List[Parameter]:
         session: Session = self._session_manager.obtain_session()
-        query: Any = select(Parameter).where(Parameter.domain == domain).order_by(Parameter.order)
+        query: Any = select(Parameter).where(Parameter.domain == domain, Parameter.active == True).order_by(Parameter.order)  # noqa: E712
         search_one_collect_request_result: List[Parameter] = session.exec(statement=query).fetchall()
         return search_one_collect_request_result
