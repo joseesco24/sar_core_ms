@@ -120,6 +120,9 @@ waste_1: Waste = Waste(
     volume_in_l=request_waste_data_dto_list_fixture_1[0].volumeInL,
     description=request_waste_data_dto_list_fixture_1[0].description,
     note=request_waste_data_dto_list_fixture_1[0].note,
+    process_status=9,
+    create=datetime_provider.get_current_time(),
+    update=datetime_provider.get_current_time(),
 )
 
 waste_2: Waste = Waste(
@@ -131,6 +134,9 @@ waste_2: Waste = Waste(
     volume_in_l=request_waste_data_dto_list_fixture_1[1].volumeInL,
     description=request_waste_data_dto_list_fixture_1[1].description,
     note=request_waste_data_dto_list_fixture_1[1].note,
+    process_status=9,
+    create=datetime_provider.get_current_time(),
+    update=datetime_provider.get_current_time(),
 )
 
 wastes_list.append(waste_1)
@@ -140,6 +146,9 @@ collect_request: CollectRequest = CollectRequest(
     collect_date=datetime_provider.pretty_date_string_to_date(iso_string=r"01/01/2021"),
     production_center_id=request_request_data_dto_fixture_1.productionCenterId,
     uuid=collect_request_uuid_fixture_1,
+    process_status=9,
+    create=datetime_provider.get_current_time(),
+    update=datetime_provider.get_current_time(),
 )
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -157,6 +166,9 @@ response_waste_data_dto_fixture_1: ResponseWasteDataDto = ResponseWasteDataDto(
     type=waste_1.type,
     note=waste_1.note,
     id=waste_1.uuid,
+    processStatus=9,
+    create=datetime_provider.prettify_date_time_obj(date_time_obj=waste_1.create),
+    update=datetime_provider.prettify_date_time_obj(date_time_obj=waste_1.update),
 )
 
 response_waste_data_dto_fixture_2: ResponseWasteDataDto = ResponseWasteDataDto(
@@ -168,6 +180,9 @@ response_waste_data_dto_fixture_2: ResponseWasteDataDto = ResponseWasteDataDto(
     type=waste_2.type,
     note=waste_2.note,
     id=waste_2.uuid,
+    processStatus=9,
+    create=datetime_provider.prettify_date_time_obj(date_time_obj=waste_2.create),
+    update=datetime_provider.prettify_date_time_obj(date_time_obj=waste_2.update),
 )
 
 response_waste_data_dto_list_fixture_1.append(response_waste_data_dto_fixture_1)
@@ -177,6 +192,9 @@ response_request_data_dto_fixture_1: ResponseRequestDataDto = ResponseRequestDat
     productionCenterId=collect_request.production_center_id,
     collectDate=r"01/01/2021",
     id=collect_request.uuid,
+    processStatus=9,
+    create=datetime_provider.prettify_date_time_obj(date_time_obj=collect_request.create),
+    update=datetime_provider.prettify_date_time_obj(date_time_obj=collect_request.update),
 )
 
 request_create_response_fixture_1: CollectRequestCreateResponseDto = CollectRequestCreateResponseDto(
@@ -189,11 +207,11 @@ request_create_response_fixture_1: CollectRequestCreateResponseDto = CollectRequ
 # ---------------------------------------------------------------------------------------------------------------------
 
 collect_request_core: CollectRequestCore = CollectRequestCore()
-collect_request_core.collect_request_provider.store_collect_request = MagicMock(return_value=collect_request_uuid_fixture_1)
-collect_request_core.parameter_provider.search_parameters_by_domain = MagicMock(return_value=parameter_list_fixture_1)
-collect_request_core.waste_provider.store_waste = MagicMock(side_effect=wastes_ids_fixture_1)
-collect_request_core.collect_request_provider.search_collect_request_by_id = MagicMock(return_value=collect_request)
-collect_request_core.waste_provider.search_waste_by_id = MagicMock(side_effect=wastes_list)
+collect_request_core._collect_request_provider.store_collect_request = MagicMock(return_value=collect_request_uuid_fixture_1)
+collect_request_core._parameter_provider.search_parameters_by_domain = MagicMock(return_value=parameter_list_fixture_1)
+collect_request_core._waste_provider.store_waste = MagicMock(side_effect=wastes_ids_fixture_1)
+collect_request_core._collect_request_provider.search_collect_request_by_id = MagicMock(return_value=collect_request)
+collect_request_core._waste_provider.search_waste_by_id = MagicMock(side_effect=wastes_list)
 
 # ---------------------------------------------------------------------------------------------------------------------
 # ** info: executing tests
@@ -222,7 +240,7 @@ async def test_validate_wastes_domains_2() -> None:
 async def test_store_collect_request_1() -> None:
     collect_request_id: str = await collect_request_core._store_collect_request(request_create_request=request_create_request_fixture_1)
     assert collect_request_id == collect_request_uuid_fixture_1
-    collect_request_core.collect_request_provider.store_collect_request.assert_called_with(
+    collect_request_core._collect_request_provider.store_collect_request.assert_called_with(
         collect_date=request_create_request_fixture_1.request.collectDate, production_center_id=request_create_request_fixture_1.request.productionCenterId
     )
 
@@ -253,13 +271,13 @@ async def test_store_collect_request_wastes_1() -> None:
             note=request_create_request_fixture_1.waste[1].note,
         ),
     ]
-    collect_request_core.waste_provider.store_waste.assert_has_calls(calls)
+    collect_request_core._waste_provider.store_waste.assert_has_calls(calls)
 
 
 @mark.asyncio
 async def test_search_collect_request_by_id_1() -> None:
     await collect_request_core._search_collect_request_by_id(collect_request_id=collect_request_uuid_fixture_1)
-    collect_request_core.collect_request_provider.search_collect_request_by_id.assert_called_with(uuid=collect_request_uuid_fixture_1)
+    collect_request_core._collect_request_provider.search_collect_request_by_id.assert_called_with(uuid=collect_request_uuid_fixture_1)
 
 
 @mark.asyncio
@@ -269,7 +287,7 @@ async def test_search_wastes_by_ids_1() -> None:
         call(uuid=wastes_ids_fixture_1[0]),
         call(uuid=wastes_ids_fixture_1[1]),
     ]
-    collect_request_core.waste_provider.search_waste_by_id.assert_has_calls(calls)
+    collect_request_core._waste_provider.search_waste_by_id.assert_has_calls(calls)
 
 
 @mark.asyncio
@@ -280,7 +298,7 @@ async def test_map_collect_response_1() -> None:
 
 @mark.asyncio
 async def test_driver_create_request_1() -> None:
-    collect_request_core.waste_provider.store_waste = MagicMock(side_effect=wastes_ids_fixture_1)
-    collect_request_core.waste_provider.search_waste_by_id = MagicMock(side_effect=wastes_list)
+    collect_request_core._waste_provider.store_waste = MagicMock(side_effect=wastes_ids_fixture_1)
+    collect_request_core._waste_provider.search_waste_by_id = MagicMock(side_effect=wastes_list)
     request_create_response: CollectRequestCreateResponseDto = await collect_request_core.driver_create_request(request_create_request=request_create_request_fixture_1)
     assert request_create_response == request_create_response_fixture_1

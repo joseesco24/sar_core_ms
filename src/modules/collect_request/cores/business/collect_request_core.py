@@ -42,11 +42,11 @@ class CollectRequestCore:
 
     def __init__(self: Self):
         # ** info: providers building
-        self.collect_request_provider: CollectRequestProvider = CollectRequestProvider()
-        self.parameter_provider: ParameterProvider = ParameterProvider()
-        self.waste_provider: WasteProvider = WasteProvider()
-        # ** info: artifacts building
-        self.datetime_provider: DatetimeProvider = DatetimeProvider()
+        self._collect_request_provider: CollectRequestProvider = CollectRequestProvider()
+        self._parameter_provider: ParameterProvider = ParameterProvider()
+        self._waste_provider: WasteProvider = WasteProvider()
+        # ** info: sidecards building
+        self._datetime_provider: DatetimeProvider = DatetimeProvider()
 
     # !------------------------------------------------------------------------
     # ! info: driver methods section start
@@ -76,8 +76,8 @@ class CollectRequestCore:
     # !------------------------------------------------------------------------
 
     async def _validate_wastes_domains(self: Self, request_create_request: CollectRequestCreateRequestDto) -> None:
-        waste_packaging_types: List[Parameter] = self.parameter_provider.search_parameters_by_domain(domain=r"wastePackagingType")
-        waste_types: List[Parameter] = self.parameter_provider.search_parameters_by_domain(domain=r"wasteType")
+        waste_packaging_types: List[Parameter] = self._parameter_provider.search_parameters_by_domain(domain=r"wastePackagingType")
+        waste_types: List[Parameter] = self._parameter_provider.search_parameters_by_domain(domain=r"wasteType")
         waste_packaging_types_ids: Set[int] = set([waste_packaging_type.id for waste_packaging_type in waste_packaging_types])
         waste_types_ids: Set[int] = set([waste_type.id for waste_type in waste_types])
         for waste in request_create_request.waste:
@@ -91,7 +91,7 @@ class CollectRequestCore:
                 raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"waste type {waste.type} is not valid")
 
     async def _store_collect_request(self: Self, request_create_request: CollectRequestCreateRequestDto) -> str:
-        collect_request_id: str = self.collect_request_provider.store_collect_request(
+        collect_request_id: str = self._collect_request_provider.store_collect_request(
             collect_date=request_create_request.request.collectDate, production_center_id=request_create_request.request.productionCenterId
         )
         return collect_request_id
@@ -99,7 +99,7 @@ class CollectRequestCore:
     async def _store_collect_request_wastes(self: Self, collect_request_id: str, request_create_request: CollectRequestCreateRequestDto) -> List[str]:
         wastes_ids: List[str] = list()
         for waste in request_create_request.waste:
-            waste_id: str = self.waste_provider.store_waste(
+            waste_id: str = self._waste_provider.store_waste(
                 request_uuid=collect_request_id,
                 weight_in_kg=waste.weightInKg,
                 description=waste.description,
@@ -112,7 +112,7 @@ class CollectRequestCore:
         return wastes_ids
 
     async def _search_collect_request_by_id(self: Self, collect_request_id: str) -> CollectRequest:
-        collect_request: CollectRequest = self.collect_request_provider.search_collect_request_by_id(uuid=collect_request_id)
+        collect_request: CollectRequest = self._collect_request_provider.search_collect_request_by_id(uuid=collect_request_id)
         return collect_request
 
     async def _search_wastes_by_ids(self: Self, wastes_ids: List[str]) -> List[Waste]:
@@ -123,7 +123,7 @@ class CollectRequestCore:
         return wastes
 
     async def _search_waste_by_id(self: Self, waste_id: str) -> Waste:
-        waste: Waste = self.waste_provider.search_waste_by_id(uuid=waste_id)
+        waste: Waste = self._waste_provider.search_waste_by_id(uuid=waste_id)
         return waste
 
     async def _map_collect_response(self: Self, collect_request_info: CollectRequest, wastes_info: List[Waste]) -> CollectRequestCreateResponseDto:
@@ -133,10 +133,15 @@ class CollectRequestCore:
         )
 
     async def _map_collect_response_request_info(self: Self, collect_request_info: CollectRequest) -> ResponseRequestDataDto:
+        create: str = self._datetime_provider.prettify_date_time_obj(date_time_obj=collect_request_info.create)
+        update: str = self._datetime_provider.prettify_date_time_obj(date_time_obj=collect_request_info.update)
         return ResponseRequestDataDto(
-            collectDate=self.datetime_provider.prettify_date_obj(collect_request_info.collect_date),
-            productionCenterId=collect_request_info.production_center_id,
             id=collect_request_info.uuid,
+            collectDate=self._datetime_provider.prettify_date_obj(collect_request_info.collect_date),
+            processStatus=collect_request_info.process_status,
+            productionCenterId=collect_request_info.production_center_id,
+            update=update,
+            create=create,
         )
 
     async def _map_collect_response_wastes_info(self: Self, wastes_info: List[Waste]) -> List[ResponseWasteDataDto]:
@@ -147,13 +152,21 @@ class CollectRequestCore:
         return collect_response_wastes_info
 
     async def _map_collect_response_waste_info(self: Self, waste_info: Waste) -> ResponseWasteDataDto:
+        created: str = self._datetime_provider.prettify_date_time_obj(date_time_obj=waste_info.create)
+        updated: str = self._datetime_provider.prettify_date_time_obj(date_time_obj=waste_info.update)
         return ResponseWasteDataDto(
+            id=waste_info.uuid,
+            requestId=waste_info.request_uuid,
+            type=waste_info.type,
+            packaging=waste_info.packaging,
+            processStatus=waste_info.process_status,
             weightInKg=float(waste_info.weight_in_kg),
             volumeInL=float(waste_info.volume_in_l),
+            isotopesNumber=None,
+            stateWaste=None,
+            storeType=None,
             description=waste_info.description,
-            requestId=waste_info.request_uuid,
-            packaging=waste_info.packaging,
             note=waste_info.note,
-            type=waste_info.type,
-            id=waste_info.uuid,
+            create=created,
+            update=updated,
         )

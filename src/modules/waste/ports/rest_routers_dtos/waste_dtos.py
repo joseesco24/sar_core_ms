@@ -10,6 +10,9 @@ from pydantic import ValidationInfo
 from pydantic import BaseModel
 from pydantic import Field
 
+# ** info: typing imports
+from typing import Optional
+
 # **info: metadata for the model imports
 from src.modules.waste.ports.rest_routers_dtos.waste_dtos_metadata import collect_request_classify_req_ex
 from src.modules.waste.ports.rest_routers_dtos.waste_dtos_metadata import collect_request_classify_res_ex
@@ -91,21 +94,24 @@ class WasteClassifyRequestDto(BaseModel):
 
 
 class WasteClasificationResponseDto(BaseModel):
-    activityType: int = Field(...)
+    storeType: int = Field(...)
     model_config = waste_clasification_res_ex
 
 
 class WasteClassifyResponseDto(BaseModel):
-    code: int = Field(...)
-    message: str = Field(...)
-
-    @field_validator("code")
-    @classmethod
-    def int_validator(cls, value: int, info: ValidationInfo) -> int:
-        if isinstance(value, int):
-            value = int(value)
-        else:
-            raise ValueError(f"{info.field_name} is not a integer input")
-        return value
+    id: str = Field(...)
+    requestId: str = Field(...)
+    type: int = Field(...)
+    packaging: int = Field(...)
+    processStatus: int = Field(...)
+    weightInKg: float = Field(...)
+    volumeInL: float = Field(...)
+    isotopesNumber: float = Field(...)
+    stateWaste: int = Field(...)
+    storeType: int = Field(...)
+    description: str = Field(...)
+    note: Optional[str] = None
+    create: str = Field(...)
+    update: str = Field(...)
 
     model_config = collect_request_classify_res_ex

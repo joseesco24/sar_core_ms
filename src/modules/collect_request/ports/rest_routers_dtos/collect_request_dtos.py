@@ -81,14 +81,20 @@ class RequestRequestDataDto(BaseModel):
 
 
 class ResponseWasteDataDto(BaseModel):
+    id: str = Field(...)
+    requestId: str = Field(...)
+    type: int = Field(...)
+    packaging: int = Field(...)
+    processStatus: int = Field(...)
     weightInKg: float = Field(...)
     volumeInL: float = Field(...)
+    isotopesNumber: Optional[float] = None
+    stateWaste: Optional[int] = None
+    storeType: Optional[int] = None
     description: str = Field(...)
-    packaging: int = Field(...)
-    requestId: str = Field(...)
     note: Optional[str] = None
-    type: int = Field(...)
-    id: str = Field(...)
+    create: str = Field(...)
+    update: str = Field(...)
 
     @field_validator("weightInKg", "volumeInL")
     @classmethod
@@ -110,9 +116,12 @@ class ResponseWasteDataDto(BaseModel):
 
 
 class ResponseRequestDataDto(BaseModel):
-    productionCenterId: int = Field(...)
-    collectDate: str = Field(...)
     id: str = Field(...)
+    collectDate: str = Field(...)
+    processStatus: int = Field(...)
+    productionCenterId: int = Field(...)
+    create: str = Field(...)
+    update: str = Field(...)
 
     @field_validator("productionCenterId")
     @classmethod
