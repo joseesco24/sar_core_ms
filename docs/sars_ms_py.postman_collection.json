@@ -25,7 +25,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"domain\": \"wasteType\"\n}",
+									"raw": "{\n    \"domain\": \"wasteProcessStatus\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -135,7 +135,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n  \"isotopesNumber\": 1942,\n  \"stateWaste\": 7,\n  \"storeId\": 4,\n  \"wasteId\": \"157b3446-52d8-44b7-838e-17575ac63d41\"\n}",
+											"raw": "{\n  \"isotopesNumber\": 1500,\n  \"stateWaste\": 7,\n  \"storeId\": 4,\n  \"wasteId\": \"0238eaa7-078e-4542-8701-ee18500d7cb5\"\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -158,6 +158,40 @@
 									"response": []
 								}
 							]
+						},
+						{
+							"name": "filter-by-status",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "request-id",
+										"value": "joseesco24",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"processStatus\": 9\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/rest/waste/filter-by-status",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"rest",
+										"waste",
+										"filter-by-status"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				}
