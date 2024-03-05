@@ -209,7 +209,7 @@ request_create_response_fixture_1: CollectRequestCreateResponseDto = CollectRequ
 collect_request_core: CollectRequestCore = CollectRequestCore()
 collect_request_core._collect_request_provider.store_collect_request = MagicMock(return_value=collect_request)
 collect_request_core._parameter_provider.search_parameters_by_domain = MagicMock(return_value=parameter_list_fixture_1)
-collect_request_core._waste_provider.store_waste = MagicMock(side_effect=wastes_list)
+collect_request_core._waste_provider.create_waste_with_basic_info = MagicMock(side_effect=wastes_list)
 
 # ---------------------------------------------------------------------------------------------------------------------
 # ** info: executing tests
@@ -269,7 +269,7 @@ async def test_store_collect_request_wastes_1() -> None:
             note=request_create_request_fixture_1.waste[1].note,
         ),
     ]
-    collect_request_core._waste_provider.store_waste.assert_has_calls(calls)
+    collect_request_core._waste_provider.create_waste_with_basic_info.assert_has_calls(calls)
 
 
 @mark.asyncio
@@ -282,6 +282,6 @@ async def test_map_collect_response_1() -> None:
 async def test_driver_create_request_1() -> None:
     collect_request_core._collect_request_provider.store_collect_request = MagicMock(return_value=collect_request)
     collect_request_core._parameter_provider.search_parameters_by_domain = MagicMock(return_value=parameter_list_fixture_1)
-    collect_request_core._waste_provider.store_waste = MagicMock(side_effect=wastes_list)
+    collect_request_core._waste_provider.create_waste_with_basic_info = MagicMock(side_effect=wastes_list)
     request_create_response: CollectRequestCreateResponseDto = await collect_request_core.driver_create_request(request_create_request=request_create_request_fixture_1)
     assert request_create_response == request_create_response_fixture_1

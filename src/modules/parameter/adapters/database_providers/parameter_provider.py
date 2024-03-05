@@ -1,6 +1,9 @@
 # !/usr/bin/python3
 # type: ignore
 
+# ** info: python imports
+import logging
+
 # ** info: typing imports
 from typing import List
 from typing import Self
@@ -20,6 +23,10 @@ from src.sidecards.artifacts.env_provider import EnvProvider
 # ** info: session managers imports
 from src.sidecards.database_managers.mysql_manager import MySQLManager
 
+# ** info: cachetools imports
+from cachetools import TTLCache
+from cachetools import cached
+
 __all__: list[str] = ["ParameterProvider"]
 
 
@@ -37,8 +44,11 @@ class ParameterProvider:
             query={"charset": "utf8"},
         )
 
+    @cached(cache=TTLCache(ttl=60, maxsize=1024))
     def search_parameters_by_domain(self: Self, domain: str) -> List[Parameter]:
+        logging.debug(f"searching parameters by domain {domain}")
         session: Session = self._session_manager.obtain_session()
         query: Any = select(Parameter).where(Parameter.domain == domain, Parameter.active == True).order_by(Parameter.order)  # noqa: E712
         search_one_collect_request_result: List[Parameter] = session.exec(statement=query).fetchall()
+        logging.debug("searching parameters by domain ended")
         return search_one_collect_request_result

@@ -17,6 +17,7 @@ from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteClasificat
 from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteFilterByStatusRequestDto  # type: ignore
 from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteClasificationRequestDto  # type: ignore
 from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteFullDataResponseListDto  # type: ignore
+from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteUpdateStatusRequestDto  # type: ignore
 from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteFullDataResponseDto  # type: ignore
 from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteClassifyRequestDto  # type: ignore
 
@@ -64,25 +65,33 @@ class WasteCore:
         clasification: int = await self._obtain_waste_clasification(
             state_waste=parameter_search_request.stateWaste, weight_in_kg=parameter_search_request.weightInKg, isotopes_number=parameter_search_request.isotopesNumber
         )
-        waste_classify_response: WasteClasificationResponseDto = await self._map_waste_classify_response(clasification=clasification)
+        obtain_waste_classify_response: WasteClasificationResponseDto = await self._map_waste_classify_response(clasification=clasification)
         logging.info("driver_obtain_waste_classify ended")
-        return waste_classify_response
+        return obtain_waste_classify_response
 
     async def driver_update_waste_classify(self: Self, waste_classify_request: WasteClassifyRequestDto) -> WasteFullDataResponseDto:
         logging.info("starting driver_update_waste_classify")
         await self._validate_wastes_state(waste_classify_request=waste_classify_request)
         waste_info: Waste = await self._waste_classify_request(waste_classify_request=waste_classify_request)
-        waste_classify_response: WasteFullDataResponseDto = await self._map_full_data_response(waste_info=waste_info)
+        update_waste_classify_response: WasteFullDataResponseDto = await self._map_full_data_response(waste_info=waste_info)
         logging.info("driver_update_waste_classify ended")
-        return waste_classify_response
+        return update_waste_classify_response
 
-    async def driver_filter_waste_by_status(self: Self, filter_waste_by_status_request: WasteFilterByStatusRequestDto) -> WasteFullDataResponseListDto:
-        logging.info("starting driver_update_waste_classify")
+    async def driver_search_waste_by_status(self: Self, filter_waste_by_status_request: WasteFilterByStatusRequestDto) -> WasteFullDataResponseListDto:
+        logging.info("starting driver_search_waste_by_status")
         await self._validate_waste_process_status(process_status=filter_waste_by_status_request.processStatus)
-        wastes_info: List[Waste] = self._waste_provider.serch_wastes_by_process_status(process_status=filter_waste_by_status_request.processStatus)
-        waste_classify_response: WasteFullDataResponseListDto = await self._map_full_data_response_list(wastes_info=wastes_info)
-        logging.info("driver_update_waste_classify ended")
-        return waste_classify_response
+        wastes_info: List[Waste] = self._waste_provider.list_wastes_by_process_status(process_status=filter_waste_by_status_request.processStatus)
+        filtered_wastes_response: WasteFullDataResponseListDto = await self._map_full_data_response_list(wastes_info=wastes_info)
+        logging.info("driver_search_waste_by_status ended")
+        return filtered_wastes_response
+
+    async def driver_update_waste_status(self: Self, waste_update_status_request: WasteUpdateStatusRequestDto) -> WasteFullDataResponseDto:
+        logging.info("starting driver_update_waste_status")
+        await self._validate_waste_process_status(process_status=waste_update_status_request.processStatus)
+        waste_info: Waste = self._waste_provider.update_waste_status(uuid=waste_update_status_request.wasteId, process_status=waste_update_status_request.processStatus)
+        waste_update_status_response: WasteFullDataResponseDto = await self._map_full_data_response(waste_info=waste_info)
+        logging.info("driver_update_waste_status ended")
+        return waste_update_status_response
 
     # !------------------------------------------------------------------------
     # ! info: core methods section start
@@ -119,7 +128,7 @@ class WasteCore:
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"state type {waste_classify_request.stateWaste} is not valid")
 
     async def _waste_classify_request(self: Self, waste_classify_request: WasteClassifyRequestDto) -> Waste:
-        waste_info: Waste = self._waste_provider.classify_waste(
+        waste_info: Waste = self._waste_provider.update_waste_internal_classification_info(
             uuid=waste_classify_request.wasteId,
             isotopes_number=waste_classify_request.isotopesNumber,
             state_waste=waste_classify_request.stateWaste,

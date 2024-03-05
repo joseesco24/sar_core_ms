@@ -3,6 +3,7 @@
 
 # ** info: python imports
 from datetime import datetime
+import logging
 
 # ** info: typing imports
 from typing import Union
@@ -28,6 +29,10 @@ from src.sidecards.artifacts.env_provider import EnvProvider
 # ** info: session managers imports
 from src.sidecards.database_managers.mysql_manager import MySQLManager
 
+# ** info: cachetools imports
+from cachetools import TTLCache
+from cachetools import cached
+
 __all__: list[str] = ["WasteProvider"]
 
 
@@ -46,19 +51,25 @@ class WasteProvider:
             query={"charset": "utf8"},
         )
 
+    @cached(cache=TTLCache(ttl=60, maxsize=1024))
     def search_waste_by_id(self: Self, uuid: str) -> Waste:
+        logging.debug(f"searching waste by id {uuid}")
         session: Session = self._session_manager.obtain_session()
         query: Any = select(Waste).where(Waste.uuid == uuid)
         search_waste_by_id_result: Waste = session.exec(statement=query).first()
+        logging.debug("searching waste by id ended")
         return search_waste_by_id_result
 
-    def serch_wastes_by_process_status(self: Self, process_status: int) -> list[Waste]:
+    @cached(cache=TTLCache(ttl=60, maxsize=1024))
+    def list_wastes_by_process_status(self: Self, process_status: int) -> list[Waste]:
+        logging.debug(f"searching wastes by process status {process_status}")
         session: Session = self._session_manager.obtain_session()
         query: Any = select(Waste).where(Waste.process_status == process_status)
         search_waste_by_domain_result: list[Waste] = session.exec(statement=query).all()
+        logging.debug("searching wastes by process status ended")
         return search_waste_by_domain_result
 
-    def store_waste(
+    def create_waste_with_basic_info(
         self: Self,
         request_uuid: str,
         type: int,
@@ -68,6 +79,7 @@ class WasteProvider:
         description: str,
         note: Union[str, None] = None,
     ) -> Waste:
+        logging.debug("creating new waste with basic info")
         session: Session = self._session_manager.obtain_session()
         uuid: str = self._uuid_provider.get_str_uuid()
         date_time: datetime = self._datetime_provider.get_current_time()
@@ -87,9 +99,11 @@ class WasteProvider:
         session.add(new_waste)
         session.commit()
         session.refresh(new_waste)
+        logging.debug("new waste with basic info created")
         return new_waste
 
-    def classify_waste(self: Self, uuid: str, isotopes_number: float, state_waste: int, store: int) -> Waste:
+    def update_waste_internal_classification_info(self: Self, uuid: str, isotopes_number: float, state_waste: int, store: int) -> Waste:
+        logging.debug(f"updating waste {uuid} internal classification info")
         session: Session = self._session_manager.obtain_session()
         query: Any = select(Waste).where(Waste.uuid == uuid)
         waste_data: Waste = session.exec(statement=query).first()
@@ -102,4 +116,20 @@ class WasteProvider:
         session.add(waste_data)
         session.commit()
         session.refresh(waste_data)
+        logging.debug(f"waste {uuid} internal classification info updated")
+        return waste_data
+
+    def update_waste_status(self: Self, uuid: str, process_status: int) -> Waste:
+        logging.debug(f"updating waste {uuid} status")
+        session: Session = self._session_manager.obtain_session()
+        query: Any = select(Waste).where(Waste.uuid == uuid)
+        waste_data: Waste = session.exec(statement=query).first()
+        if waste_data is None:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="waste not found")
+        waste_data.update = self._datetime_provider.get_current_time()
+        waste_data.process_status = process_status
+        session.add(waste_data)
+        session.commit()
+        session.refresh(waste_data)
+        logging.debug(f"waste {uuid} status updated")
         return waste_data

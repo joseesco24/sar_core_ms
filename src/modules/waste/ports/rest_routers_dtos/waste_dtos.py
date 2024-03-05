@@ -20,6 +20,10 @@ from src.modules.waste.ports.rest_routers_dtos.waste_dtos_metadata import collec
 from src.modules.waste.ports.rest_routers_dtos.waste_dtos_metadata import collect_request_classify_res_ex
 from src.modules.waste.ports.rest_routers_dtos.waste_dtos_metadata import waste_clasification_req_ex
 from src.modules.waste.ports.rest_routers_dtos.waste_dtos_metadata import waste_clasification_res_ex
+from src.modules.waste.ports.rest_routers_dtos.waste_dtos_metadata import waste_update_status_req
+
+# ** info: sidecards imports
+from src.sidecards.artifacts.uuid_provider import UuidProvider
 
 __all__: list[str] = ["WasteClasificationRequestDto", "WasteClasificationResponseDto", "WasteClassifyRequestDto", "WasteFullDataResponseDto", "WasteFilterByStatusRequestDto"]
 
@@ -85,6 +89,15 @@ class WasteClassifyRequestDto(BaseModel):
             raise ValueError(f"{info.field_name} is not a integer input")
         return value
 
+    @field_validator("wasteId")
+    @classmethod
+    def uuid_validator(cls, value: str, info: ValidationInfo) -> int:
+        if UuidProvider.check_str_uuid(value):
+            value = str(value)
+        else:
+            raise ValueError(f"{info.field_name} is not a valid uuid input")
+        return value
+
     model_config = collect_request_classify_req_ex
 
 
@@ -101,6 +114,31 @@ class WasteFilterByStatusRequestDto(BaseModel):
         return value
 
     model_config = waste_filter_by_status_request_dto
+
+
+class WasteUpdateStatusRequestDto(BaseModel):
+    wasteId: str = Field(...)
+    processStatus: int = Field(...)
+
+    @field_validator("wasteId")
+    @classmethod
+    def uuid_validator(cls, value: str, info: ValidationInfo) -> int:
+        if UuidProvider.check_str_uuid(value):
+            value = str(value)
+        else:
+            raise ValueError(f"{info.field_name} is not a valid uuid input")
+        return value
+
+    @field_validator("processStatus")
+    @classmethod
+    def int_validator(cls, value: int, info: ValidationInfo) -> int:
+        if isinstance(value, int):
+            value = int(value)
+        else:
+            raise ValueError(f"{info.field_name} is not a integer input")
+        return value
+
+    model_config = waste_update_status_req
 
 
 # !------------------------------------------------------------------------

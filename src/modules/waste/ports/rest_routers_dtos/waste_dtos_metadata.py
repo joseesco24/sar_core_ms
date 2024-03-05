@@ -4,6 +4,8 @@ waste_clasification_res_ex = {"json_schema_extra": {"examples": [{"storeType": 4
 
 waste_filter_by_status_request_dto = {"json_schema_extra": {"examples": [{"processStatus": 9}]}}
 
+waste_update_status_req = {"json_schema_extra": {"examples": [{"id": "97ed79c5-eb28-4f80-93b1-1d5800c95bc9", "processStatus": 9}]}}
+
 collect_request_classify_req_ex = {"json_schema_extra": {"examples": [{"isotopesNumber": 1942, "stateWaste": 7, "storeId": 4, "wasteId": "97ed79c5-eb28-4f80-93b1-1d5800c95bc9"}]}}
 
 collect_request_classify_res_ex = {
