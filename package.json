@@ -1,6 +1,6 @@
 {
 	"name": "sar_ms_py",
-	"version": "v2.1.0",
+	"version": "v2.2.0",
 	"description": "This repository corresponds to the a small python microservice that is gint to be used used in the sar system.",
 	"author": {
 		"email": "josed.escobar@outlook.com",
