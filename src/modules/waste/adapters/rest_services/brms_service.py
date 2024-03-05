@@ -16,9 +16,12 @@ import httpx
 from fastapi import HTTPException
 from fastapi import status
 
-# ** info: artifacts imports
+# ** info: sidecards imports
 from src.sidecards.artifacts.env_provider import EnvProvider
 
+# ** info: cachetools imports
+from cachetools import TTLCache
+from cachetools import cached
 
 __all__: list[str] = ["BrmsService"]
 
@@ -28,26 +31,22 @@ class BrmsService:
         self._env_provider: EnvProvider = EnvProvider()
         self.base_url: str = str(self._env_provider.sar_brms_base_url)
 
+    @cached(cache=TTLCache(ttl=3600, maxsize=1024))
     def obtain_waste_clasification(self: Self, state_waste: str, weight_in_kg: float, isotopes_number: float) -> int:
+        logging.debug("obtaining waste classification from brms")
         data: dict[str, str] = {"stateWaste": state_waste, "weightInKg": weight_in_kg, "isotopesNumber": isotopes_number}
         url: str = urljoin(self.base_url, r"/brms/waste/clasification")
-
+        response: int
         logging.debug(f"brms url: {url}")
-
         try:
             raw_response: Response = httpx.post(url, json=data)
         except Exception:
             logging.critical("error unable to connect to brms")
             raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE)
-
         logging.debug(f"brms url: {url}")
-
         if raw_response.status_code != status.HTTP_200_OK:
             logging.critical("the brms service didnt respond correctly")
             raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE)
-
-        response: int
-
         try:
             response = int(raw_response.text)
         except Exception:
@@ -56,5 +55,5 @@ class BrmsService:
         if response == 0:
             logging.critical("the waste was not classified by the brms")
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="waste not classifiable")
-
+        logging.debug("waste classification obtained from brms")
         return response

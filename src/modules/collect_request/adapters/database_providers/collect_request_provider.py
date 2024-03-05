@@ -3,6 +3,7 @@
 
 # ** info: python imports
 from datetime import datetime
+import logging
 
 # ** info: typing imports
 from typing import Self
@@ -17,13 +18,15 @@ from src.modules.collect_request.adapters.database_providers_entities.collect_re
     CollectRequest,
 )
 
-# ** info: artifacts imports
+# ** info: sidecards imports
 from src.sidecards.artifacts.datetime_provider import DatetimeProvider
+from src.sidecards.database_managers.mysql_manager import MySQLManager
 from src.sidecards.artifacts.uuid_provider import UuidProvider
 from src.sidecards.artifacts.env_provider import EnvProvider
 
-# ** info: session managers imports
-from src.sidecards.database_managers.mysql_manager import MySQLManager
+# ** info: cachetools imports
+from cachetools import TTLCache
+from cachetools import cached
 
 __all__: list[str] = ["CollectRequestProvider"]
 
@@ -43,25 +46,30 @@ class CollectRequestProvider:
             query={"charset": "utf8"},
         )
 
+    @cached(cache=TTLCache(ttl=60, maxsize=1024))
     def search_collect_request_by_id(self: Self, uuid: str) -> CollectRequest:
+        logging.debug(f"searching collect request by id {uuid}")
         session: Session = self._session_manager.obtain_session()
         query: Any = select(CollectRequest).where(CollectRequest.uuid == uuid)
         search_collect_request_by_id_result: CollectRequest = session.exec(statement=query).first()
+        logging.debug("searching collect request by id ended")
         return search_collect_request_by_id_result
 
     def store_collect_request(self: Self, collect_date: str, production_center_id: int) -> CollectRequest:
+        logging.debug("creating a new collect request")
         session: Session = self._session_manager.obtain_session()
         uuid: str = self._uuid_provider.get_str_uuid()
         date_time: datetime = self._datetime_provider.get_current_time()
         new_collect_request: CollectRequest = CollectRequest(
-            uuid=uuid,
+            production_center_id=production_center_id,
             collect_date=collect_date,
             process_status=9,
-            production_center_id=production_center_id,
             create=date_time,
             update=date_time,
+            uuid=uuid,
         )
         session.add(new_collect_request)
         session.commit()
         session.refresh(new_collect_request)
+        logging.debug("new collect request created")
         return new_collect_request

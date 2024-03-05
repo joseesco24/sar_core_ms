@@ -21,13 +21,11 @@ from fastapi import status
 # ** info: users entity
 from src.modules.waste.adapters.database_providers_entities.waste_entity import Waste
 
-# ** info: artifacts imports
+# ** info: sidecards imports
 from src.sidecards.artifacts.datetime_provider import DatetimeProvider
+from src.sidecards.database_managers.mysql_manager import MySQLManager
 from src.sidecards.artifacts.uuid_provider import UuidProvider
 from src.sidecards.artifacts.env_provider import EnvProvider
-
-# ** info: session managers imports
-from src.sidecards.database_managers.mysql_manager import MySQLManager
 
 # ** info: cachetools imports
 from cachetools import TTLCache

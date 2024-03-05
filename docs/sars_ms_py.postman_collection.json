@@ -160,38 +160,79 @@
 							]
 						},
 						{
-							"name": "filter-by-status",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "request-id",
-										"value": "joseesco24",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"processStatus\": 9\n}",
-									"options": {
-										"raw": {
-											"language": "json"
+							"name": "status",
+							"item": [
+								{
+									"name": "search",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "request-id",
+												"value": "joseesco24",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"processStatus\": 9\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{HOST}}/rest/waste/status/search",
+											"host": [
+												"{{HOST}}"
+											],
+											"path": [
+												"rest",
+												"waste",
+												"status",
+												"search"
+											]
 										}
-									}
+									},
+									"response": []
 								},
-								"url": {
-									"raw": "{{HOST}}/rest/waste/filter-by-status",
-									"host": [
-										"{{HOST}}"
-									],
-									"path": [
-										"rest",
-										"waste",
-										"filter-by-status"
-									]
+								{
+									"name": "update",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "request-id",
+												"value": "joseesco24",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"processStatus\": 11,\n    \"wasteId\": \"213b0bfd-7389-4ce5-b0d4-6d5aaf4661aa\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{HOST}}/rest/waste/status/update",
+											"host": [
+												"{{HOST}}"
+											],
+											"path": [
+												"rest",
+												"waste",
+												"status",
+												"update"
+											]
+										}
+									},
+									"response": []
 								}
-							},
-							"response": []
+							]
 						}
 					]
 				}
