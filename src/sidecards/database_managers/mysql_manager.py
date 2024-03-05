@@ -20,11 +20,9 @@ from sqlalchemy import URL
 from sqlmodel import create_engine
 from sqlmodel import Session
 
-# ** info: artifacts imports
-from src.sidecards.artifacts.uuid_provider import UuidProvider
-
-# ** info: artifacts imports
+# ** info: sidecards.artifacts imports
 from src.sidecards.artifacts.datetime_provider import DatetimeProvider
+from src.sidecards.artifacts.uuid_provider import UuidProvider
 from src.sidecards.artifacts.env_provider import EnvProvider
 
 __all__: list[str] = ["MySQLManager"]

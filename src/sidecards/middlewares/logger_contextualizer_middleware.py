@@ -15,7 +15,7 @@ from loguru import logger
 from starlette.responses import StreamingResponse
 from starlette.requests import Request
 
-# ** info: artifacts imports
+# ** info: sidecards.artifacts imports
 from src.sidecards.artifacts.uuid_provider import UuidProvider
 
 

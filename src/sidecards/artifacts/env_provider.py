@@ -16,6 +16,8 @@ from pydantic import Field
 
 __all__: list[str] = ["EnvProvider"]
 
+load_dotenv(override=True, verbose=True, dotenv_path=find_dotenv(".env"))
+
 
 class EnvironmentMode(str, Enum):
     development: str = "development"
@@ -47,6 +49,3 @@ class EnvProvider(BaseSettings):
 
     # ** info: external microservices base urls
     sar_brms_base_url: HttpUrl = Field(..., validation_alias="SAR_BRMS_BASE_URL")
-
-
-load_dotenv(override=True, verbose=True, dotenv_path=find_dotenv(".env"))

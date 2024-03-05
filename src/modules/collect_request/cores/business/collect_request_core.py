@@ -28,7 +28,7 @@ from src.modules.collect_request.adapters.database_providers.collect_request_pro
 from src.modules.parameter.adapters.database_providers.parameter_provider import ParameterProvider  # type: ignore
 from src.modules.waste.adapters.database_providers.waste_provider import WasteProvider  # type: ignore
 
-# ** info: artifacts imports
+# ** info: sidecards.artifacts imports
 from src.sidecards.artifacts.datetime_provider import DatetimeProvider  # type: ignore
 
 __all__: list[str] = ["CollectRequestCore"]

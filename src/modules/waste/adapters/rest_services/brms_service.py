@@ -16,7 +16,7 @@ import httpx
 from fastapi import HTTPException
 from fastapi import status
 
-# ** info: sidecards imports
+# ** info: sidecards.artifacts imports
 from src.sidecards.artifacts.env_provider import EnvProvider
 
 # ** info: cachetools imports

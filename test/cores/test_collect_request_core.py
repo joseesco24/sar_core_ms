@@ -31,7 +31,7 @@ from src.modules.collect_request.adapters.database_providers_entities.collect_re
 from src.modules.parameter.adapters.database_providers_entities.parameter_entity import Parameter
 from src.modules.waste.adapters.database_providers_entities.waste_entity import Waste
 
-# ** info: artifacts imports
+# ** info: sidecards.artifacts imports
 from src.sidecards.artifacts.datetime_provider import DatetimeProvider
 
 # ---------------------------------------------------------------------------------------------------------------------

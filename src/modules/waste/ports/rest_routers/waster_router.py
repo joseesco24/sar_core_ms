@@ -17,7 +17,7 @@ from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteClassifyRe
 # ** info: app core imports
 from src.modules.waste.cores.business.waste_core import WasteCore  # type: ignore
 
-# ** info: sidecards imports
+# ** info: sidecards.artifacts imports
 from src.sidecards.artifacts.path_provider import PathProvider  # type: ignore
 
 __all__: list[str] = ["waste_router"]

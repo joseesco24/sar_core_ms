@@ -23,7 +23,7 @@ from loguru import logger
 # ** info: loguru _recattrs imports
 from loguru._recattrs import RecordException
 
-# ** info: artifacts imports
+# ** info: sidecards.artifacts imports
 from src.sidecards.artifacts.datetime_provider import DatetimeProvider
 
 

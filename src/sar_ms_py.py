@@ -1,5 +1,4 @@
 # !/usr/bin/python3
-# type: ignore
 
 # ** info: python imports
 from os.path import join
@@ -26,26 +25,26 @@ from fastapi import FastAPI
 from starlette.middleware.base import BaseHTTPMiddleware
 
 # ** info: rest based routers imports
-from src.modules.collect_request.ports.rest_routers.collect_request_router import CollectRequestRouter
+from src.modules.collect_request.ports.rest_routers.collect_request_router import CollectRequestRouter  # type: ignore
 from src.modules.parameter.ports.rest_routers.parameter_router import parameter_router
 from src.modules.waste.ports.rest_routers.waster_router import waste_router
 
-# ** info: artifacts imports
-from src.sidecards.artifacts.logging_provider import LoggingProvider
-from src.sidecards.artifacts.env_provider import EnvProvider
-from src.sidecards.artifacts.path_provider import PathProvider
+# ** info: sidecards.artifacts imports
+from src.sidecards.artifacts.logging_provider import LoggingProvider  # type: ignore
+from src.sidecards.artifacts.env_provider import EnvProvider  # type: ignore
+from src.sidecards.artifacts.path_provider import PathProvider  # type: ignore
 
-# ** info: middlewares imports
-from src.sidecards.middlewares.authentication_handler_middleware import AuthenticationHandlerMiddleware
-from src.sidecards.middlewares.logger_contextualizer_middleware import LoggerContextualizerMiddleware
-from src.sidecards.middlewares.error_handler_middleware import ErrorHandlerMiddleware
+# ** info: sidecard.middlewares imports
+from src.sidecards.middlewares.authentication_handler_middleware import AuthenticationHandlerMiddleware  # type: ignore
+from src.sidecards.middlewares.logger_contextualizer_middleware import LoggerContextualizerMiddleware  # type: ignore
+from src.sidecards.middlewares.error_handler_middleware import ErrorHandlerMiddleware  # type: ignore
 
 # ---------------------------------------------------------------------------------------------------------------------
 # ** info: building needed artifacts
 # ---------------------------------------------------------------------------------------------------------------------
 
 path_provider: PathProvider = PathProvider()
-env_provider: EnvProvider = EnvProvider()
+env_provider: EnvProvider = EnvProvider()  # type: ignore
 
 # ---------------------------------------------------------------------------------------------------------------------
 # ** info: setting up global app logging

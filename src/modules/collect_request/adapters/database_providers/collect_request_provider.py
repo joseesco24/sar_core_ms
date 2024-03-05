@@ -18,7 +18,7 @@ from src.modules.collect_request.adapters.database_providers_entities.collect_re
     CollectRequest,
 )
 
-# ** info: sidecards imports
+# ** info: sidecards.artifacts imports
 from src.sidecards.artifacts.datetime_provider import DatetimeProvider
 from src.sidecards.database_managers.mysql_manager import MySQLManager
 from src.sidecards.artifacts.uuid_provider import UuidProvider
