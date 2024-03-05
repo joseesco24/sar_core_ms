@@ -16,9 +16,11 @@ from sqlmodel import select
 # ** info: users entity
 from src.modules.parameter.adapters.database_providers_entities.parameter_entity import Parameter
 
+# ** info: sidecards.database_managers imports
+from src.sidecards.database_managers.mysql_manager import MySQLManager
+
 # ** info: sidecards.artifacts imports
 from src.sidecards.artifacts.datetime_provider import DatetimeProvider
-from src.sidecards.database_managers.mysql_manager import MySQLManager
 from src.sidecards.artifacts.env_provider import EnvProvider
 
 # ** info: cachetools imports
