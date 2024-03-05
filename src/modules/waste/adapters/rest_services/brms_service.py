@@ -31,7 +31,7 @@ class BrmsService:
         self._env_provider: EnvProvider = EnvProvider()
         self.base_url: str = str(self._env_provider.sar_brms_base_url)
 
-    @cached(cache=TTLCache(ttl=3600, maxsize=1024))
+    @cached(cache=TTLCache(ttl=240, maxsize=20))
     def obtain_waste_clasification(self: Self, state_waste: str, weight_in_kg: float, isotopes_number: float) -> int:
         logging.debug("obtaining waste classification from brms")
         data: dict[str, str] = {"stateWaste": state_waste, "weightInKg": weight_in_kg, "isotopesNumber": isotopes_number}

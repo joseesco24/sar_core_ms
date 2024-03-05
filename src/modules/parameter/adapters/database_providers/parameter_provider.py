@@ -42,7 +42,7 @@ class ParameterProvider:
             query={"charset": "utf8"},
         )
 
-    @cached(cache=TTLCache(ttl=60, maxsize=1024))
+    @cached(cache=TTLCache(ttl=240, maxsize=20))
     def search_parameters_by_domain(self: Self, domain: str) -> List[Parameter]:
         logging.debug(f"searching parameters by domain {domain}")
         session: Session = self._session_manager.obtain_session()

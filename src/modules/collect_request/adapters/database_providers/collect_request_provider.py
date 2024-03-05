@@ -46,7 +46,7 @@ class CollectRequestProvider:
             query={"charset": "utf8"},
         )
 
-    @cached(cache=TTLCache(ttl=60, maxsize=1024))
+    @cached(cache=TTLCache(ttl=60, maxsize=20))
     def search_collect_request_by_id(self: Self, uuid: str) -> CollectRequest:
         logging.debug(f"searching collect request by id {uuid}")
         session: Session = self._session_manager.obtain_session()

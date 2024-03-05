@@ -49,7 +49,7 @@ class WasteProvider:
             query={"charset": "utf8"},
         )
 
-    @cached(cache=TTLCache(ttl=60, maxsize=1024))
+    @cached(cache=TTLCache(ttl=60, maxsize=20))
     def search_waste_by_id(self: Self, uuid: str) -> Waste:
         logging.debug(f"searching waste by id {uuid}")
         session: Session = self._session_manager.obtain_session()
@@ -58,7 +58,7 @@ class WasteProvider:
         logging.debug("searching waste by id ended")
         return search_waste_by_id_result
 
-    @cached(cache=TTLCache(ttl=60, maxsize=1024))
+    @cached(cache=TTLCache(ttl=60, maxsize=10))
     def list_wastes_by_process_status(self: Self, process_status: int) -> list[Waste]:
         logging.debug(f"searching wastes by process status {process_status}")
         session: Session = self._session_manager.obtain_session()
