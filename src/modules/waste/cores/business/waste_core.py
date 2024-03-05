@@ -12,6 +12,9 @@ from typing import Set
 from fastapi import HTTPException
 from fastapi import status
 
+# ** info: cores imports
+from src.modules.parameter.cores.business.parameter_core import ParameterCore  # type: ignore
+
 # ** info: dtos imports
 from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteClasificationResponseDto  # type: ignore
 from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteFilterByStatusRequestDto  # type: ignore
@@ -22,11 +25,9 @@ from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteFullDataRe
 from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteClassifyRequestDto  # type: ignore
 
 # ** info: entities imports
-from src.modules.parameter.adapters.database_providers_entities.parameter_entity import Parameter  # type: ignore
 from src.modules.waste.adapters.database_providers_entities.waste_entity import Waste  # type: ignore
 
 # ** info: providers imports
-from src.modules.parameter.adapters.database_providers.parameter_provider import ParameterProvider  # type: ignore
 from src.modules.waste.adapters.database_providers.waste_provider import WasteProvider  # type: ignore
 
 # ** info: ports imports
@@ -45,8 +46,9 @@ class WasteCore:
     # !------------------------------------------------------------------------
 
     def __init__(self: Self):
+        # ** info: cores building
+        self._parameter_core: ParameterCore = ParameterCore()
         # ** info: providers building
-        self._parameter_provider: ParameterProvider = ParameterProvider()
         self._waste_provider: WasteProvider = WasteProvider()
         # ** info: rest services building
         self._brms_service: BrmsService = BrmsService()
@@ -111,16 +113,14 @@ class WasteCore:
         return WasteClasificationResponseDto(storeType=clasification)
 
     async def _validate_waste_process_status(self: Self, process_status: int) -> None:
-        waste_states: List[Parameter] = self._parameter_provider.search_parameters_by_domain(domain=r"wasteProcessStatus")
-        waste_state_ids: Set[int] = set([waste_state.id for waste_state in waste_states])
+        waste_state_ids: Set[int] = await self._parameter_core.cf_get_set_of_parameter_ids_by_domain(domain=r"wasteProcessStatus")
         if process_status not in waste_state_ids:
             valid_state_waste: str = r",".join(str(s) for s in waste_state_ids)
             logging.error(f"process status {process_status} is not valid valid types are {valid_state_waste}")
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"process status {process_status} is not valid")
 
     async def _validate_wastes_state(self: Self, waste_classify_request: WasteClassifyRequestDto) -> None:
-        waste_states: List[Parameter] = self._parameter_provider.search_parameters_by_domain(domain=r"stateWaste")
-        waste_state_ids: Set[int] = set([waste_state.id for waste_state in waste_states])
+        waste_state_ids: Set[int] = await self._parameter_core.cf_get_set_of_parameter_ids_by_domain(domain=r"stateWaste")
         if waste_classify_request.stateWaste not in waste_state_ids:
             valid_state_waste: str = r",".join(str(s) for s in waste_state_ids)
             logging.error(f"state type {waste_classify_request.stateWaste} is not valid valid types are {valid_state_waste}")
@@ -142,31 +142,25 @@ class WasteCore:
         return [await self._map_full_data_response(waste_info=waste_info) for waste_info in wastes_info]
 
     async def _map_full_data_response(self: Self, waste_info: Waste) -> WasteFullDataResponseDto:
-
         created: str = self._datetime_provider.prettify_date_time_obj(date_time_obj=waste_info.create)
         updated: str = self._datetime_provider.prettify_date_time_obj(date_time_obj=waste_info.update)
-
         waste_full_data_response: WasteFullDataResponseDto = WasteFullDataResponseDto(
-            id=waste_info.uuid,
-            requestId=waste_info.request_uuid,
-            type=waste_info.type,
-            packaging=waste_info.packaging,
-            processStatus=waste_info.process_status,
             weightInKg=float(waste_info.weight_in_kg),
             volumeInL=float(waste_info.volume_in_l),
+            processStatus=waste_info.process_status,
             description=waste_info.description,
+            requestId=waste_info.request_uuid,
+            packaging=waste_info.packaging,
+            type=waste_info.type,
             note=waste_info.note,
+            id=waste_info.uuid,
             create=created,
             update=updated,
         )
-
         if waste_info.isotopes_number is not None:
             waste_full_data_response.isotopesNumber = float(waste_info.isotopes_number)
-
         if waste_info.state_waste is not None:
             waste_full_data_response.stateWaste = waste_info.state_waste
-
         if waste_info.store is not None:
             waste_full_data_response.storeType = waste_info.store
-
         return waste_full_data_response

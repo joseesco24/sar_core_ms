@@ -95,7 +95,7 @@ class CollectRequestCore:
         return collect_request_info
 
     async def _store_collect_request_wastes(self: Self, collect_request_id: str, request_create_request: CollectRequestCreateRequestDto) -> List[Waste]:
-        wastes: List[Waste] = list()
+        wastes: List[Waste] = []
         for waste in request_create_request.waste:
             waste_info: Waste = self._waste_provider.create_waste_with_basic_info(
                 request_uuid=collect_request_id,
