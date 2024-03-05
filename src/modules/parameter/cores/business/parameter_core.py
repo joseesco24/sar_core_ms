@@ -49,14 +49,23 @@ class ParameterCore(metaclass=Singleton):
         return parameter_search_response
 
     # !------------------------------------------------------------------------
-    # ! info: core methods section start
-    # ! warning: all the methods in this section are the ones that are going to be called from another core or from a driver method
-    # ! warning: a method only can be declared in this section if it is going to be called from another core or from a driver method
+    # ! info: core adapter methods section start
+    # ! warning: all the methods in this section are the ones that are going to call methods from another core
+    # ! warning: a method only can be declared in this section if it is going to call a port method from another core
     # !------------------------------------------------------------------------
 
-    async def cf_get_set_of_parameter_ids_by_domain(self: Self, domain: str) -> Set[int]:
+    # !------------------------------------------------------------------------
+    # ! info: core port methods section start
+    # ! warning: all the methods in this section are the ones that are going to be called from another core
+    # ! warning: a method only can be declared in this section if it is going to be called from another core
+    # !------------------------------------------------------------------------
+
+    # ** info: cpm pc are initials for core port methods parameter core
+    async def cpm_pc_get_set_of_parameter_ids_by_domain(self: Self, domain: str) -> Set[int]:
+        logging.info("starting cpm_pc_get_set_of_parameter_ids_by_domain")
         parameters_list: List[Parameter] = self.parameter_provider.search_parameters_by_domain(domain=domain)
         parameters_ids: Set[int] = set([parameter.id for parameter in parameters_list])
+        logging.info("cpm_pc_get_set_of_parameter_ids_by_domain ended")
         return parameters_ids
 
     # !------------------------------------------------------------------------
