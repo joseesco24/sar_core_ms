@@ -1,5 +1,4 @@
 # !/usr/bin/python3
-# type: ignore
 
 # ** info: python imports
 import logging
