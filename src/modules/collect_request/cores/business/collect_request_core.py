@@ -17,6 +17,9 @@ from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos im
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestCreateRequestDto  # type: ignore
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import ResponseRequestDataDto  # type: ignore
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import ResponseWasteDataDto  # type: ignore
+from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestFindByStatusReqDto  # type: ignore
+from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestFindByStatusResDto  # type: ignore
+from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestModifyByIdReqDto  # type: ignore
 
 # ** info: entities imports
 from src.modules.collect_request.adapters.database_providers_entities.collect_request_entity import CollectRequest  # type: ignore
@@ -61,6 +64,22 @@ class CollectRequestCore:
         request_create_response: CollectRequestCreateResponseDto = await self._map_collect_response(collect_request_info=collect_request_info, wastes_info=wastes_info)
         return request_create_response
 
+    async def driver_find_request_by_status(self: Self, request_find_request_by_status: CollectRequestFindByStatusReqDto) -> CollectRequestFindByStatusResDto:
+        logging.info("starting driver_find_request_by_status")
+        await self._validate_collect_process_status(process_status=request_find_request_by_status.processStatus)
+        CollectRequest_info: List[CollectRequest] = self._collect_request_provider.find_collects_requests_by_state(process_status=request_find_request_by_status.processStatus)
+        find_request_by_status_response: CollectRequestFindByStatusResDto = await self._map_full_collect_response_list(CollectRequest_info=CollectRequest_info)
+        logging.info("driver_find_request_by_status ended")
+        return find_request_by_status_response
+
+    async def driver_modify_request_by_id(self: Self, request_modify_request_by_id: CollectRequestModifyByIdReqDto) -> ResponseRequestDataDto:
+        logging.info("starting driver_modify_request_by_id")
+        await self._validate_collect_process_status(process_status=request_modify_request_by_id.processStatus)
+        CollectRequest_info: CollectRequest = await self._modify_collect_request(request_modify_request_by_id=request_modify_request_by_id)
+        modify_request_by_id_response: ResponseRequestDataDto = await self._map_full_collect_response(CollectRequest_info=CollectRequest_info)
+        logging.info("driver_modify_request_by_id ended")
+        return modify_request_by_id_response
+
     # !------------------------------------------------------------------------
     # ! info: core methods section start
     # ! warning: all the methods in this section are the ones that are going to be called from another core or from a driver method
@@ -94,6 +113,20 @@ class CollectRequestCore:
         )
         return collect_request_info
 
+    async def _modify_collect_request(self: Self, request_modify_request_by_id: CollectRequestModifyByIdReqDto) -> CollectRequest:
+        CollectRequest_info: CollectRequest = self._collect_request_provider.modify_collect_request_by_id(
+            uuid=request_modify_request_by_id.collectReqId, process_status=request_modify_request_by_id.processStatus
+        )
+        return CollectRequest_info
+
+    async def _validate_collect_process_status(self: Self, process_status: int) -> None:
+        collect_states: List[Parameter] = self._parameter_provider.search_parameters_by_domain(domain=r"wasteProcessStatus")
+        collect_state_ids: Set[int] = set([collect_state.id for collect_state in collect_states])
+        if process_status not in collect_state_ids:
+            valid_state_collect: str = r",".join(str(s) for s in collect_state_ids)
+            logging.error(f"process status {process_status} is not valid valid types are {valid_state_collect}")
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"process status {process_status} is not valid")
+
     async def _store_collect_request_wastes(self: Self, collect_request_id: str, request_create_request: CollectRequestCreateRequestDto) -> List[Waste]:
         wastes: List[Waste] = []
         for waste in request_create_request.waste:
@@ -114,6 +147,25 @@ class CollectRequestCore:
             request=await self._map_collect_response_request_info(collect_request_info=collect_request_info),
             waste=await self._map_collect_response_wastes_info(wastes_info=wastes_info),
         )
+
+    async def _map_full_collect_response_list(self: Self, CollectRequest_info: List[CollectRequest]) -> CollectRequestFindByStatusResDto:
+        return CollectRequestFindByStatusResDto(values=await self._map_full_collect_responses(CollectRequest_info=CollectRequest_info))
+
+    async def _map_full_collect_responses(self: Self, CollectRequest_info: List[CollectRequest]) -> List[ResponseRequestDataDto]:
+        return [await self._map_full_collect_response(CollectRequest_info=CollectRequest_info) for CollectRequest_info in CollectRequest_info]
+
+    async def _map_full_collect_response(self: Self, CollectRequest_info: CollectRequest) -> ResponseRequestDataDto:
+        created: str = self._datetime_provider.prettify_date_time_obj(date_time_obj=CollectRequest_info.create)
+        updated: str = self._datetime_provider.prettify_date_time_obj(date_time_obj=CollectRequest_info.update)
+        CollectRequest_full_data_response: ResponseRequestDataDto = ResponseRequestDataDto(
+            id=CollectRequest_info.uuid,
+            collectDate=self._datetime_provider.prettify_date_obj(CollectRequest_info.collect_date),
+            processStatus=CollectRequest_info.process_status,
+            productionCenterId=CollectRequest_info.production_center_id,
+            update=updated,
+            create=created,
+        )
+        return CollectRequest_full_data_response
 
     async def _map_collect_response_request_info(self: Self, collect_request_info: CollectRequest) -> ResponseRequestDataDto:
         create: str = self._datetime_provider.prettify_date_time_obj(date_time_obj=collect_request_info.create)

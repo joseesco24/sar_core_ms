@@ -1,3 +1,49 @@
+collect_request_modify_state_by_id_req_dto = {"json_schema_extra": {"examples": [{"collectReqId": "97ed79c5-eb28-4f80-93b1-1d5800c95bc9", "processStatus": 10}]}}
+
+collect_request_modify_state_by_id_res_dto = {
+    "json_schema_extra": {
+        "examples": [
+            {
+                "id": "09fe7cbc-8acf-4147-9b45-d3d79f19ceda",
+                "processStatus": 10,
+                "collectDate": "2024-03-03",
+                "productionCenterId": 123456789,
+                "create": "2024-03-03 02:54:12.000000",
+                "update": "2024-03-05 12:35:18.000000",
+            }
+        ]
+    }
+}
+
+collect_request_find_by_status_req_dto = {"json_schema_extra": {"examples": [{"processStatus": 9}]}}
+
+collect_request_find_by_status_res_dto = {
+    "json_schema_extra": {
+        "examples": [
+            {
+                "values": [
+                    {
+                        "id": "09fe7cbc-8acf-4147-9b45-d3d79f19ceda",
+                        "processStatus": 9,
+                        "collectDate": "2024-03-03",
+                        "productionCenterId": 123456789,
+                        "create": "2024-03-03 02:54:12.000000",
+                        "update": "2024-03-03 02:54:12.000000",
+                    },
+                    {
+                        "id": "097d0fd7-847f-4a1c-8f37-0cde338aeaef",
+                        "processStatus": 9,
+                        "collectDate": "2024-03-08",
+                        "productionCenterId": 15,
+                        "create": "2024-03-03 22:54:12.000000",
+                        "update": "2024-03-03 22:54:12.000000",
+                    },
+                ]
+            }
+        ]
+    }
+}
+
 collect_request_creation_req_ex = {
     "json_schema_extra": {
         "examples": [

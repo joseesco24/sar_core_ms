@@ -9,6 +9,10 @@ import logging
 from typing import Self
 from typing import Any
 
+# ** info: fastapi imports
+from fastapi import HTTPException
+from fastapi import status
+
 # ** info: sqlmodel imports
 from sqlmodel import Session
 from sqlmodel import select
@@ -75,3 +79,22 @@ class CollectRequestProvider:
         session.refresh(new_collect_request)
         logging.debug("new collect request created")
         return new_collect_request
+
+    def find_collects_requests_by_state(self: Self, process_status: int) -> list[CollectRequest]:
+        session: Session = self._session_manager.obtain_session()
+        query: Any = select(CollectRequest).where(CollectRequest.process_status == process_status)
+        find_collect_request_by_state_result: list[CollectRequest] = session.exec(statement=query).all()
+        return find_collect_request_by_state_result
+
+    def modify_collect_request_by_id(self: Self, uuid: str, process_status: int) -> CollectRequest:
+        session: Session = self._session_manager.obtain_session()
+        query: Any = select(CollectRequest).where(CollectRequest.uuid == uuid)
+        CollectRequest_data: CollectRequest = session.exec(statement=query).first()
+        if CollectRequest_data is None:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Collect Request not found")
+        CollectRequest_data.update = self._datetime_provider.get_current_time()
+        CollectRequest_data.process_status = process_status
+        session.add(CollectRequest_data)
+        session.commit()
+        session.refresh(CollectRequest_data)
+        return CollectRequest_data

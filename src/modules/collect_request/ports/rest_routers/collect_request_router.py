@@ -12,6 +12,10 @@ from fastapi import Body
 # ** info: port dtos imports
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestCreateResponseDto
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestCreateRequestDto
+from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestFindByStatusReqDto
+from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestFindByStatusResDto
+from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestModifyByIdReqDto
+from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import ResponseRequestDataDto
 
 # ** info: app core imports
 from src.modules.collect_request.cores.business.collect_request_core import CollectRequestCore
@@ -43,6 +47,34 @@ class CollectRequestRouter:
             methods=["POST"],
         )
 
+        self.router.add_api_route(
+            description="find all the collect request by its process status",
+            summary="find all the collect request by its process status",
+            path=self._path_provider.build_posix_path("find-by-status"),
+            response_model=CollectRequestFindByStatusResDto,
+            status_code=status.HTTP_200_OK,
+            endpoint=self._api_find_collectReq_by_status,
+            methods=["POST"],
+        )
+
+        self.router.add_api_route(
+            description="modify the collect request status by its id",
+            summary="modify the collect request status by its id",
+            path=self._path_provider.build_posix_path("modify-status"),
+            response_model=ResponseRequestDataDto,
+            status_code=status.HTTP_200_OK,
+            endpoint=self._api_modify_collectReq_by_id,
+            methods=["POST"],
+        )
+
     async def _api_create_request(self: Self, request_create_request: CollectRequestCreateRequestDto = Body(...)) -> CollectRequestCreateResponseDto:
         request_create_response: CollectRequestCreateResponseDto = await self._collect_request_core.driver_create_request(request_create_request)
+        return request_create_response
+
+    async def _api_find_collectReq_by_status(self: Self, request_find_request_by_status: CollectRequestFindByStatusReqDto = Body(...)) -> CollectRequestFindByStatusResDto:
+        request_create_response: CollectRequestFindByStatusResDto = await self._collect_request_core.driver_find_request_by_status(request_find_request_by_status)
+        return request_create_response
+
+    async def _api_modify_collectReq_by_id(self: Self, request_modify_request_by_id: CollectRequestModifyByIdReqDto = Body(...)) -> ResponseRequestDataDto:
+        request_create_response: ResponseRequestDataDto = await self._collect_request_core.driver_modify_request_by_id(request_modify_request_by_id)
         return request_create_response
