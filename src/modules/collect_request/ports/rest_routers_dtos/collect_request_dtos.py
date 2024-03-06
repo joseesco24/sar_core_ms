@@ -14,6 +14,9 @@ from typing import List
 # **info: metadata for the model imports
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos_metadata import collect_request_creation_req_ex
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos_metadata import collect_request_creation_res_ex
+from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos_metadata import collect_request_find_by_status_req_dto
+from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos_metadata import collect_request_find_by_status_res_dto
+from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos_metadata import collect_request_modify_state_by_id_req_dto
 
 # ** info: artifacts imports
 from src.sidecards.artifacts.datetime_provider import DatetimeProvider
@@ -155,6 +158,37 @@ class CollectRequestCreateRequestDto(BaseModel):
     model_config = collect_request_creation_req_ex
 
 
+class CollectRequestFindByStatusReqDto(BaseModel):
+    processStatus: int = Field(...)
+
+    @field_validator("processStatus")
+    @classmethod
+    def int_validator(cls, value: int, info: ValidationInfo) -> int:
+        if isinstance(value, int):
+            value = int(value)
+        else:
+            raise ValueError(f"{info.field_name} is not a integer input")
+        return value
+
+    model_config = collect_request_find_by_status_req_dto
+
+
+class CollectRequestModifyByIdReqDto(BaseModel):
+    collectReqId: str = Field(...)
+    processStatus: int = Field(...)
+
+    @field_validator("processStatus")
+    @classmethod
+    def int_validator(cls, value: int, info: ValidationInfo) -> int:
+        if isinstance(value, int):
+            value = int(value)
+        else:
+            raise ValueError(f"{info.field_name} is not a integer input")
+        return value
+
+    model_config = collect_request_modify_state_by_id_req_dto
+
+
 # !------------------------------------------------------------------------
 # ! info: response model section start
 # ! warning: all models in this section are the ones that are going to be used as response dto models
@@ -166,3 +200,8 @@ class CollectRequestCreateResponseDto(BaseModel):
     waste: List[ResponseWasteDataDto] = Field(...)
     request: ResponseRequestDataDto = Field(...)
     model_config = collect_request_creation_res_ex
+
+
+class CollectRequestFindByStatusResDto(BaseModel):
+    values: List[ResponseRequestDataDto] = Field(...)
+    model_config = collect_request_find_by_status_res_dto
