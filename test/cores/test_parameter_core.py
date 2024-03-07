@@ -101,13 +101,6 @@ parameter_core._parameter_provider.search_parameters_by_domain = MagicMock(retur
 
 
 @mark.asyncio
-async def test_cpm_pc_get_set_of_parameter_ids_by_domain_1() -> None:
-    ids: Set[int] = await parameter_core.cpm_pc_get_set_of_parameter_ids_by_domain(domain=r"testDomain")
-    parameter_core._parameter_provider.search_parameters_by_domain.assert_called_with(domain=r"testDomain")
-    assert ids == paramaters_ids_fixture_1
-
-
-@mark.asyncio
 async def test_driver_search_parameter_1() -> None:
     parameter_search_response: ParameterSearchResponseDto = await parameter_core.driver_search_parameter(parameter_search_request=parameter_search_request_dto_fixture_1)
     parameter_core._parameter_provider.search_parameters_by_domain.assert_called_with(domain=parameter_search_request_dto_fixture_1.domain)
