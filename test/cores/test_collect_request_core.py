@@ -30,7 +30,6 @@ from src.modules.collect_request.cores.business.collect_request_core import Coll
 
 # ** info: entities imports
 from src.modules.collect_request.adapters.database_providers_entities.collect_request_entity import CollectRequest  # type: ignore
-from src.modules.parameter.adapters.database_providers_entities.parameter_entity import Parameter  # type: ignore
 from src.modules.waste.adapters.database_providers_entities.waste_entity import Waste  # type: ignore
 
 # ** info: sidecards.artifacts imports
@@ -74,39 +73,11 @@ request_create_request_fixture_1: CollectRequestCreateRequestDto = CollectReques
     request=request_request_data_dto_fixture_1,
 )
 
-
 # ---------------------------------------------------------------------------------------------------------------------
-# ** info: parameter fixtures declaration
+# ** info: parameters fixtures declaration
 # ---------------------------------------------------------------------------------------------------------------------
 
-parameter_list_fixture_1: list[Parameter] = list()
-
-parameter_fixture_1: Parameter = Parameter(
-    id=1,
-    domain=r"wasteType",
-    value=r"Radioterapia",
-    description=r"Residuos provenientes del equipo empleado en el tratamiento de diversos tipos de cáncer, como el de mama, próstata y pulmón",
-    active=True,
-    order=1,
-    create=datetime_provider.get_current_time(),
-    update=datetime_provider.get_current_time(),
-)
-
-parameter_fixture_2: Parameter = Parameter(
-    id=2,
-    domain=r"wasteType",
-    value=r"Combustible Nuclear",
-    description=r"Residuos provenientes de reactores nucleares en los que se usa material nuclear para generar energía eléctrica",
-    active=True,
-    order=2,
-    create=datetime_provider.get_current_time(),
-    update=datetime_provider.get_current_time(),
-)
-
-parameter_list_fixture_1.append(parameter_fixture_1)
-parameter_list_fixture_1.append(parameter_fixture_2)
-
-parameters_ids_fixture_1: Set[int] = set([parameter.id for parameter in parameter_list_fixture_1])
+parameters_ids_fixture_1: Set[int] = set([1, 2])
 
 # ---------------------------------------------------------------------------------------------------------------------
 # ** info: more needed fixtures declaration

@@ -33,7 +33,7 @@ class ParameterCore(metaclass=Singleton):
 
     def __init__(self: Self):
         # ** info: providers building
-        self.parameter_provider: ParameterProvider = ParameterProvider()
+        self._parameter_provider: ParameterProvider = ParameterProvider()
 
     # !------------------------------------------------------------------------
     # ! info: driver methods section start
@@ -63,7 +63,7 @@ class ParameterCore(metaclass=Singleton):
     # ** info: cpm pc are initials for core port methods parameter core
     async def cpm_pc_get_set_of_parameter_ids_by_domain(self: Self, domain: str) -> Set[int]:
         logging.info("starting cpm_pc_get_set_of_parameter_ids_by_domain")
-        parameters_list: List[Parameter] = self.parameter_provider.search_parameters_by_domain(domain=domain)
+        parameters_list: List[Parameter] = self._parameter_provider.search_parameters_by_domain(domain=domain)
         parameters_ids: Set[int] = set([parameter.id for parameter in parameters_list])
         logging.info("cpm_pc_get_set_of_parameter_ids_by_domain ended")
         return parameters_ids
@@ -75,7 +75,7 @@ class ParameterCore(metaclass=Singleton):
     # !------------------------------------------------------------------------
 
     async def _search_by_domain(self: Self, domain: str) -> List[Parameter]:
-        parameters: List[Parameter] = self.parameter_provider.search_parameters_by_domain(domain=domain)
+        parameters: List[Parameter] = self._parameter_provider.search_parameters_by_domain(domain=domain)
         return parameters
 
     async def _map_parameter_response(self: Self, parameters: List[Parameter]) -> ParameterSearchResponseDto:
