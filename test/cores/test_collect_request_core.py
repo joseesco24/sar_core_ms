@@ -3,7 +3,6 @@
 # ** info: python imports
 from unittest.mock import AsyncMock
 from unittest.mock import MagicMock
-from unittest.mock import call
 from os.path import join
 from pytest import mark
 from os import path
