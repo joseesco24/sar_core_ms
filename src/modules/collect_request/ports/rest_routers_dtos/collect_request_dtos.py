@@ -14,6 +14,7 @@ from typing import List
 # **info: metadata for the model imports
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos_metadata import collect_request_creation_req_ex
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos_metadata import collect_request_creation_res_ex
+from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos_metadata import collect_request_modify_state_by_id_res_dto
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos_metadata import collect_request_find_by_status_req_dto
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos_metadata import collect_request_find_by_status_res_dto
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos_metadata import collect_request_modify_state_by_id_req_dto
@@ -143,6 +144,8 @@ class ResponseRequestDataDto(BaseModel):
         except ValueError:
             raise ValueError(f"{info.field_name} is not a valid dd/mm/yyyy date")
         return value
+
+    model_config = collect_request_modify_state_by_id_res_dto
 
 
 # !------------------------------------------------------------------------

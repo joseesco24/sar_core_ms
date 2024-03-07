@@ -4,6 +4,7 @@
 import logging
 
 # ** info: typing imports
+from typing import Union
 from typing import List
 from typing import Self
 from typing import Set
@@ -101,10 +102,10 @@ class WasteCore:
     # !------------------------------------------------------------------------
 
     # ** info: cam pc are initials for core adapter methods parameter core
-    async def _cam_pc_get_set_of_parameter_ids_by_domain(self: Self, domain: str) -> Set[int]:
-        logging.info("starting _cam_pc_get_set_of_parameter_ids_by_domain")
+    async def cam_pc_get_set_of_parameter_ids_by_domain(self: Self, domain: str) -> Set[int]:
+        logging.info("starting cam_pc_get_set_of_parameter_ids_by_domain")
         ids: Set[int] = await self._parameter_core.cpm_pc_get_set_of_parameter_ids_by_domain(domain=domain)
-        logging.info("ending _cam_pc_get_set_of_parameter_ids_by_domain")
+        logging.info("ending cam_pc_get_set_of_parameter_ids_by_domain")
         return ids
 
     # !------------------------------------------------------------------------
@@ -112,6 +113,30 @@ class WasteCore:
     # ! warning: all the methods in this section are the ones that are going to be called from another core
     # ! warning: a method only can be declared in this section if it is going to be called from another core
     # !------------------------------------------------------------------------
+
+    # ** info: cpm wc are initials for core port methods waste core
+    async def cpm_wc_create_waste_with_basic_info(
+        self: Self,
+        request_uuid: str,
+        type: int,
+        packaging: int,
+        weight_in_kg: float,
+        volume_in_l: float,
+        description: str,
+        note: Union[str, None] = None,
+    ) -> Waste:
+        logging.info("starting cpm_wc_create_waste_with_basic_info")
+        new_waste: Waste = self._waste_provider.create_waste_with_basic_info(
+            request_uuid=request_uuid,
+            type=type,
+            packaging=packaging,
+            weight_in_kg=weight_in_kg,
+            volume_in_l=volume_in_l,
+            description=description,
+            note=note,
+        )
+        logging.info("ending cpm_wc_create_waste_with_basic_info")
+        return new_waste
 
     # !------------------------------------------------------------------------
     # ! info: private class methods section start
@@ -126,14 +151,14 @@ class WasteCore:
         return WasteClasificationResponseDto(storeType=clasification)
 
     async def _validate_waste_process_status(self: Self, process_status: int) -> None:
-        waste_state_ids: Set[int] = await self._cam_pc_get_set_of_parameter_ids_by_domain(domain=r"wasteProcessStatus")
+        waste_state_ids: Set[int] = await self.cam_pc_get_set_of_parameter_ids_by_domain(domain=r"wasteProcessStatus")
         if process_status not in waste_state_ids:
             valid_state_waste: str = r",".join(str(s) for s in waste_state_ids)
             logging.error(f"process status {process_status} is not valid valid types are {valid_state_waste}")
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"process status {process_status} is not valid")
 
     async def _validate_wastes_state(self: Self, waste_classify_request: WasteClassifyRequestDto) -> None:
-        waste_state_ids: Set[int] = await self._cam_pc_get_set_of_parameter_ids_by_domain(domain=r"stateWaste")
+        waste_state_ids: Set[int] = await self.cam_pc_get_set_of_parameter_ids_by_domain(domain=r"stateWaste")
         if waste_classify_request.stateWaste not in waste_state_ids:
             valid_state_waste: str = r",".join(str(s) for s in waste_state_ids)
             logging.error(f"state type {waste_classify_request.stateWaste} is not valid valid types are {valid_state_waste}")

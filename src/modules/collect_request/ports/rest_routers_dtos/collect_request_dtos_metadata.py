@@ -6,7 +6,7 @@ collect_request_modify_state_by_id_res_dto = {
             {
                 "id": "09fe7cbc-8acf-4147-9b45-d3d79f19ceda",
                 "processStatus": 10,
-                "collectDate": "2024-03-03",
+                "collectDate": "2024/03/03",
                 "productionCenterId": 123456789,
                 "create": "2024-03-03 02:54:12.000000",
                 "update": "2024-03-05 12:35:18.000000",
@@ -25,7 +25,7 @@ collect_request_find_by_status_res_dto = {
                     {
                         "id": "09fe7cbc-8acf-4147-9b45-d3d79f19ceda",
                         "processStatus": 9,
-                        "collectDate": "2024-03-03",
+                        "collectDate": "2024/03/03",
                         "productionCenterId": 123456789,
                         "create": "2024-03-03 02:54:12.000000",
                         "update": "2024-03-03 02:54:12.000000",
@@ -33,7 +33,7 @@ collect_request_find_by_status_res_dto = {
                     {
                         "id": "097d0fd7-847f-4a1c-8f37-0cde338aeaef",
                         "processStatus": 9,
-                        "collectDate": "2024-03-08",
+                        "collectDate": "2024/03/08",
                         "productionCenterId": 15,
                         "create": "2024-03-03 22:54:12.000000",
                         "update": "2024-03-03 22:54:12.000000",

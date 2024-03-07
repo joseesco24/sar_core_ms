@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "4e74ce64-996c-46ad-9a6a-5a10cbe9afc0",
 		"name": "sars_ms_py",
-		"schema": "https://schema.getpostman.com/json/collection/v2.3.0/collection.json",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "8443281"
 	},
 	"item": [
@@ -51,6 +51,81 @@
 				{
 					"name": "collect-request",
 					"item": [
+						{
+							"name": "status",
+							"item": [
+								{
+									"name": "search",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "request-id",
+												"value": "joseesco24",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"processStatus\": 21\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{HOST}}/rest/collect-request/status/search",
+											"host": [
+												"{{HOST}}"
+											],
+											"path": [
+												"rest",
+												"collect-request",
+												"status",
+												"search"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "update",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "request-id",
+												"value": "joseesco24",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"processStatus\": 21,\n    \"collectReqId\": \"094d64d2-cfd3-4299-a606-85bd2e4c18ce\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{HOST}}/rest/collect-request/status/update",
+											"host": [
+												"{{HOST}}"
+											],
+											"path": [
+												"rest",
+												"collect-request",
+												"status",
+												"update"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
 						{
 							"name": "create",
 							"request": {
@@ -135,7 +210,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n  \"isotopesNumber\": 1500,\n  \"stateWaste\": 7,\n  \"storeId\": 4,\n  \"wasteId\": \"0238eaa7-078e-4542-8701-ee18500d7cb5\"\n}",
+											"raw": "{\n  \"isotopesNumber\": 1500,\n  \"stateWaste\": 7,\n  \"storeId\": 4,\n  \"wasteId\": \"ba6828ca-d5e1-4263-a490-773bb7592801\"\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -210,7 +285,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"processStatus\": 11,\n    \"wasteId\": \"213b0bfd-7389-4ce5-b0d4-6d5aaf4661aa\"\n}",
+											"raw": "{\n    \"processStatus\": 11,\n    \"wasteId\": \"ba6828ca-d5e1-4263-a490-773bb7592801\"\n}",
 											"options": {
 												"raw": {
 													"language": "json"

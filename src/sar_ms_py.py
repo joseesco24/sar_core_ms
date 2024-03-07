@@ -25,7 +25,7 @@ from fastapi import FastAPI
 from starlette.middleware.base import BaseHTTPMiddleware
 
 # ** info: rest based routers imports
-from src.modules.collect_request.ports.rest_routers.collect_request_router import CollectRequestRouter  # type: ignore
+from src.modules.collect_request.ports.rest_routers.collect_request_router import collect_request_router  # type: ignore
 from src.modules.parameter.ports.rest_routers.parameter_router import parameter_router
 from src.modules.waste.ports.rest_routers.waster_router import waste_router
 
@@ -65,12 +65,12 @@ metadata: Dict[str, Any] = {
     "description": "This repository corresponds to the a small python microservice that is going to be used used in the sar system.",
     "summary": "Service incharge of managing wastes, collect request, and system parameters.",
     "title": "Sar Python Microservice",
-    "version": "v2.3.0",
+    "version": "v2.4.0",
 }
 
 sar_ms_py: FastAPI
 if env_provider.app_swagger_docs is True:
-    sar_ms_py = FastAPI(swagger_ui_parameters={"defaultModelsExpandDepth": -1}, redoc_url=None, **metadata)
+    sar_ms_py = FastAPI(swagger_ui_parameters={"defaultModelsExpandDepth": -1}, redoc_url=None, **metadata)  # type: ignore
     logging.warning("swagger docs active")
 else:
     sar_ms_py = FastAPI(docs_url=None, redoc_url=None, **metadata)
@@ -86,9 +86,7 @@ rest_router: APIRouter = APIRouter(prefix=path_provider.build_posix_path("rest")
 # ** info: setting rest routers
 # ---------------------------------------------------------------------------------------------------------------------
 
-collect_request_router: CollectRequestRouter = CollectRequestRouter()
-
-rest_router.include_router(router=collect_request_router.router)
+rest_router.include_router(router=collect_request_router)
 rest_router.include_router(router=parameter_router)
 rest_router.include_router(router=waste_router)
 

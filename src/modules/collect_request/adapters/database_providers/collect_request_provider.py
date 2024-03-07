@@ -69,7 +69,7 @@ class CollectRequestProvider:
         new_collect_request: CollectRequest = CollectRequest(
             production_center_id=production_center_id,
             collect_date=collect_date,
-            process_status=9,
+            process_status=21,
             create=date_time,
             update=date_time,
             uuid=uuid,
@@ -80,6 +80,7 @@ class CollectRequestProvider:
         logging.debug("new collect request created")
         return new_collect_request
 
+    @cached(cache=TTLCache(ttl=60, maxsize=20))
     def find_collects_requests_by_state(self: Self, process_status: int) -> list[CollectRequest]:
         session: Session = self._session_manager.obtain_session()
         query: Any = select(CollectRequest).where(CollectRequest.process_status == process_status)
