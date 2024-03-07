@@ -55,10 +55,11 @@ class MySQLManager:
 
         if self._session is not None and self._session.is_active is True:
             self._session.close()
-        if self._session is not None and self._session.is_active is False:
-            self._session.begin()
 
         self._check_session_health()
+
+        if self._session is not None and self._session.is_active is False:
+            self._session.begin()
 
         logging.info("connection obtained")
 
