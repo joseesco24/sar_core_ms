@@ -62,10 +62,12 @@ fi
 
 # ** info: linting files
 print_title "Linting Files"
+flake8 ./test --max-line-length=180 --verbose
 flake8 ./src --max-line-length=180 --verbose
 
 # ** info: validating typos
 print_title "Validating Typos"
+mypy --explicit-package-bases ./test
 mypy --explicit-package-bases ./src
 
 # ** info: linting files

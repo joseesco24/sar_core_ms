@@ -9,8 +9,8 @@
 	"readme": "readme.md",
 	"scripts": {
 		"export-dependencies": "poetry export --without-hashes --only dev --format=requirements.txt > ./requirements/dev.txt && poetry export --without-hashes --format=requirements.txt > ./requirements/app.txt",
+		"lint": "flake8 ./src --max-line-length=180 --verbose && mypy --explicit-package-bases ./src && flake8 ./test --max-line-length=180 --verbose && mypy --explicit-package-bases ./test",
 		"clean-cache": "find . | grep -E \"(/__pycache__$|\\.pyc$|\\.pyo$)\" | xargs rm -rf && rm -r .mypy_cache .pytest_cache",
-		"lint": "flake8 ./src --max-line-length=180 --verbose && mypy --explicit-package-bases ./src",
 		"docker-dependencies-stop": "docker compose -f docker_compose/deploy.dependencies.yaml down",
 		"docker-dependencies-start": "docker compose -f docker_compose/deploy.dependencies.yaml up",
 		"docker-image-build": "cp -f ./env/production.env .env && docker compose -f docker_compose/image.build.yaml build",
