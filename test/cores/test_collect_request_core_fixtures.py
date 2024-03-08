@@ -16,6 +16,7 @@ from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos im
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestFindByStatusReqDto  # type: ignore
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestCreateResponseDto  # type: ignore
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestCreateRequestDto  # type: ignore
+from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestModifyByIdReqDto  # type: ignore
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import ResponseRequestDataDto  # type: ignore
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import RequestRequestDataDto  # type: ignore
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import ResponseWasteDataDto  # type: ignore
@@ -185,3 +186,8 @@ request_create_response_fixture_1: CollectRequestCreateResponseDto = CollectRequ
 request_find_request_by_status_fixture_1: CollectRequestFindByStatusReqDto = CollectRequestFindByStatusReqDto(processStatus=9)
 
 collect_request_find_by_status_fixture_1: CollectRequestFindByStatusResDto = CollectRequestFindByStatusResDto(values=[response_request_data_dto_fixture_1])
+
+collect_request_modify_by_id_req_dto_fixture_1: CollectRequestModifyByIdReqDto = CollectRequestModifyByIdReqDto(
+    collectReqId=collect_request.uuid,
+    processStatus=9,
+)
