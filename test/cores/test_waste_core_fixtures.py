@@ -16,6 +16,7 @@ from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteClasificat
 from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteFilterByStatusRequestDto  # type: ignore
 from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteClasificationRequestDto  # type: ignore
 from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteFullDataResponseListDto  # type: ignore
+from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteUpdateStatusRequestDto  # type: ignore
 from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteFullDataResponseDto  # type: ignore
 from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteClassifyRequestDto  # type: ignore
 
@@ -153,5 +154,14 @@ update_waste_casification_request_fixture_1: WasteClassifyRequestDto = WasteClas
 # ---------------------------------------------------------------------------------------------------------------------
 
 waste_filter_by_status_request_fixture_1: WasteFilterByStatusRequestDto = WasteFilterByStatusRequestDto(
+    processStatus=9,
+)
+
+# ---------------------------------------------------------------------------------------------------------------------
+# ** info: building mocks
+# ---------------------------------------------------------------------------------------------------------------------
+
+waste_update_status_request_fixture_1: WasteUpdateStatusRequestDto = WasteUpdateStatusRequestDto(
+    wasteId="08893dbf-ebd1-4717-988b-fd15ddff12c9",
     processStatus=9,
 )
