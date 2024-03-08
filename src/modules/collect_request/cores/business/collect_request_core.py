@@ -71,16 +71,16 @@ class CollectRequestCore:
     async def driver_find_request_by_status(self: Self, request_find_request_by_status: CollectRequestFindByStatusReqDto) -> CollectRequestFindByStatusResDto:
         logging.info("starting driver_find_request_by_status")
         await self._validate_collect_request_process_status(process_status=request_find_request_by_status.processStatus)
-        CollectRequest_info: List[CollectRequest] = self._collect_request_provider.find_collects_requests_by_state(process_status=request_find_request_by_status.processStatus)
-        find_request_by_status_response: CollectRequestFindByStatusResDto = await self._map_full_collect_response_list(CollectRequest_info=CollectRequest_info)
+        collect_request_info: List[CollectRequest] = self._collect_request_provider.find_collects_requests_by_state(process_status=request_find_request_by_status.processStatus)
+        find_request_by_status_response: CollectRequestFindByStatusResDto = await self._map_full_collect_response_list(collect_request_info=collect_request_info)
         logging.info("driver_find_request_by_status ended")
         return find_request_by_status_response
 
     async def driver_modify_request_by_id(self: Self, request_modify_request_by_id: CollectRequestModifyByIdReqDto) -> ResponseRequestDataDto:
         logging.info("starting driver_modify_request_by_id")
         await self._validate_collect_request_process_status(process_status=request_modify_request_by_id.processStatus)
-        CollectRequest_info: CollectRequest = await self._modify_collect_request(request_modify_request_by_id=request_modify_request_by_id)
-        modify_request_by_id_response: ResponseRequestDataDto = await self._map_full_collect_response(CollectRequest_info=CollectRequest_info)
+        collect_request_info: CollectRequest = await self._modify_collect_request(request_modify_request_by_id=request_modify_request_by_id)
+        modify_request_by_id_response: ResponseRequestDataDto = await self._map_full_collect_response(collect_request_info=collect_request_info)
         logging.info("driver_modify_request_by_id ended")
         return modify_request_by_id_response
 
@@ -147,10 +147,10 @@ class CollectRequestCore:
         return collect_request_info
 
     async def _modify_collect_request(self: Self, request_modify_request_by_id: CollectRequestModifyByIdReqDto) -> CollectRequest:
-        CollectRequest_info: CollectRequest = self._collect_request_provider.modify_collect_request_by_id(
+        collect_request_info: CollectRequest = self._collect_request_provider.modify_collect_request_by_id(
             uuid=request_modify_request_by_id.collectReqId, process_status=request_modify_request_by_id.processStatus
         )
-        return CollectRequest_info
+        return collect_request_info
 
     async def _validate_collect_request_process_status(self: Self, process_status: int) -> None:
         collect_state_ids: Set[int] = await self.cam_pc_get_set_of_parameter_ids_by_domain(domain=r"collectRequestProcessStatus")
@@ -165,20 +165,20 @@ class CollectRequestCore:
             waste=await self._map_collect_response_wastes_info(wastes_info=wastes_info),
         )
 
-    async def _map_full_collect_response_list(self: Self, CollectRequest_info: List[CollectRequest]) -> CollectRequestFindByStatusResDto:
-        return CollectRequestFindByStatusResDto(values=await self._map_full_collect_responses(CollectRequest_info=CollectRequest_info))
+    async def _map_full_collect_response_list(self: Self, collect_request_info: List[CollectRequest]) -> CollectRequestFindByStatusResDto:
+        return CollectRequestFindByStatusResDto(values=await self._map_full_collect_responses(collect_request_info=collect_request_info))
 
-    async def _map_full_collect_responses(self: Self, CollectRequest_info: List[CollectRequest]) -> List[ResponseRequestDataDto]:
-        return [await self._map_full_collect_response(CollectRequest_info=CollectRequest_info) for CollectRequest_info in CollectRequest_info]
+    async def _map_full_collect_responses(self: Self, collect_request_info: List[CollectRequest]) -> List[ResponseRequestDataDto]:
+        return [await self._map_full_collect_response(collect_request_info=collect_request_info) for collect_request_info in collect_request_info]
 
-    async def _map_full_collect_response(self: Self, CollectRequest_info: CollectRequest) -> ResponseRequestDataDto:
-        created: str = self._datetime_provider.prettify_date_time_obj(date_time_obj=CollectRequest_info.create)
-        updated: str = self._datetime_provider.prettify_date_time_obj(date_time_obj=CollectRequest_info.update)
+    async def _map_full_collect_response(self: Self, collect_request_info: CollectRequest) -> ResponseRequestDataDto:
+        created: str = self._datetime_provider.prettify_date_time_obj(date_time_obj=collect_request_info.create)
+        updated: str = self._datetime_provider.prettify_date_time_obj(date_time_obj=collect_request_info.update)
         CollectRequest_full_data_response: ResponseRequestDataDto = ResponseRequestDataDto(
-            id=CollectRequest_info.uuid,
-            collectDate=self._datetime_provider.prettify_date_obj(CollectRequest_info.collect_date),
-            processStatus=CollectRequest_info.process_status,
-            productionCenterId=CollectRequest_info.production_center_id,
+            id=collect_request_info.uuid,
+            collectDate=self._datetime_provider.prettify_date_obj(collect_request_info.collect_date),
+            processStatus=collect_request_info.process_status,
+            productionCenterId=collect_request_info.production_center_id,
             update=updated,
             create=created,
         )

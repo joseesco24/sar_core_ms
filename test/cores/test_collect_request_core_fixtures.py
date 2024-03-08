@@ -12,6 +12,8 @@ from typing import Set
 sys.path.append(join(path.dirname(path.realpath(__file__)), "..", "..", "."))
 
 # ** info: dtos imports
+from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestFindByStatusResDto  # type: ignore
+from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestFindByStatusReqDto  # type: ignore
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestCreateResponseDto  # type: ignore
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestCreateRequestDto  # type: ignore
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import ResponseRequestDataDto  # type: ignore
@@ -179,3 +181,7 @@ request_create_response_fixture_1: CollectRequestCreateResponseDto = CollectRequ
     waste=response_waste_data_dto_list_fixture_1,
     request=response_request_data_dto_fixture_1,
 )
+
+request_find_request_by_status_fixture_1: CollectRequestFindByStatusReqDto = CollectRequestFindByStatusReqDto(processStatus=9)
+
+collect_request_find_by_status_fixture_1: CollectRequestFindByStatusResDto = CollectRequestFindByStatusResDto(values=[response_request_data_dto_fixture_1])
