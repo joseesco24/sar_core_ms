@@ -60,10 +60,12 @@ class CollectRequestCore:
     # !------------------------------------------------------------------------
 
     async def driver_create_request(self: Self, request_create_request: CollectRequestCreateRequestDto) -> CollectRequestCreateResponseDto:
+        logging.info("starting driver_create_request")
         await self._validate_wastes_domains(request_create_request=request_create_request)
         collect_request_info: CollectRequest = await self._store_collect_request(request_create_request=request_create_request)
         wastes_info: List[Waste] = await self.cam_wc_create_waste_with_basic_info(collect_request_id=collect_request_info.uuid, request_create_request=request_create_request)
         request_create_response: CollectRequestCreateResponseDto = await self._map_collect_response(collect_request_info=collect_request_info, wastes_info=wastes_info)
+        logging.info("starting driver_create_request")
         return request_create_response
 
     async def driver_find_request_by_status(self: Self, request_find_request_by_status: CollectRequestFindByStatusReqDto) -> CollectRequestFindByStatusResDto:
