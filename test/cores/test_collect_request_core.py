@@ -27,6 +27,7 @@ from test_collect_request_core_fixtures import wastes_list  # type: ignore
 # ---------------------------------------------------------------------------------------------------------------------
 # ** info: building mocks
 # ** info: only the methods that interact with external systems are mocked, the rest of the methods are tested
+# !! info: this includes only adapters from the same module and cpms (core port methods) from other cores
 # ---------------------------------------------------------------------------------------------------------------------
 
 collect_request_core: CollectRequestCore = CollectRequestCore()

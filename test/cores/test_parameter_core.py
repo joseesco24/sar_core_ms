@@ -24,6 +24,7 @@ from test_parameter_core_fixtures import parameter_list_fixture_1  # type: ignor
 # ---------------------------------------------------------------------------------------------------------------------
 # ** info: building mocks
 # ** info: only the methods that interact with external systems are mocked, the rest of the methods are tested
+# !! info: this includes only adapters from the same module and cpms (core port methods) from other cores
 # ---------------------------------------------------------------------------------------------------------------------
 
 parameter_core: ParameterCore = ParameterCore()
