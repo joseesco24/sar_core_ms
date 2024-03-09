@@ -43,7 +43,7 @@ waste_core._parameter_core.cpm_pc_get_set_of_parameter_ids_by_domain = AsyncMock
 waste_core._waste_provider.update_waste_internal_classification_info = MagicMock(return_value=waste_1)  # type: ignore
 waste_core._waste_provider.list_wastes_by_process_status = MagicMock(return_value=wastes_list)  # type: ignore
 waste_core._waste_provider.update_waste_status = MagicMock(return_value=waste_2)  # type: ignore
-waste_core._brms_service.obtain_waste_clasification = MagicMock(return_value=1)  # type: ignore
+waste_core._brms_service.obtain_waste_clasification = AsyncMock(return_value=1)  # type: ignore
 
 # ---------------------------------------------------------------------------------------------------------------------
 # ** info: executing tests

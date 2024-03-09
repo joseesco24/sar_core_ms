@@ -145,7 +145,7 @@ class WasteCore:
     # !------------------------------------------------------------------------
 
     async def _obtain_waste_clasification(self: Self, state_waste: str, weight_in_kg: float, isotopes_number: float) -> int:
-        return self._brms_service.obtain_waste_clasification(state_waste=state_waste, weight_in_kg=weight_in_kg, isotopes_number=isotopes_number)
+        return await self._brms_service.obtain_waste_clasification(state_waste=state_waste, weight_in_kg=weight_in_kg, isotopes_number=isotopes_number)
 
     async def _map_waste_classify_response(self: Self, clasification: int) -> WasteClasificationResponseDto:
         return WasteClasificationResponseDto(storeType=clasification)
