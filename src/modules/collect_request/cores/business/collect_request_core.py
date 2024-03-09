@@ -63,7 +63,7 @@ class CollectRequestCore:
         logging.info("starting driver_create_request")
         await self._validate_wastes_domains(request_create_request=request_create_request)
         collect_request_info: CollectRequest = await self._store_collect_request(request_create_request=request_create_request)
-        wastes_info: List[Waste] = await self.cam_wc_create_waste_with_basic_info(collect_request_id=collect_request_info.uuid, request_create_request=request_create_request)
+        wastes_info: List[Waste] = await self._cam_wc_create_waste_with_basic_info(collect_request_id=collect_request_info.uuid, request_create_request=request_create_request)
         request_create_response: CollectRequestCreateResponseDto = await self._map_collect_response(collect_request_info=collect_request_info, wastes_info=wastes_info)
         logging.info("starting driver_create_request")
         return request_create_response
@@ -91,14 +91,14 @@ class CollectRequestCore:
     # !------------------------------------------------------------------------
 
     # ** info: cam pc are initials for core adapter methods parameter core
-    async def cam_pc_get_set_of_parameter_ids_by_domain(self: Self, domain: str) -> Set[int]:
-        logging.info("starting cam_pc_get_set_of_parameter_ids_by_domain")
+    async def _cam_pc_get_set_of_parameter_ids_by_domain(self: Self, domain: str) -> Set[int]:
+        logging.info("starting _cam_pc_get_set_of_parameter_ids_by_domain")
         ids: Set[int] = await self._parameter_core.cpm_pc_get_set_of_parameter_ids_by_domain(domain=domain)
-        logging.info("ending cam_pc_get_set_of_parameter_ids_by_domain")
+        logging.info("ending _cam_pc_get_set_of_parameter_ids_by_domain")
         return ids
 
     # ** info: cam wc are initials for core adapter methods waste core
-    async def cam_wc_create_waste_with_basic_info(self: Self, collect_request_id: str, request_create_request: CollectRequestCreateRequestDto) -> List[Waste]:
+    async def _cam_wc_create_waste_with_basic_info(self: Self, collect_request_id: str, request_create_request: CollectRequestCreateRequestDto) -> List[Waste]:
         logging.info("starting cpm_wc_create_waste_with_basic_info")
         wastes: List[Waste] = []
         for waste in request_create_request.waste:
@@ -128,8 +128,8 @@ class CollectRequestCore:
     # !------------------------------------------------------------------------
 
     async def _validate_wastes_domains(self: Self, request_create_request: CollectRequestCreateRequestDto) -> None:
-        waste_packaging_types_ids: Set[int] = await self.cam_pc_get_set_of_parameter_ids_by_domain(domain=r"wastePackagingType")
-        waste_types_ids: Set[int] = await self.cam_pc_get_set_of_parameter_ids_by_domain(domain=r"wasteType")
+        waste_packaging_types_ids: Set[int] = await self._cam_pc_get_set_of_parameter_ids_by_domain(domain=r"wastePackagingType")
+        waste_types_ids: Set[int] = await self._cam_pc_get_set_of_parameter_ids_by_domain(domain=r"wasteType")
         for waste in request_create_request.waste:
             if waste.packaging not in waste_packaging_types_ids:
                 valid_waste_types: str = r",".join(str(s) for s in waste_packaging_types_ids)
@@ -153,7 +153,7 @@ class CollectRequestCore:
         return collect_request_info
 
     async def _validate_collect_request_process_status(self: Self, process_status: int) -> None:
-        collect_state_ids: Set[int] = await self.cam_pc_get_set_of_parameter_ids_by_domain(domain=r"collectRequestProcessStatus")
+        collect_state_ids: Set[int] = await self._cam_pc_get_set_of_parameter_ids_by_domain(domain=r"collectRequestProcessStatus")
         if process_status not in collect_state_ids:
             valid_state_collect: str = r",".join(str(s) for s in collect_state_ids)
             logging.error(f"process status {process_status} is not valid valid types are {valid_state_collect}")

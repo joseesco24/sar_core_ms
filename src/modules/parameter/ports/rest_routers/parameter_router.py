@@ -34,6 +34,6 @@ _parameter_core: ParameterCore = ParameterCore()
     response_model=ParameterSearchResponseDto,
     status_code=status.HTTP_200_OK,
 )
-async def _api_search_parameter(parameter_search_request: ParameterSearchRequestDto = Body(...)) -> ParameterSearchResponseDto:
+async def api_search_parameter(parameter_search_request: ParameterSearchRequestDto = Body(...)) -> ParameterSearchResponseDto:
     parameter_search_response: ParameterSearchResponseDto = await _parameter_core.driver_search_parameter(parameter_search_request)
     return parameter_search_response

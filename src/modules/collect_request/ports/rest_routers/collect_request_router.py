@@ -39,7 +39,7 @@ _collect_request_core: CollectRequestCore = CollectRequestCore()
     response_model=CollectRequestCreateResponseDto,
     status_code=status.HTTP_200_OK,
 )
-async def _api_create_request(request_create_request: CollectRequestCreateRequestDto = Body(...)) -> CollectRequestCreateResponseDto:
+async def api_create_request(request_create_request: CollectRequestCreateRequestDto = Body(...)) -> CollectRequestCreateResponseDto:
     request_create_response: CollectRequestCreateResponseDto = await _collect_request_core.driver_create_request(request_create_request)
     return request_create_response
 
@@ -51,7 +51,7 @@ async def _api_create_request(request_create_request: CollectRequestCreateReques
     response_model=CollectRequestFindByStatusResDto,
     status_code=status.HTTP_200_OK,
 )
-async def _api_find_collectReq_by_status(request_find_request_by_status: CollectRequestFindByStatusReqDto = Body(...)) -> CollectRequestFindByStatusResDto:
+async def api_find_request_by_status(request_find_request_by_status: CollectRequestFindByStatusReqDto = Body(...)) -> CollectRequestFindByStatusResDto:
     request_create_response: CollectRequestFindByStatusResDto = await _collect_request_core.driver_find_request_by_status(request_find_request_by_status)
     return request_create_response
 
@@ -63,6 +63,6 @@ async def _api_find_collectReq_by_status(request_find_request_by_status: Collect
     response_model=ResponseRequestDataDto,
     status_code=status.HTTP_200_OK,
 )
-async def _api_modify_collectReq_by_id(request_modify_request_by_id: CollectRequestModifyByIdReqDto = Body(...)) -> ResponseRequestDataDto:
+async def api_modify_request_by_id(request_modify_request_by_id: CollectRequestModifyByIdReqDto = Body(...)) -> ResponseRequestDataDto:
     request_create_response: ResponseRequestDataDto = await _collect_request_core.driver_modify_request_by_id(request_modify_request_by_id)
     return request_create_response

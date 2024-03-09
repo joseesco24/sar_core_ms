@@ -39,7 +39,7 @@ _waste_core: WasteCore = WasteCore()
     response_model=WasteClasificationResponseDto,
     status_code=status.HTTP_200_OK,
 )
-async def _api_obtain_waste_classify(parameter_search_request: WasteClasificationRequestDto = Body(...)) -> WasteClasificationResponseDto:
+async def api_obtain_waste_classify(parameter_search_request: WasteClasificationRequestDto = Body(...)) -> WasteClasificationResponseDto:
     obtain_waste_classify_response: WasteClasificationResponseDto = await _waste_core.driver_obtain_waste_classify(parameter_search_request)
     return obtain_waste_classify_response
 
@@ -51,7 +51,7 @@ async def _api_obtain_waste_classify(parameter_search_request: WasteClasificatio
     response_model=WasteFullDataResponseDto,
     status_code=status.HTTP_200_OK,
 )
-async def _api_update_waste_classify(waste_classify_request: WasteClassifyRequestDto = Body(...)) -> WasteFullDataResponseDto:
+async def api_update_waste_classify(waste_classify_request: WasteClassifyRequestDto = Body(...)) -> WasteFullDataResponseDto:
     update_waste_classify_response: WasteFullDataResponseDto = await _waste_core.driver_update_waste_classify(waste_classify_request)
     return update_waste_classify_response
 
@@ -63,7 +63,7 @@ async def _api_update_waste_classify(waste_classify_request: WasteClassifyReques
     response_model=WasteFullDataResponseListDto,
     status_code=status.HTTP_200_OK,
 )
-async def _api_search_waste_by_status(filter_waste_by_status_request: WasteFilterByStatusRequestDto = Body(...)) -> WasteFullDataResponseListDto:
+async def api_search_waste_by_status(filter_waste_by_status_request: WasteFilterByStatusRequestDto = Body(...)) -> WasteFullDataResponseListDto:
     filtered_wastes_response: WasteFullDataResponseListDto = await _waste_core.driver_search_waste_by_status(filter_waste_by_status_request)
     return filtered_wastes_response
 
@@ -75,6 +75,6 @@ async def _api_search_waste_by_status(filter_waste_by_status_request: WasteFilte
     response_model=WasteFullDataResponseDto,
     status_code=status.HTTP_200_OK,
 )
-async def _api_update_waste_status(waste_update_status_request: WasteUpdateStatusRequestDto = Body(...)) -> WasteFullDataResponseDto:
+async def api_update_waste_status(waste_update_status_request: WasteUpdateStatusRequestDto = Body(...)) -> WasteFullDataResponseDto:
     waste_update_status_response: WasteFullDataResponseDto = await _waste_core.driver_update_waste_status(waste_update_status_request)
     return waste_update_status_response

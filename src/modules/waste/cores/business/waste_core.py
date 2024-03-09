@@ -102,10 +102,10 @@ class WasteCore:
     # !------------------------------------------------------------------------
 
     # ** info: cam pc are initials for core adapter methods parameter core
-    async def cam_pc_get_set_of_parameter_ids_by_domain(self: Self, domain: str) -> Set[int]:
-        logging.info("starting cam_pc_get_set_of_parameter_ids_by_domain")
+    async def _cam_pc_get_set_of_parameter_ids_by_domain(self: Self, domain: str) -> Set[int]:
+        logging.info("starting _cam_pc_get_set_of_parameter_ids_by_domain")
         ids: Set[int] = await self._parameter_core.cpm_pc_get_set_of_parameter_ids_by_domain(domain=domain)
-        logging.info("ending cam_pc_get_set_of_parameter_ids_by_domain")
+        logging.info("ending _cam_pc_get_set_of_parameter_ids_by_domain")
         return ids
 
     # !------------------------------------------------------------------------
@@ -151,14 +151,14 @@ class WasteCore:
         return WasteClasificationResponseDto(storeType=clasification)
 
     async def _validate_waste_process_status(self: Self, process_status: int) -> None:
-        waste_state_ids: Set[int] = await self.cam_pc_get_set_of_parameter_ids_by_domain(domain=r"wasteProcessStatus")
+        waste_state_ids: Set[int] = await self._cam_pc_get_set_of_parameter_ids_by_domain(domain=r"wasteProcessStatus")
         if process_status not in waste_state_ids:
             valid_state_waste: str = r",".join(str(s) for s in waste_state_ids)
             logging.error(f"process status {process_status} is not valid valid types are {valid_state_waste}")
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"process status {process_status} is not valid")
 
     async def _validate_wastes_state(self: Self, waste_classify_request: WasteClassifyRequestDto) -> None:
-        waste_state_ids: Set[int] = await self.cam_pc_get_set_of_parameter_ids_by_domain(domain=r"stateWaste")
+        waste_state_ids: Set[int] = await self._cam_pc_get_set_of_parameter_ids_by_domain(domain=r"stateWaste")
         if waste_classify_request.stateWaste not in waste_state_ids:
             valid_state_waste: str = r",".join(str(s) for s in waste_state_ids)
             logging.error(f"state type {waste_classify_request.stateWaste} is not valid valid types are {valid_state_waste}")
