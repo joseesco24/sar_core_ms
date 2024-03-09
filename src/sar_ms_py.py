@@ -65,7 +65,7 @@ metadata: Dict[str, Any] = {
     "description": "This repository corresponds to the a small python microservice that is going to be used used in the sar system.",
     "summary": "Service incharge of managing wastes, collect request, and system parameters.",
     "title": "Sar Python Microservice",
-    "version": "v2.5.1",
+    "version": "v2.6.0",
 }
 
 sar_ms_py: FastAPI
