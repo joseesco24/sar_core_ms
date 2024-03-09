@@ -13,6 +13,9 @@ from typing import Any
 from sqlmodel import Session
 from sqlmodel import select
 
+# ** info: stamina imports
+from stamina import retry
+
 # ** info: users entity
 from src.modules.parameter.adapters.database_providers_entities.parameter_entity import Parameter
 
@@ -45,6 +48,7 @@ class ParameterProvider:
         )
 
     @cached(cache=TTLCache(ttl=240, maxsize=20))
+    @retry(on=Exception, attempts=4, wait_initial=0.08, wait_exp_base=2)
     def search_parameters_by_domain(self: Self, domain: str) -> List[Parameter]:
         logging.debug(f"searching parameters by domain {domain}")
         session: Session = self._session_manager.obtain_session()

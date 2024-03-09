@@ -17,10 +17,11 @@ from fastapi import status
 from sqlmodel import Session
 from sqlmodel import select
 
+# ** info: stamina imports
+from stamina import retry
+
 # ** info: users entity
-from src.modules.collect_request.adapters.database_providers_entities.collect_request_entity import (
-    CollectRequest,
-)
+from src.modules.collect_request.adapters.database_providers_entities.collect_request_entity import CollectRequest
 
 # ** info: sidecards.database_managers imports
 from src.sidecards.database_managers.mysql_manager import MySQLManager
@@ -53,6 +54,7 @@ class CollectRequestProvider:
         )
 
     @cached(cache=TTLCache(ttl=60, maxsize=20))
+    @retry(on=Exception, attempts=4, wait_initial=0.08, wait_exp_base=2)
     def search_collect_request_by_id(self: Self, uuid: str) -> CollectRequest:
         logging.debug(f"searching collect request by id {uuid}")
         session: Session = self._session_manager.obtain_session()
@@ -61,6 +63,7 @@ class CollectRequestProvider:
         logging.debug("searching collect request by id ended")
         return search_collect_request_by_id_result
 
+    @retry(on=Exception, attempts=4, wait_initial=0.08, wait_exp_base=2)
     def store_collect_request(self: Self, collect_date: str, production_center_id: int) -> CollectRequest:
         logging.debug("creating a new collect request")
         session: Session = self._session_manager.obtain_session()
@@ -81,12 +84,14 @@ class CollectRequestProvider:
         return new_collect_request
 
     @cached(cache=TTLCache(ttl=60, maxsize=20))
+    @retry(on=Exception, attempts=4, wait_initial=0.08, wait_exp_base=2)
     def find_collects_requests_by_state(self: Self, process_status: int) -> list[CollectRequest]:
         session: Session = self._session_manager.obtain_session()
         query: Any = select(CollectRequest).where(CollectRequest.process_status == process_status)
         find_collect_request_by_state_result: list[CollectRequest] = session.exec(statement=query).all()
         return find_collect_request_by_state_result
 
+    @retry(on=Exception, attempts=4, wait_initial=0.08, wait_exp_base=2)
     def modify_collect_request_by_id(self: Self, uuid: str, process_status: int) -> CollectRequest:
         session: Session = self._session_manager.obtain_session()
         query: Any = select(CollectRequest).where(CollectRequest.uuid == uuid)

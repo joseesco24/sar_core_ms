@@ -14,6 +14,9 @@ from typing import Any
 from sqlmodel import Session
 from sqlmodel import select
 
+# ** info: stamina imports
+from stamina import retry
+
 # ** info: fastapi imports
 from fastapi import HTTPException
 from fastapi import status
@@ -52,6 +55,7 @@ class WasteProvider:
         )
 
     @cached(cache=TTLCache(ttl=60, maxsize=20))
+    @retry(on=Exception, attempts=4, wait_initial=0.08, wait_exp_base=2)
     def search_waste_by_id(self: Self, uuid: str) -> Waste:
         logging.debug(f"searching waste by id {uuid}")
         session: Session = self._session_manager.obtain_session()
@@ -61,6 +65,7 @@ class WasteProvider:
         return search_waste_by_id_result
 
     @cached(cache=TTLCache(ttl=60, maxsize=10))
+    @retry(on=Exception, attempts=4, wait_initial=0.08, wait_exp_base=2)
     def list_wastes_by_process_status(self: Self, process_status: int) -> list[Waste]:
         logging.debug(f"searching wastes by process status {process_status}")
         session: Session = self._session_manager.obtain_session()
@@ -69,6 +74,7 @@ class WasteProvider:
         logging.debug("searching wastes by process status ended")
         return search_waste_by_domain_result
 
+    @retry(on=Exception, attempts=4, wait_initial=0.08, wait_exp_base=2)
     def create_waste_with_basic_info(
         self: Self,
         request_uuid: str,
@@ -102,6 +108,7 @@ class WasteProvider:
         logging.debug("new waste with basic info created")
         return new_waste
 
+    @retry(on=Exception, attempts=4, wait_initial=0.08, wait_exp_base=2)
     def update_waste_internal_classification_info(self: Self, uuid: str, isotopes_number: float, state_waste: int, store: int) -> Waste:
         logging.debug(f"updating waste {uuid} internal classification info")
         session: Session = self._session_manager.obtain_session()
@@ -119,6 +126,7 @@ class WasteProvider:
         logging.debug(f"waste {uuid} internal classification info updated")
         return waste_data
 
+    @retry(on=Exception, attempts=4, wait_initial=0.08, wait_exp_base=2)
     def update_waste_status(self: Self, uuid: str, process_status: int) -> Waste:
         logging.debug(f"updating waste {uuid} status")
         session: Session = self._session_manager.obtain_session()

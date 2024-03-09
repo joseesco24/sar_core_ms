@@ -90,7 +90,7 @@ class MySQLManager:
         logging.critical("shutting down connection")
         self._end_session_and_engine()
         logging.critical("connection shuted down")
-        logging.critical("a new attempt to restart the connection is going to be executed on the next request")
+        logging.critical("a new attempt to restart the connection is going to be executed on the next database request")
         raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE)
 
     def _test_qeury(self: Self) -> bool:

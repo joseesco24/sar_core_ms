@@ -37,7 +37,7 @@ class BrmsService:
         self.base_url: str = str(self._env_provider.sar_brms_base_url)
 
     @async_cached(cache=TTLCache(ttl=240, maxsize=20))
-    @retry(on=HTTPException, attempts=4, wait_initial=0.4, wait_exp_base=0.2)
+    @retry(on=HTTPException, attempts=4, wait_initial=0.4, wait_exp_base=2)
     async def obtain_waste_clasification(self: Self, state_waste: str, weight_in_kg: float, isotopes_number: float) -> int:
         logging.debug("obtaining waste classification from brms")
         data: dict[str, str] = {"stateWaste": state_waste, "weightInKg": weight_in_kg, "isotopesNumber": isotopes_number}
