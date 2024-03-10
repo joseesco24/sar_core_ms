@@ -80,6 +80,11 @@ class CollectRequestCore:
         logging.info("starting driver_modify_request_by_id")
         await self._validate_collect_request_process_status(process_status=request_modify_request_by_id.processStatus)
         collect_request_info: CollectRequest = await self._modify_collect_request(request_modify_request_by_id=request_modify_request_by_id)
+        if request_modify_request_by_id.processStatus == 22:
+            process_status_waste = 13
+        else:
+            process_status_waste = 10
+        await self._cam_wc_update_waste_by_requestId(collect_request_id=request_modify_request_by_id.collectReqId, process_status_waste=process_status_waste)
         modify_request_by_id_response: ResponseRequestDataDto = await self._map_full_collect_response(collect_request_info=collect_request_info)
         logging.info("driver_modify_request_by_id ended")
         return modify_request_by_id_response
@@ -114,6 +119,12 @@ class CollectRequestCore:
             wastes.append(waste_info)
         logging.info("ending cpm_wc_create_waste_with_basic_info")
         return wastes
+
+    # ** info: cam wc are initials for core adapter methods waste core
+    async def _cam_wc_update_waste_by_requestId(self: Self, collect_request_id: str, process_status_waste: int) -> None:
+        logging.info("starting update_waste_by_requestId")
+        await self._waste_core.cpm_wc_update_waste_by_requestId(request_uuid=collect_request_id, process_status=process_status_waste)
+        logging.info("ending update_waste_by_requestId")
 
     # !------------------------------------------------------------------------
     # ! info: core port methods section start

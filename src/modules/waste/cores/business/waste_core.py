@@ -138,6 +138,15 @@ class WasteCore:
         logging.info("ending cpm_wc_create_waste_with_basic_info")
         return new_waste
 
+    async def cpm_wc_update_waste_by_requestId(
+        self: Self,
+        request_uuid: str,
+        process_status: int,
+    ) -> None:
+        logging.info("starting cpm_wc_update_waste_by_requestId")
+        self._waste_provider.update_waste_status_by_requestId(request_uuid=request_uuid, process_status=process_status)
+        logging.info("ending cpm_wc_update_waste_by_requestId")
+
     # !------------------------------------------------------------------------
     # ! info: private class methods section start
     # ! warning: all the methods in this section are the ones that are going to be called from inside this core
