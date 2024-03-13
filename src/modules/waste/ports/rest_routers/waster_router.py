@@ -1,6 +1,7 @@
 # !/usr/bin/python3
 
 # ** info: fastapi imports
+from fastapi import HTTPException
 from fastapi import APIRouter
 from fastapi import status
 from fastapi import Body
@@ -74,7 +75,9 @@ async def api_search_waste_by_status(filter_waste_by_status_request: WasteFilter
     path=_path_provider.build_posix_path("status", "update"),
     response_model=WasteFullDataResponseDto,
     status_code=status.HTTP_200_OK,
+    deprecated=True,
 )
 async def api_update_waste_status(waste_update_status_request: WasteUpdateStatusRequestDto = Body(...)) -> WasteFullDataResponseDto:
+    raise HTTPException(status_code=status.HTTP_501_NOT_IMPLEMENTED, detail="api deprecated")
     waste_update_status_response: WasteFullDataResponseDto = await _waste_core.driver_update_waste_status(waste_update_status_request)
     return waste_update_status_response
