@@ -3,6 +3,9 @@
 # ** info: python imports
 import logging
 
+# ** info: asyncio imports
+from asyncio import gather
+
 # ** info: typing imports
 from typing import Union
 from typing import List
@@ -31,7 +34,8 @@ from src.modules.waste.adapters.database_providers_entities.waste_entity import 
 # ** info: providers imports
 from src.modules.waste.adapters.database_providers.waste_provider import WasteProvider  # type: ignore
 
-# ** info: ports imports
+# ** info: adapter imports
+from src.modules.waste.adapters.rest_services.warehouse_ms_service import WarehouseMsService  # type: ignore
 from src.modules.waste.adapters.rest_services.brms_service import BrmsService  # type: ignore
 
 # ** info: sidecards.artifacts imports
@@ -46,7 +50,7 @@ class WasteCore:
     # ! info: core slots section start
     # !------------------------------------------------------------------------
 
-    __slots__ = ["_parameter_core", "_waste_provider", "_brms_service", "_datetime_provider"]
+    __slots__ = ["_parameter_core", "_waste_provider", "_warehouse_ms_service", "_brms_service", "_datetime_provider"]
 
     # !------------------------------------------------------------------------
     # ! info: core atributtes and constructor section start
@@ -58,6 +62,7 @@ class WasteCore:
         # ** info: providers building
         self._waste_provider: WasteProvider = WasteProvider()
         # ** info: rest services building
+        self._warehouse_ms_service: WarehouseMsService = WarehouseMsService()
         self._brms_service: BrmsService = BrmsService()
         # ** info: sidecards building
         self._datetime_provider: DatetimeProvider = DatetimeProvider()
@@ -80,6 +85,12 @@ class WasteCore:
     async def driver_update_waste_classify(self: Self, waste_classify_request: WasteClassifyRequestDto) -> WasteFullDataResponseDto:
         logging.info("starting driver_update_waste_classify")
         await self._validate_wastes_state(waste_classify_request=waste_classify_request)
+        warehouse_capacity_and_waste_data = await self._get_warehouse_capacity_and_waste_data(warehouse_id=waste_classify_request.storeId, waste_id=waste_classify_request.wasteId)
+        warehouse_current_capacity: float = warehouse_capacity_and_waste_data[0]
+        waste_wight_in_kg: float = float(warehouse_capacity_and_waste_data[1].weight_in_kg)
+        await self._validate_warehouse_capacity_vs_waste_weight(waste_weight_in_kg=waste_wight_in_kg, warehouse_current_capacity=warehouse_current_capacity)
+        new_warehouse_capacity: float = await self._compute_new_warehouse_capacity(warehouse_current_capacity=warehouse_current_capacity, waste_weight_in_kg=waste_wight_in_kg)
+        await self._update_warehouse_current_capacity(warehouse_id=waste_classify_request.storeId, new_warehouse_capacity=new_warehouse_capacity)
         waste_info: Waste = await self._waste_classify_request(waste_classify_request=waste_classify_request)
         update_waste_classify_response: WasteFullDataResponseDto = await self._map_full_data_response(waste_info=waste_info)
         logging.info("driver_update_waste_classify ended")
@@ -219,3 +230,27 @@ class WasteCore:
         if waste_info.store is not None:
             waste_full_data_response.storeType = waste_info.store
         return waste_full_data_response
+
+    async def _get_warehouse_current_capacity(self: Self, warehouse_id: int) -> float:
+        return await self._warehouse_ms_service.obtain_warehouse_current_capacity(warehouse_id=warehouse_id)
+
+    async def _get_waste_data_by_id(self: Self, uuid: str) -> Waste:
+        waste: Waste = self._waste_provider.search_waste_by_id(uuid=uuid)
+        if waste is None:
+            logging.error(f"waste with id {uuid} not found")
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"waste with id {uuid} not found")
+        return waste
+
+    async def _get_warehouse_capacity_and_waste_data(self: Self, warehouse_id: int, waste_id: str) -> tuple[float, Waste]:
+        return await gather(self._get_warehouse_current_capacity(warehouse_id=warehouse_id), self._get_waste_data_by_id(uuid=waste_id))
+
+    async def _validate_warehouse_capacity_vs_waste_weight(self: Self, warehouse_current_capacity: float, waste_weight_in_kg: float) -> None:
+        if warehouse_current_capacity < waste_weight_in_kg:
+            logging.error(f"warehouse capacity {warehouse_current_capacity} is less than waste weight {waste_weight_in_kg}")
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"warehouse capacity {warehouse_current_capacity} is less than waste weight {waste_weight_in_kg}")
+
+    async def _compute_new_warehouse_capacity(self: Self, warehouse_current_capacity: float, waste_weight_in_kg: float) -> float:
+        return warehouse_current_capacity - waste_weight_in_kg
+
+    async def _update_warehouse_current_capacity(self: Self, warehouse_id: int, new_warehouse_capacity: float) -> float:
+        return await self._warehouse_ms_service.update_warehouse_current_capacity(warehouse_id=warehouse_id, new_warehouse_capacity=new_warehouse_capacity)

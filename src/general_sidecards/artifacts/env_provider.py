@@ -48,4 +48,5 @@ class EnvProvider(BaseSettings):
     database_port: int = Field(..., validation_alias="DATABASE_PORT")
 
     # ** info: external microservices base urls
+    sar_warehouse_ms_base_url: HttpUrl = Field(..., validation_alias="SAR_WAREHOUSE_MS_BASE_URL")
     sar_brms_base_url: HttpUrl = Field(..., validation_alias="SAR_BRMS_BASE_URL")
