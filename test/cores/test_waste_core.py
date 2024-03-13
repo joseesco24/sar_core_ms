@@ -39,7 +39,7 @@ from test_waste_core_fixtures import waste_2  # type: ignore
 # ---------------------------------------------------------------------------------------------------------------------
 
 waste_core: WasteCore = WasteCore()
-waste_core._parameter_core.cpm_pc_get_set_of_parameter_ids_by_domain = AsyncMock(return_value=set([1, 9]))  # type: ignore
+type(waste_core._parameter_core).cpm_pc_get_set_of_parameter_ids_by_domain = AsyncMock(return_value=set([1, 9]))  # type: ignore
 waste_core._waste_provider.update_waste_internal_classification_info = MagicMock(return_value=waste_1)  # type: ignore
 waste_core._waste_provider.list_wastes_by_process_status = MagicMock(return_value=wastes_list)  # type: ignore
 waste_core._waste_provider.update_waste_status = MagicMock(return_value=waste_2)  # type: ignore

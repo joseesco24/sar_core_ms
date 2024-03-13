@@ -37,9 +37,9 @@ from test_collect_request_core_fixtures import wastes_list  # type: ignore
 # ---------------------------------------------------------------------------------------------------------------------
 
 collect_request_core: CollectRequestCore = CollectRequestCore()
-collect_request_core._parameter_core.cpm_pc_get_set_of_parameter_ids_by_domain = AsyncMock(return_value=parameters_ids_fixture_1)  # type: ignore
+type(collect_request_core._parameter_core).cpm_pc_get_set_of_parameter_ids_by_domain = AsyncMock(return_value=parameters_ids_fixture_1)  # type: ignore
 collect_request_core._collect_request_provider.find_collects_requests_by_state = MagicMock(return_value=[collect_request])  # type: ignore
-collect_request_core._waste_core.cpm_wc_create_waste_with_basic_info = AsyncMock(side_effect=wastes_list)  # type: ignore
+type(collect_request_core._waste_core).cpm_wc_create_waste_with_basic_info = AsyncMock(side_effect=wastes_list)  # type: ignore
 collect_request_core._collect_request_provider.modify_collect_request_by_id = MagicMock(return_value=collect_request)
 collect_request_core._collect_request_provider.store_collect_request = MagicMock(return_value=collect_request)
 

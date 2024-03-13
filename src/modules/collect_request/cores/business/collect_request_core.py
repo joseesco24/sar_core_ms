@@ -45,7 +45,7 @@ class CollectRequestCore:
     # ! info: core slots section start
     # !------------------------------------------------------------------------
 
-    __slots__ = ["_business_glossary_translate_provider", "_parameter_core", "_waste_core", "_collect_request_provider", "_datetime_provider"]
+    __slots__ = ["_parameter_core", "_waste_core", "_collect_request_provider", "_business_glossary_translate_provider", "_datetime_provider"]
 
     # !------------------------------------------------------------------------
     # ! info: core atributtes and constructor section start

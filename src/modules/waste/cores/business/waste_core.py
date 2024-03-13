@@ -43,6 +43,12 @@ __all__: list[str] = ["WasteCore"]
 class WasteCore:
 
     # !------------------------------------------------------------------------
+    # ! info: core slots section start
+    # !------------------------------------------------------------------------
+
+    __slots__ = ["_parameter_core", "_waste_provider", "_brms_service", "_datetime_provider"]
+
+    # !------------------------------------------------------------------------
     # ! info: core atributtes and constructor section start
     # !------------------------------------------------------------------------
 
