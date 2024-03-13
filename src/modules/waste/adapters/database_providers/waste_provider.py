@@ -143,17 +143,21 @@ class WasteProvider:
         return waste_data
 
     @retry(on=Exception, attempts=4, wait_initial=0.08, wait_exp_base=2)
-    def update_waste_status_by_requestId(self: Self, request_uuid: str, process_status: int) -> None:
+    def update_waste_status_by_request_id(self: Self, request_uuid: str, process_status: int) -> list[Waste]:
         logging.debug(f"updating waste {request_uuid} status")
+        return_wastes: list[Waste] = []
         session: Session = self._session_manager.obtain_session()
         query: Any = select(Waste).where(Waste.request_uuid == request_uuid)
-        waste_by_reqId: list[Waste] = session.exec(statement=query).all()
-        if waste_by_reqId is None:
+        wastes: list[Waste] = session.exec(statement=query).all()
+        if wastes is None:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="wastes not found")
-        for waste in waste_by_reqId:
+        for waste in wastes:
             waste.update = self._datetime_provider.get_current_time()
             waste.process_status = process_status
             session.add(waste)
-            session.commit()
+        session.commit()
+        for waste in wastes:
             session.refresh(waste)
+            return_wastes.append(waste)
         logging.debug(f"waste {request_uuid} status updated")
+        return return_wastes

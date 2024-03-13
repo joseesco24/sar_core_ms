@@ -126,10 +126,11 @@ class CollectRequestCore:
         return wastes
 
     # ** info: cam wc are initials for core adapter methods waste core
-    async def _cam_wc_update_waste_by_requestId(self: Self, collect_request_id: str, process_status_waste: int) -> None:
+    async def _cam_wc_update_waste_by_requestId(self: Self, collect_request_id: str, process_status_waste: int) -> list[Waste]:
         logging.info("starting update_waste_by_requestId")
-        await self._waste_core.cpm_wc_update_waste_by_requestId(request_uuid=collect_request_id, process_status=process_status_waste)
+        updated_wastes: list[Waste] = await self._waste_core.cpm_wc_update_waste_by_request_id(request_uuid=collect_request_id, process_status=process_status_waste)
         logging.info("ending update_waste_by_requestId")
+        return updated_wastes
 
     # !------------------------------------------------------------------------
     # ! info: core port methods section start

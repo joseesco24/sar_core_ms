@@ -1,5 +1,2 @@
-from enum import Enum
-
-
-class CollectRequestStates(Enum):
+class CollectRequestStates:
     approved: int = 22

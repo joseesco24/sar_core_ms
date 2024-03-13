@@ -144,14 +144,16 @@ class WasteCore:
         logging.info("ending cpm_wc_create_waste_with_basic_info")
         return new_waste
 
-    async def cpm_wc_update_waste_by_requestId(
+    # ** info: cpm wc are initials for core port methods waste core
+    async def cpm_wc_update_waste_by_request_id(
         self: Self,
         request_uuid: str,
         process_status: int,
-    ) -> None:
+    ) -> list[Waste]:
         logging.info("starting cpm_wc_update_waste_by_requestId")
-        self._waste_provider.update_waste_status_by_requestId(request_uuid=request_uuid, process_status=process_status)
+        updated_wastes: list[Waste] = self._waste_provider.update_waste_status_by_request_id(request_uuid=request_uuid, process_status=process_status)
         logging.info("ending cpm_wc_update_waste_by_requestId")
+        return updated_wastes
 
     # !------------------------------------------------------------------------
     # ! info: private class methods section start
