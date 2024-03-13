@@ -20,7 +20,7 @@ from src.modules.parameter.ports.rest_routers_dtos.parameter_dtos import Paramet
 from src.modules.parameter.adapters.database_providers_entities.parameter_entity import Parameter  # type: ignore
 
 # ** info: sidecards.artifacts imports
-from src.sidecards.artifacts.datetime_provider import DatetimeProvider  # type: ignore
+from src.general_sidecards.artifacts.datetime_provider import DatetimeProvider  # type: ignore
 
 # ---------------------------------------------------------------------------------------------------------------------
 # ** info: create needed artifcts

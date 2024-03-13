@@ -13,7 +13,7 @@ from src.modules.parameter.ports.rest_routers_dtos.parameter_dtos import Paramet
 from src.modules.parameter.cores.business.parameter_core import ParameterCore  # type: ignore
 
 # ** info: sidecards.artifacts imports
-from src.sidecards.artifacts.path_provider import PathProvider  # type: ignore
+from src.general_sidecards.artifacts.path_provider import PathProvider  # type: ignore
 
 __all__: list[str] = ["parameter_router"]
 

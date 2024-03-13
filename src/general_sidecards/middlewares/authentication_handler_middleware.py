@@ -20,7 +20,7 @@ from fastapi.responses import JSONResponse
 from fastapi import status
 
 # ** info: sidecards.artifacts imports
-from src.sidecards.artifacts.env_provider import EnvProvider
+from src.general_sidecards.artifacts.env_provider import EnvProvider
 
 __all__: list[str] = ["AuthenticationHandlerMiddleware"]
 

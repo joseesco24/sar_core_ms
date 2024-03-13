@@ -21,9 +21,9 @@ from sqlmodel import create_engine
 from sqlmodel import Session
 
 # ** info: sidecards.artifacts imports
-from src.sidecards.artifacts.datetime_provider import DatetimeProvider
-from src.sidecards.artifacts.uuid_provider import UuidProvider
-from src.sidecards.artifacts.env_provider import EnvProvider
+from src.general_sidecards.artifacts.datetime_provider import DatetimeProvider
+from src.general_sidecards.artifacts.uuid_provider import UuidProvider
+from src.general_sidecards.artifacts.env_provider import EnvProvider
 
 __all__: list[str] = ["MySQLManager"]
 

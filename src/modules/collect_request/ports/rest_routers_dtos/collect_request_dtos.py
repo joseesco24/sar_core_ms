@@ -20,7 +20,7 @@ from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos_me
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos_metadata import collect_request_modify_state_by_id_req_dto
 
 # ** info: sidecards.artifacts imports
-from src.sidecards.artifacts.datetime_provider import DatetimeProvider
+from src.general_sidecards.artifacts.datetime_provider import DatetimeProvider
 
 __all__: list[str] = ["CollectRequestCreateResponseDto", "CollectRequestCreateRequestDto"]
 

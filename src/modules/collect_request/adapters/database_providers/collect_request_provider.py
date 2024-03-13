@@ -24,12 +24,12 @@ from stamina import retry
 from src.modules.collect_request.adapters.database_providers_entities.collect_request_entity import CollectRequest
 
 # ** info: sidecards.database_managers imports
-from src.sidecards.database_managers.mysql_manager import MySQLManager
+from src.general_sidecards.database_managers.mysql_manager import MySQLManager
 
 # ** info: sidecards.artifacts imports
-from src.sidecards.artifacts.datetime_provider import DatetimeProvider
-from src.sidecards.artifacts.uuid_provider import UuidProvider
-from src.sidecards.artifacts.env_provider import EnvProvider
+from src.general_sidecards.artifacts.datetime_provider import DatetimeProvider
+from src.general_sidecards.artifacts.uuid_provider import UuidProvider
+from src.general_sidecards.artifacts.env_provider import EnvProvider
 
 # ** info: cachetools imports
 from cachetools import TTLCache

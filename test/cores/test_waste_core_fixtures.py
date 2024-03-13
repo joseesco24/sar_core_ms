@@ -24,7 +24,7 @@ from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteClassifyRe
 from src.modules.waste.adapters.database_providers_entities.waste_entity import Waste  # type: ignore
 
 # ** info: sidecards.artifacts imports
-from src.sidecards.artifacts.datetime_provider import DatetimeProvider  # type: ignore
+from src.general_sidecards.artifacts.datetime_provider import DatetimeProvider  # type: ignore
 
 # ---------------------------------------------------------------------------------------------------------------------
 # ** info: create needed artifcts

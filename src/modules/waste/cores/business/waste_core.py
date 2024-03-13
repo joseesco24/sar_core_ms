@@ -35,7 +35,7 @@ from src.modules.waste.adapters.database_providers.waste_provider import WastePr
 from src.modules.waste.adapters.rest_services.brms_service import BrmsService  # type: ignore
 
 # ** info: sidecards.artifacts imports
-from src.sidecards.artifacts.datetime_provider import DatetimeProvider  # type: ignore
+from src.general_sidecards.artifacts.datetime_provider import DatetimeProvider  # type: ignore
 
 __all__: list[str] = ["WasteCore"]
 

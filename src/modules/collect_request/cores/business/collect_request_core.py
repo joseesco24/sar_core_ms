@@ -33,12 +33,19 @@ from src.modules.waste.adapters.database_providers_entities.waste_entity import 
 from src.modules.collect_request.adapters.database_providers.collect_request_provider import CollectRequestProvider  # type: ignore
 
 # ** info: sidecards.artifacts imports
-from src.sidecards.artifacts.datetime_provider import DatetimeProvider  # type: ignore
+from src.business_sidecards.artifacts.business_glossary_translate_provider import BusinessGlossaryTranslateProvider  # type: ignore
+from src.general_sidecards.artifacts.datetime_provider import DatetimeProvider  # type: ignore
 
 __all__: list[str] = ["CollectRequestCore"]
 
 
 class CollectRequestCore:
+
+    # !------------------------------------------------------------------------
+    # ! info: core slots section start
+    # !------------------------------------------------------------------------
+
+    __slots__ = ["_business_glossary_translate_provider", "_parameter_core", "_waste_core", "_collect_request_provider", "_datetime_provider"]
 
     # !------------------------------------------------------------------------
     # ! info: core atributtes and constructor section start
@@ -51,6 +58,7 @@ class CollectRequestCore:
         # ** info: providers building
         self._collect_request_provider: CollectRequestProvider = CollectRequestProvider()
         # ** info: sidecards building
+        self._business_glossary_translate_provider: BusinessGlossaryTranslateProvider = BusinessGlossaryTranslateProvider()
         self._datetime_provider: DatetimeProvider = DatetimeProvider()
 
     # !------------------------------------------------------------------------
@@ -80,11 +88,8 @@ class CollectRequestCore:
         logging.info("starting driver_modify_request_by_id")
         await self._validate_collect_request_process_status(process_status=request_modify_request_by_id.processStatus)
         collect_request_info: CollectRequest = await self._modify_collect_request(request_modify_request_by_id=request_modify_request_by_id)
-        if request_modify_request_by_id.processStatus == 22:
-            process_status_waste = 13
-        else:
-            process_status_waste = 10
-        await self._cam_wc_update_waste_by_requestId(collect_request_id=request_modify_request_by_id.collectReqId, process_status_waste=process_status_waste)
+        updated_waste_status: int = await self._select_waste_status_by_collect_request_status(process_status=request_modify_request_by_id.processStatus)
+        await self._cam_wc_update_waste_by_requestId(collect_request_id=request_modify_request_by_id.collectReqId, process_status_waste=updated_waste_status)
         modify_request_by_id_response: ResponseRequestDataDto = await self._map_full_collect_response(collect_request_info=collect_request_info)
         logging.info("driver_modify_request_by_id ended")
         return modify_request_by_id_response
@@ -233,3 +238,6 @@ class CollectRequestCore:
             create=created,
             update=updated,
         )
+
+    async def _select_waste_status_by_collect_request_status(self: Self, process_status: int) -> int:
+        return await self._business_glossary_translate_provider.select_waste_status_by_collect_request_status(collect_request_status=process_status)

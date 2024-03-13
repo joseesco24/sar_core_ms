@@ -30,14 +30,14 @@ from src.modules.parameter.ports.rest_routers.parameter_router import parameter_
 from src.modules.waste.ports.rest_routers.waster_router import waste_router
 
 # ** info: sidecards.artifacts imports
-from src.sidecards.artifacts.logging_provider import LoggingProvider  # type: ignore
-from src.sidecards.artifacts.env_provider import EnvProvider  # type: ignore
-from src.sidecards.artifacts.path_provider import PathProvider  # type: ignore
+from src.general_sidecards.artifacts.logging_provider import LoggingProvider  # type: ignore
+from src.general_sidecards.artifacts.env_provider import EnvProvider  # type: ignore
+from src.general_sidecards.artifacts.path_provider import PathProvider  # type: ignore
 
 # ** info: sidecard.middlewares imports
-from src.sidecards.middlewares.authentication_handler_middleware import AuthenticationHandlerMiddleware  # type: ignore
-from src.sidecards.middlewares.logger_contextualizer_middleware import LoggerContextualizerMiddleware  # type: ignore
-from src.sidecards.middlewares.error_handler_middleware import ErrorHandlerMiddleware  # type: ignore
+from src.general_sidecards.middlewares.authentication_handler_middleware import AuthenticationHandlerMiddleware  # type: ignore
+from src.general_sidecards.middlewares.logger_contextualizer_middleware import LoggerContextualizerMiddleware  # type: ignore
+from src.general_sidecards.middlewares.error_handler_middleware import ErrorHandlerMiddleware  # type: ignore
 
 # ---------------------------------------------------------------------------------------------------------------------
 # ** info: building needed artifacts
