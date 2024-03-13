@@ -28,6 +28,7 @@ from src.modules.waste.adapters.database_providers_entities.waste_entity import 
 from src.general_sidecards.database_managers.mysql_manager import MySQLManager
 
 # ** info: sidecards.artifacts imports
+from src.business_sidecards.constants.waste_states_constants import WasteStates
 from src.general_sidecards.artifacts.datetime_provider import DatetimeProvider
 from src.general_sidecards.artifacts.uuid_provider import UuidProvider
 from src.general_sidecards.artifacts.env_provider import EnvProvider
@@ -94,7 +95,7 @@ class WasteProvider:
             request_uuid=request_uuid,
             type=type,
             packaging=packaging,
-            process_status=9,
+            process_status=WasteStates.waste_treatement_in_course,
             weight_in_kg=weight_in_kg,
             volume_in_l=volume_in_l,
             description=description,
