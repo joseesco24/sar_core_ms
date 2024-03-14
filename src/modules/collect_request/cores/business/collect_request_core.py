@@ -227,20 +227,7 @@ class CollectRequestCore:
         return CollectRequestFindByStatusResDto(values=await self._map_full_collect_responses(collect_request_info=collect_request_info))
 
     async def _map_full_collect_responses(self: Self, collect_request_info: List[CollectRequest]) -> List[ResponseRequestDataDto]:
-        return [await self._map_full_collect_response(collect_request_info=collect_request_info) for collect_request_info in collect_request_info]
-
-    async def _map_full_collect_response(self: Self, collect_request_info: CollectRequest) -> ResponseRequestDataDto:
-        created: str = self._datetime_provider.prettify_date_time_obj(date_time_obj=collect_request_info.create)
-        updated: str = self._datetime_provider.prettify_date_time_obj(date_time_obj=collect_request_info.update)
-        CollectRequest_full_data_response: ResponseRequestDataDto = ResponseRequestDataDto(
-            id=collect_request_info.uuid,
-            collectDate=self._datetime_provider.prettify_date_obj(collect_request_info.collect_date),
-            processStatus=collect_request_info.process_status,
-            productionCenterId=collect_request_info.production_center_id,
-            update=updated,
-            create=created,
-        )
-        return CollectRequest_full_data_response
+        return [await self._map_collect_response_request_info(collect_request_info=collect_request_info) for collect_request_info in collect_request_info]
 
     async def _map_collect_response_request_info(self: Self, collect_request_info: CollectRequest) -> ResponseRequestDataDto:
         create: str = self._datetime_provider.prettify_date_time_obj(date_time_obj=collect_request_info.create)
@@ -250,6 +237,7 @@ class CollectRequestCore:
             collectDate=self._datetime_provider.prettify_date_obj(collect_request_info.collect_date),
             processStatus=collect_request_info.process_status,
             productionCenterId=collect_request_info.production_center_id,
+            note=collect_request_info.note,
             update=update,
             create=create,
         )

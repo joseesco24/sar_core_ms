@@ -4,6 +4,9 @@
 # ** info: python imports
 from datetime import datetime
 
+# ** info: typing imports
+from typing import Optional
+
 # ** info: sqlmodel imports
 from sqlmodel import SQLModel
 from sqlmodel import Field
@@ -19,5 +22,6 @@ class CollectRequest(SQLModel, table=True):
     collect_date: datetime = Field(nullable=False)
     process_status: int = Field(nullable=False)
     production_center_id: int = Field(nullable=False)
+    note: Optional[str] = Field(max_length=65535, nullable=True)
     create: datetime = Field(nullable=False)
     update: datetime = Field(nullable=False)

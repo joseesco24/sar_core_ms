@@ -135,6 +135,7 @@ class ResponseRequestDataDto(BaseModel):
     collectDate: str = Field(...)
     processStatus: int = Field(...)
     productionCenterId: int = Field(...)
+    note: Optional[str] = None
     create: str = Field(...)
     update: str = Field(...)
 
