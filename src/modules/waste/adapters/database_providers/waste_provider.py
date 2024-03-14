@@ -75,6 +75,16 @@ class WasteProvider:
         logging.debug("searching wastes by process status ended")
         return search_waste_by_domain_result
 
+    @cached(cache=TTLCache(ttl=60, maxsize=10))
+    @retry(on=Exception, attempts=4, wait_initial=0.08, wait_exp_base=2)
+    def list_wastes_by_collect_request_id(self: Self, collect_request_uuid: str) -> list[Waste]:
+        logging.debug(f"searching wastes by collect request id {collect_request_uuid}")
+        session: Session = self._session_manager.obtain_session()
+        query: Any = select(Waste).where(Waste.request_uuid == collect_request_uuid)
+        list_wastes_by_collect_request_id: list[Waste] = session.exec(statement=query).all()
+        logging.debug("searching wastes by collect request id ended")
+        return list_wastes_by_collect_request_id
+
     @retry(on=Exception, attempts=4, wait_initial=0.08, wait_exp_base=2)
     def create_waste_with_basic_info(
         self: Self,

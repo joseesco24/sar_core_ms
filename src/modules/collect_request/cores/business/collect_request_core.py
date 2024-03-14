@@ -3,6 +3,9 @@
 # ** info: python imports
 import logging
 
+# ** info: asyncio imports
+from asyncio import gather
+
 # ** info: typing imports
 from typing import Self
 from typing import List
@@ -19,9 +22,10 @@ from src.modules.waste.cores.business.waste_core import WasteCore  # type: ignor
 # ** info: dtos imports
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestFindByStatusReqDto  # type: ignore
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestFindByStatusResDto  # type: ignore
-from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestCreateResponseDto  # type: ignore
+from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestFullDataResponseDto  # type: ignore
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestCreateRequestDto  # type: ignore
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestModifyByIdReqDto  # type: ignore
+from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestSetFInishedDto  # type: ignore
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import ResponseRequestDataDto  # type: ignore
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import ResponseWasteDataDto  # type: ignore
 
@@ -34,6 +38,7 @@ from src.modules.collect_request.adapters.database_providers.collect_request_pro
 
 # ** info: sidecards.artifacts imports
 from src.business_sidecards.artifacts.business_glossary_translate_provider import BusinessGlossaryTranslateProvider  # type: ignore
+from src.business_sidecards.constants.collect_request_states_constants import CollectRequestStates  # type: ignore
 from src.general_sidecards.artifacts.datetime_provider import DatetimeProvider  # type: ignore
 
 __all__: list[str] = ["CollectRequestCore"]
@@ -67,12 +72,12 @@ class CollectRequestCore:
     # ! warning: a method only can be declared in this section if it is going to be called from the routers layer
     # !------------------------------------------------------------------------
 
-    async def driver_create_request(self: Self, request_create_request: CollectRequestCreateRequestDto) -> CollectRequestCreateResponseDto:
+    async def driver_create_request(self: Self, request_create_request: CollectRequestCreateRequestDto) -> CollectRequestFullDataResponseDto:
         logging.info("starting driver_create_request")
         await self._validate_wastes_domains(request_create_request=request_create_request)
         collect_request_info: CollectRequest = await self._store_collect_request(request_create_request=request_create_request)
         wastes_info: List[Waste] = await self._cam_wc_create_waste_with_basic_info(collect_request_id=collect_request_info.uuid, request_create_request=request_create_request)
-        request_create_response: CollectRequestCreateResponseDto = await self._map_collect_response(collect_request_info=collect_request_info, wastes_info=wastes_info)
+        request_create_response: CollectRequestFullDataResponseDto = await self._map_collect_response(collect_request_info=collect_request_info, wastes_info=wastes_info)
         logging.info("starting driver_create_request")
         return request_create_response
 
@@ -84,15 +89,26 @@ class CollectRequestCore:
         logging.info("driver_find_request_by_status ended")
         return find_request_by_status_response
 
-    async def driver_modify_request_by_id(self: Self, request_modify_request_by_id: CollectRequestModifyByIdReqDto) -> ResponseRequestDataDto:
+    async def driver_modify_request_by_id(self: Self, request_modify_request_by_id: CollectRequestModifyByIdReqDto) -> CollectRequestFullDataResponseDto:
         logging.info("starting driver_modify_request_by_id")
         await self._validate_collect_request_process_status(process_status=request_modify_request_by_id.processStatus)
-        collect_request_info: CollectRequest = await self._modify_collect_request(request_modify_request_by_id=request_modify_request_by_id)
-        updated_waste_status: int = await self._select_waste_status_by_collect_request_status(process_status=request_modify_request_by_id.processStatus)
-        await self._cam_wc_update_waste_by_requestId(collect_request_id=request_modify_request_by_id.collectReqId, process_status_waste=updated_waste_status)
-        modify_request_by_id_response: ResponseRequestDataDto = await self._map_full_collect_response(collect_request_info=collect_request_info)
+        collect_request_info, wastes_info = await self._update_collect_request_and_child_wastes_at_once(
+            collect_request_new_status=request_modify_request_by_id.processStatus,
+            collect_request_id=request_modify_request_by_id.collectReqId,
+        )
+        request_create_response: CollectRequestFullDataResponseDto = await self._map_collect_response(collect_request_info=collect_request_info, wastes_info=wastes_info)
         logging.info("driver_modify_request_by_id ended")
-        return modify_request_by_id_response
+        return request_create_response
+
+    async def driver_set_collect_request_to_finished(self: Self, collect_request_set_finished: CollectRequestSetFInishedDto) -> CollectRequestFullDataResponseDto:
+        logging.info("starting driver_set_collect_request_to_finished")
+        collect_request_info, wastes_info = await self._update_collect_request_and_child_wastes_at_once(
+            collect_request_id=collect_request_set_finished.collectReqId,
+            collect_request_new_status=CollectRequestStates.finished,
+        )
+        request_create_response: CollectRequestFullDataResponseDto = await self._map_collect_response(collect_request_info=collect_request_info, wastes_info=wastes_info)
+        logging.info("driver_set_collect_request_to_finished ended")
+        return request_create_response
 
     # !------------------------------------------------------------------------
     # ! info: core adapter methods section start
@@ -126,11 +142,18 @@ class CollectRequestCore:
         return wastes
 
     # ** info: cam wc are initials for core adapter methods waste core
-    async def _cam_wc_update_waste_by_requestId(self: Self, collect_request_id: str, process_status_waste: int) -> list[Waste]:
-        logging.info("starting update_waste_by_requestId")
+    async def _cam_wc_update_waste_by_request_id(self: Self, collect_request_id: str, process_status_waste: int) -> list[Waste]:
+        logging.info("starting _cam_wc_update_waste_by_request_id")
         updated_wastes: list[Waste] = await self._waste_core.cpm_wc_update_waste_by_request_id(request_uuid=collect_request_id, process_status=process_status_waste)
-        logging.info("ending update_waste_by_requestId")
+        logging.info("ending _cam_wc_update_waste_by_request_id")
         return updated_wastes
+
+    # ** info: cam wc are initials for core adapter methods waste core
+    async def _cam_wc_list_wastes_by_collect_request_id(self: Self, collect_request_uuid: str) -> list[Waste]:
+        logging.info("starting _cam_wc_list_wastes_by_collect_request_id")
+        list_wastes_by_collect_request_id: list[Waste] = await self._waste_core.cpm_wc_list_wastes_by_collect_request_id(collect_request_uuid=collect_request_uuid)
+        logging.info("ending _cam_wc_list_wastes_by_collect_request_id")
+        return list_wastes_by_collect_request_id
 
     # !------------------------------------------------------------------------
     # ! info: core port methods section start
@@ -163,10 +186,8 @@ class CollectRequestCore:
         )
         return collect_request_info
 
-    async def _modify_collect_request(self: Self, request_modify_request_by_id: CollectRequestModifyByIdReqDto) -> CollectRequest:
-        collect_request_info: CollectRequest = self._collect_request_provider.modify_collect_request_by_id(
-            uuid=request_modify_request_by_id.collectReqId, process_status=request_modify_request_by_id.processStatus
-        )
+    async def _modify_collect_request(self: Self, collect_request_id: str, process_status: int) -> CollectRequest:
+        collect_request_info: CollectRequest = self._collect_request_provider.modify_collect_request_by_id(uuid=collect_request_id, process_status=process_status)
         return collect_request_info
 
     async def _validate_collect_request_process_status(self: Self, process_status: int) -> None:
@@ -176,8 +197,8 @@ class CollectRequestCore:
             logging.error(f"process status {process_status} is not valid valid types are {valid_state_collect}")
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"process status {process_status} is not valid")
 
-    async def _map_collect_response(self: Self, collect_request_info: CollectRequest, wastes_info: List[Waste]) -> CollectRequestCreateResponseDto:
-        return CollectRequestCreateResponseDto(
+    async def _map_collect_response(self: Self, collect_request_info: CollectRequest, wastes_info: List[Waste]) -> CollectRequestFullDataResponseDto:
+        return CollectRequestFullDataResponseDto(
             request=await self._map_collect_response_request_info(collect_request_info=collect_request_info),
             waste=await self._map_collect_response_wastes_info(wastes_info=wastes_info),
         )
@@ -242,3 +263,10 @@ class CollectRequestCore:
 
     async def _select_waste_status_by_collect_request_status(self: Self, process_status: int) -> int:
         return await self._business_glossary_translate_provider.select_waste_status_by_collect_request_status(collect_request_status=process_status)
+
+    async def _update_collect_request_and_child_wastes_at_once(self: Self, collect_request_id: str, collect_request_new_status: int) -> tuple[CollectRequest, list[Waste]]:
+        updated_waste_status: int = await self._select_waste_status_by_collect_request_status(process_status=collect_request_new_status)
+        return await gather(
+            self._modify_collect_request(collect_request_id=collect_request_id, process_status=collect_request_new_status),
+            self._cam_wc_update_waste_by_request_id(collect_request_id=collect_request_id, process_status_waste=updated_waste_status),
+        )

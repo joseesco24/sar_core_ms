@@ -21,8 +21,9 @@ from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos_me
 
 # ** info: sidecards.artifacts imports
 from src.general_sidecards.artifacts.datetime_provider import DatetimeProvider
+from src.general_sidecards.artifacts.uuid_provider import UuidProvider
 
-__all__: list[str] = ["CollectRequestCreateResponseDto", "CollectRequestCreateRequestDto"]
+__all__: list[str] = ["CollectRequestFullDataResponseDto", "CollectRequestCreateRequestDto"]
 
 
 # !------------------------------------------------------------------------
@@ -118,6 +119,15 @@ class ResponseWasteDataDto(BaseModel):
             raise ValueError(f"{info.field_name} is not a integer input")
         return value
 
+    @field_validator("id", "requestId")
+    @classmethod
+    def uuid_validator(cls, value: str, info: ValidationInfo) -> int:
+        if UuidProvider.check_str_uuid(value):
+            value = str(value)
+        else:
+            raise ValueError(f"{info.field_name} is not a valid uuid input")
+        return value
+
 
 class ResponseRequestDataDto(BaseModel):
     id: str = Field(...)
@@ -143,6 +153,15 @@ class ResponseRequestDataDto(BaseModel):
             datetime_provider.pretty_date_string_to_date(value)
         except ValueError:
             raise ValueError(f"{info.field_name} is not a valid dd/mm/yyyy date")
+        return value
+
+    @field_validator("id")
+    @classmethod
+    def uuid_validator(cls, value: str, info: ValidationInfo) -> int:
+        if UuidProvider.check_str_uuid(value):
+            value = str(value)
+        else:
+            raise ValueError(f"{info.field_name} is not a valid uuid input")
         return value
 
     model_config = collect_request_modify_state_by_id_res_dto
@@ -176,17 +195,32 @@ class CollectRequestFindByStatusReqDto(BaseModel):
     model_config = collect_request_find_by_status_req_dto
 
 
+class CollectRequestSetFInishedDto(BaseModel):
+    collectReqId: str = Field(...)
+
+    @field_validator("collectReqId")
+    @classmethod
+    def uuid_validator(cls, value: str, info: ValidationInfo) -> int:
+        if UuidProvider.check_str_uuid(value):
+            value = str(value)
+        else:
+            raise ValueError(f"{info.field_name} is not a valid uuid input")
+        return value
+
+    model_config = collect_request_modify_state_by_id_req_dto
+
+
 class CollectRequestModifyByIdReqDto(BaseModel):
     collectReqId: str = Field(...)
     processStatus: int = Field(...)
 
-    @field_validator("processStatus")
+    @field_validator("collectReqId")
     @classmethod
-    def int_validator(cls, value: int, info: ValidationInfo) -> int:
-        if isinstance(value, int):
-            value = int(value)
+    def uuid_validator(cls, value: str, info: ValidationInfo) -> int:
+        if UuidProvider.check_str_uuid(value):
+            value = str(value)
         else:
-            raise ValueError(f"{info.field_name} is not a integer input")
+            raise ValueError(f"{info.field_name} is not a valid uuid input")
         return value
 
     model_config = collect_request_modify_state_by_id_req_dto
@@ -199,7 +233,7 @@ class CollectRequestModifyByIdReqDto(BaseModel):
 # !------------------------------------------------------------------------
 
 
-class CollectRequestCreateResponseDto(BaseModel):
+class CollectRequestFullDataResponseDto(BaseModel):
     waste: List[ResponseWasteDataDto] = Field(...)
     request: ResponseRequestDataDto = Field(...)
     model_config = collect_request_creation_res_ex

@@ -166,6 +166,16 @@ class WasteCore:
         logging.info("ending cpm_wc_update_waste_by_requestId")
         return updated_wastes
 
+    # ** info: cpm wc are initials for core port methods waste core
+    async def cpm_wc_list_wastes_by_collect_request_id(
+        self: Self,
+        collect_request_uuid: str,
+    ) -> list[Waste]:
+        logging.info("starting cpm_wc_list_wastes_by_collect_request_id")
+        list_wastes_by_collect_request_id: list[Waste] = self._waste_provider.list_wastes_by_collect_request_id(collect_request_uuid=collect_request_uuid)
+        logging.info("ending cpm_wc_list_wastes_by_collect_request_id")
+        return list_wastes_by_collect_request_id
+
     # !------------------------------------------------------------------------
     # ! info: private class methods section start
     # ! warning: all the methods in this section are the ones that are going to be called from inside this core

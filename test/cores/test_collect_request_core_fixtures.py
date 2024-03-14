@@ -12,9 +12,9 @@ from typing import Set
 sys.path.append(join(path.dirname(path.realpath(__file__)), "..", "..", "."))
 
 # ** info: dtos imports
+from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestFullDataResponseDto  # type: ignore
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestFindByStatusResDto  # type: ignore
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestFindByStatusReqDto  # type: ignore
-from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestCreateResponseDto  # type: ignore
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestCreateRequestDto  # type: ignore
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestModifyByIdReqDto  # type: ignore
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import ResponseRequestDataDto  # type: ignore
@@ -178,7 +178,7 @@ response_request_data_dto_fixture_1: ResponseRequestDataDto = ResponseRequestDat
     update=datetime_provider.prettify_date_time_obj(date_time_obj=collect_request.update),
 )
 
-request_create_response_fixture_1: CollectRequestCreateResponseDto = CollectRequestCreateResponseDto(
+request_full_data_response_fixture_1: CollectRequestFullDataResponseDto = CollectRequestFullDataResponseDto(
     waste=response_waste_data_dto_list_fixture_1,
     request=response_request_data_dto_fixture_1,
 )

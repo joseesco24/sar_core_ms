@@ -27,6 +27,7 @@ from src.modules.collect_request.adapters.database_providers_entities.collect_re
 from src.general_sidecards.database_managers.mysql_manager import MySQLManager
 
 # ** info: sidecards.artifacts imports
+from src.business_sidecards.constants.collect_request_states_constants import CollectRequestStates
 from src.general_sidecards.artifacts.datetime_provider import DatetimeProvider
 from src.general_sidecards.artifacts.uuid_provider import UuidProvider
 from src.general_sidecards.artifacts.env_provider import EnvProvider
@@ -72,7 +73,7 @@ class CollectRequestProvider:
         new_collect_request: CollectRequest = CollectRequest(
             production_center_id=production_center_id,
             collect_date=collect_date,
-            process_status=21,
+            process_status=CollectRequestStates.in_review,
             create=date_time,
             update=date_time,
             uuid=uuid,

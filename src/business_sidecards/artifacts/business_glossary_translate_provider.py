@@ -17,8 +17,11 @@ class BusinessGlossaryTranslateProvider:
 
     def __init__(self: Self) -> None:
         self.dict_waste_status_by_collect_request_status: Dict[str, int] = {
+            str(CollectRequestStates.finished): WasteStates.waste_clasification_in_course,
             str(CollectRequestStates.approved): WasteStates.collect_in_course,
+            str(CollectRequestStates.rejected): WasteStates.collect_rejected,
+            str(CollectRequestStates.in_review): WasteStates.in_review,
         }
 
     async def select_waste_status_by_collect_request_status(self: Self, collect_request_status: int) -> int:
-        return self.dict_waste_status_by_collect_request_status.get(str(collect_request_status), WasteStates.collect_in_review)
+        return self.dict_waste_status_by_collect_request_status.get(str(collect_request_status))

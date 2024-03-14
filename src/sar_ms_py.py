@@ -25,6 +25,7 @@ from fastapi import FastAPI
 from starlette.middleware.base import BaseHTTPMiddleware
 
 # ** info: rest based routers imports
+from src.modules.heart_beat.ports.rest_routers.heart_beat_router import heart_beat_router  # type: ignore
 from src.modules.collect_request.ports.rest_routers.collect_request_router import collect_request_router  # type: ignore
 from src.modules.parameter.ports.rest_routers.parameter_router import parameter_router
 from src.modules.waste.ports.rest_routers.waster_router import waste_router
@@ -94,6 +95,7 @@ rest_router.include_router(router=waste_router)
 # ** info: mounting rest based routers
 # ---------------------------------------------------------------------------------------------------------------------
 
+sar_ms_py.include_router(heart_beat_router)
 sar_ms_py.include_router(rest_router)
 
 # ---------------------------------------------------------------------------------------------------------------------

@@ -2,17 +2,18 @@
 # type: ignore
 
 # ** info: fastapi imports
+from fastapi import HTTPException
 from fastapi import APIRouter
 from fastapi import status
 from fastapi import Body
 
 # ** info: port dtos imports
-from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestCreateResponseDto
-from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestCreateRequestDto
+from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestFullDataResponseDto
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestFindByStatusReqDto
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestFindByStatusResDto
+from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestCreateRequestDto
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestModifyByIdReqDto
-from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import ResponseRequestDataDto
+from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestSetFInishedDto
 
 # ** info: app core imports
 from src.modules.collect_request.cores.business.collect_request_core import CollectRequestCore
@@ -36,11 +37,11 @@ _collect_request_core: CollectRequestCore = CollectRequestCore()
     description="create a new collect request description",
     summary="create a new collect request summary",
     path=_path_provider.build_posix_path("create"),
-    response_model=CollectRequestCreateResponseDto,
+    response_model=CollectRequestFullDataResponseDto,
     status_code=status.HTTP_200_OK,
 )
-async def api_create_request(request_create_request: CollectRequestCreateRequestDto = Body(...)) -> CollectRequestCreateResponseDto:
-    request_create_response: CollectRequestCreateResponseDto = await _collect_request_core.driver_create_request(request_create_request)
+async def api_create_request(request_create_request: CollectRequestCreateRequestDto = Body(...)) -> CollectRequestFullDataResponseDto:
+    request_create_response: CollectRequestFullDataResponseDto = await _collect_request_core.driver_create_request(request_create_request)
     return request_create_response
 
 
@@ -60,9 +61,23 @@ async def api_find_request_by_status(request_find_request_by_status: CollectRequ
     description="modify the collect request status by its id",
     summary="modify the collect request status by its id",
     path=_path_provider.build_posix_path("status", "update"),
-    response_model=ResponseRequestDataDto,
+    response_model=CollectRequestFullDataResponseDto,
+    status_code=status.HTTP_200_OK,
+    deprecated=True,
+)
+async def api_modify_request_by_id(request_modify_request_by_id: CollectRequestModifyByIdReqDto = Body(...)) -> CollectRequestFullDataResponseDto:
+    raise HTTPException(status_code=status.HTTP_501_NOT_IMPLEMENTED, detail="api deprecated")
+    request_create_response: CollectRequestFullDataResponseDto = await _collect_request_core.driver_modify_request_by_id(request_modify_request_by_id)
+    return request_create_response
+
+
+@collect_request_router.post(
+    description="modify the collect request status by to finished by its id",
+    summary="modify the collect request status by to finished by its id",
+    path=_path_provider.build_posix_path("status", "update", "finished"),
+    response_model=CollectRequestFullDataResponseDto,
     status_code=status.HTTP_200_OK,
 )
-async def api_modify_request_by_id(request_modify_request_by_id: CollectRequestModifyByIdReqDto = Body(...)) -> ResponseRequestDataDto:
-    request_create_response: ResponseRequestDataDto = await _collect_request_core.driver_modify_request_by_id(request_modify_request_by_id)
+async def api_set_collect_request_to_finished(collect_request_set_finished: CollectRequestSetFInishedDto = Body(...)) -> CollectRequestFullDataResponseDto:
+    request_create_response: CollectRequestFullDataResponseDto = await _collect_request_core.driver_set_collect_request_to_finished(collect_request_set_finished)
     return request_create_response
