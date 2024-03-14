@@ -128,6 +128,7 @@ class WasteProvider:
         if waste_data is None:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="waste not found")
         waste_data.update = self._datetime_provider.get_current_time()
+        waste_data.process_status = WasteStates.waste_treatement_in_course
         waste_data.isotopes_number = isotopes_number
         waste_data.state_waste = state_waste
         waste_data.store = store
