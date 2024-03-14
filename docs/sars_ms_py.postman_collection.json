@@ -55,6 +55,154 @@
 							"name": "status",
 							"item": [
 								{
+									"name": "update",
+									"item": [
+										{
+											"name": "root",
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "request-id",
+														"value": "joseesco24",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"processStatus\": 22,\n    \"collectReqId\": \"d8f4e416-8bb5-457f-8a62-8a92d82dfdff\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{HOST}}/rest/collect-request/status/update",
+													"host": [
+														"{{HOST}}"
+													],
+													"path": [
+														"rest",
+														"collect-request",
+														"status",
+														"update"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "finished",
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "request-id",
+														"value": "joseesco24",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"collectReqId\": \"d4a2a394-0008-43b9-8ae8-a8a47981a0f6\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{HOST}}/rest/collect-request/status/update/finished",
+													"host": [
+														"{{HOST}}"
+													],
+													"path": [
+														"rest",
+														"collect-request",
+														"status",
+														"update",
+														"finished"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "approved",
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "request-id",
+														"value": "joseesco24",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"collectReqId\": \"d4a2a394-0008-43b9-8ae8-a8a47981a0f6\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{HOST}}/rest/collect-request/status/update/approved",
+													"host": [
+														"{{HOST}}"
+													],
+													"path": [
+														"rest",
+														"collect-request",
+														"status",
+														"update",
+														"approved"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "rejected",
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "request-id",
+														"value": "joseesco24",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"collectReqId\": \"d8f4e416-8bb5-457f-8a62-8a92d82dfdff\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{HOST}}/rest/collect-request/status/update/rejected",
+													"host": [
+														"{{HOST}}"
+													],
+													"path": [
+														"rest",
+														"collect-request",
+														"status",
+														"update",
+														"rejected"
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								},
+								{
 									"name": "search",
 									"request": {
 										"method": "POST",
@@ -67,7 +215,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"processStatus\": 21\n}",
+											"raw": "{\n    \"processStatus\": 22\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -84,41 +232,6 @@
 												"collect-request",
 												"status",
 												"search"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "update",
-									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "request-id",
-												"value": "joseesco24",
-												"type": "text"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"processStatus\": 21,\n    \"collectReqId\": \"094d64d2-cfd3-4299-a606-85bd2e4c18ce\"\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{HOST}}/rest/collect-request/status/update",
-											"host": [
-												"{{HOST}}"
-											],
-											"path": [
-												"rest",
-												"collect-request",
-												"status",
-												"update"
 											]
 										}
 									},
@@ -175,7 +288,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"stateWaste\": \"liquid\",\n    \"weightInKg\": 100.08,\n    \"isotopesNumber\": 31.01\n}",
+											"raw": "{\n    \"stateWaste\": \"solid\",\n    \"weightInKg\": 100.08,\n    \"isotopesNumber\": 31.02\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -210,7 +323,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n  \"isotopesNumber\": 1500,\n  \"stateWaste\": 7,\n  \"storeId\": 4,\n  \"wasteId\": \"ba6828ca-d5e1-4263-a490-773bb7592801\"\n}",
+											"raw": "{\n  \"isotopesNumber\": 1500,\n  \"stateWaste\": 7,\n  \"storeId\": 1,\n  \"wasteId\": \"0238eaa7-078e-4542-8701-ee18500d7cb5\"\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -310,6 +423,35 @@
 							]
 						}
 					]
+				}
+			]
+		},
+		{
+			"name": "heart-beat",
+			"item": [
+				{
+					"name": "root",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "request-id",
+								"value": "joseesco24",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{HOST}}/heart-beat/",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"heart-beat",
+								""
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}
