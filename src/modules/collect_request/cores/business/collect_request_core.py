@@ -27,7 +27,7 @@ from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos im
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestModifyByIdReqDto  # type: ignore
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import ResponseRequestDataDto  # type: ignore
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import ResponseWasteDataDto  # type: ignore
-from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestIdDto  # type: ignore
+from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestIdNoteDto  # type: ignore
 
 # ** info: entities imports
 from src.modules.collect_request.adapters.database_providers_entities.collect_request_entity import CollectRequest  # type: ignore
@@ -95,36 +95,40 @@ class CollectRequestCore:
         collect_request_info, wastes_info = await self._update_collect_request_and_child_wastes_at_once(
             collect_request_new_status=request_modify_request_by_id.processStatus,
             collect_request_id=request_modify_request_by_id.collectReqId,
+            collect_request_note=request_modify_request_by_id.note,
         )
         request_create_response: CollectRequestFullDataResponseDto = await self._map_collect_response(collect_request_info=collect_request_info, wastes_info=wastes_info)
         logging.info("driver_modify_request_by_id ended")
         return request_create_response
 
-    async def driver_set_collect_request_to_finished(self: Self, collect_request_just_id_req: CollectRequestIdDto) -> CollectRequestFullDataResponseDto:
+    async def driver_set_collect_request_to_finished(self: Self, collect_request_just_id_req: CollectRequestIdNoteDto) -> CollectRequestFullDataResponseDto:
         logging.info("starting driver_set_collect_request_to_finished")
         collect_request_info, wastes_info = await self._update_collect_request_and_child_wastes_at_once(
             collect_request_id=collect_request_just_id_req.collectReqId,
             collect_request_new_status=CollectRequestStates.finished,
+            collect_request_note=collect_request_just_id_req.note,
         )
         request_create_response: CollectRequestFullDataResponseDto = await self._map_collect_response(collect_request_info=collect_request_info, wastes_info=wastes_info)
         logging.info("driver_set_collect_request_to_finished ended")
         return request_create_response
 
-    async def driver_set_collect_request_to_approved(self: Self, collect_request_just_id_req: CollectRequestIdDto) -> CollectRequestFullDataResponseDto:
+    async def driver_set_collect_request_to_approved(self: Self, collect_request_just_id_req: CollectRequestIdNoteDto) -> CollectRequestFullDataResponseDto:
         logging.info("starting driver_set_collect_request_to_approved")
         collect_request_info, wastes_info = await self._update_collect_request_and_child_wastes_at_once(
             collect_request_id=collect_request_just_id_req.collectReqId,
             collect_request_new_status=CollectRequestStates.approved,
+            collect_request_note=collect_request_just_id_req.note,
         )
         request_create_response: CollectRequestFullDataResponseDto = await self._map_collect_response(collect_request_info=collect_request_info, wastes_info=wastes_info)
         logging.info("driver_set_collect_request_to_approved ended")
         return request_create_response
 
-    async def driver_set_collect_request_to_rejected(self: Self, collect_request_just_id_req: CollectRequestIdDto) -> CollectRequestFullDataResponseDto:
+    async def driver_set_collect_request_to_rejected(self: Self, collect_request_just_id_req: CollectRequestIdNoteDto) -> CollectRequestFullDataResponseDto:
         logging.info("starting api_set_collect_request_to_rejected")
         collect_request_info, wastes_info = await self._update_collect_request_and_child_wastes_at_once(
             collect_request_id=collect_request_just_id_req.collectReqId,
             collect_request_new_status=CollectRequestStates.rejected,
+            collect_request_note=collect_request_just_id_req.note,
         )
         request_create_response: CollectRequestFullDataResponseDto = await self._map_collect_response(collect_request_info=collect_request_info, wastes_info=wastes_info)
         logging.info("api_set_collect_request_to_rejected ended")
@@ -206,8 +210,10 @@ class CollectRequestCore:
         )
         return collect_request_info
 
-    async def _modify_collect_request(self: Self, collect_request_id: str, process_status: int) -> CollectRequest:
-        collect_request_info: CollectRequest = self._collect_request_provider.modify_collect_request_by_id(uuid=collect_request_id, process_status=process_status)
+    async def _modify_collect_request(self: Self, collect_request_id: str, process_status: int, collect_request_note: str) -> CollectRequest:
+        collect_request_info: CollectRequest = self._collect_request_provider.modify_collect_request_by_id(
+            uuid=collect_request_id, process_status=process_status, collect_request_note=collect_request_note
+        )
         return collect_request_info
 
     async def _validate_collect_request_process_status(self: Self, process_status: int) -> None:
@@ -272,9 +278,11 @@ class CollectRequestCore:
     async def _select_waste_status_by_collect_request_status(self: Self, process_status: int) -> int:
         return await self._business_glossary_translate_provider.select_waste_status_by_collect_request_status(collect_request_status=process_status)
 
-    async def _update_collect_request_and_child_wastes_at_once(self: Self, collect_request_id: str, collect_request_new_status: int) -> tuple[CollectRequest, list[Waste]]:
+    async def _update_collect_request_and_child_wastes_at_once(
+        self: Self, collect_request_id: str, collect_request_new_status: int, collect_request_note: str
+    ) -> tuple[CollectRequest, list[Waste]]:
         updated_waste_status: int = await self._select_waste_status_by_collect_request_status(process_status=collect_request_new_status)
         return await gather(
-            self._modify_collect_request(collect_request_id=collect_request_id, process_status=collect_request_new_status),
+            self._modify_collect_request(collect_request_id=collect_request_id, process_status=collect_request_new_status, collect_request_note=collect_request_note),
             self._cam_wc_update_waste_by_request_id(collect_request_id=collect_request_id, process_status_waste=updated_waste_status),
         )

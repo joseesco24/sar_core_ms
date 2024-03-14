@@ -72,6 +72,8 @@ async def test_driver_modify_request_by_id_hpp1() -> None:
         request_modify_request_by_id=collect_request_modify_by_id_req_dto_fixture_1
     )
     collect_request_core._collect_request_provider.modify_collect_request_by_id(
-        uuid=collect_request_modify_by_id_req_dto_fixture_1.collectReqId, process_status=collect_request_modify_by_id_req_dto_fixture_1.processStatus
+        uuid=collect_request_modify_by_id_req_dto_fixture_1.collectReqId,
+        process_status=collect_request_modify_by_id_req_dto_fixture_1.processStatus,
+        collect_request_note=collect_request_modify_by_id_req_dto_fixture_1.note,
     )
     assert modify_request_by_id_response == request_full_data_response_fixture_1

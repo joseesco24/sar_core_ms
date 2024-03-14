@@ -93,7 +93,7 @@ class CollectRequestProvider:
         return find_collect_request_by_state_result
 
     @retry(on=Exception, attempts=4, wait_initial=0.08, wait_exp_base=2)
-    def modify_collect_request_by_id(self: Self, uuid: str, process_status: int) -> CollectRequest:
+    def modify_collect_request_by_id(self: Self, uuid: str, process_status: int, collect_request_note: str) -> CollectRequest:
         session: Session = self._session_manager.obtain_session()
         query: Any = select(CollectRequest).where(CollectRequest.uuid == uuid)
         CollectRequest_data: CollectRequest = session.exec(statement=query).first()
@@ -101,6 +101,7 @@ class CollectRequestProvider:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Collect Request not found")
         CollectRequest_data.update = self._datetime_provider.get_current_time()
         CollectRequest_data.process_status = process_status
+        CollectRequest_data.note = collect_request_note
         session.add(CollectRequest_data)
         session.commit()
         session.refresh(CollectRequest_data)

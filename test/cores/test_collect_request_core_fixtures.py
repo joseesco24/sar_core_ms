@@ -128,6 +128,7 @@ collect_request: CollectRequest = CollectRequest(
     production_center_id=request_request_data_dto_fixture_1.productionCenterId,
     uuid=collect_request_uuid_fixture_1,
     process_status=9,
+    note="this is a note",
     create=datetime_provider.get_current_time(),
     update=datetime_provider.get_current_time(),
 )
@@ -174,6 +175,7 @@ response_request_data_dto_fixture_1: ResponseRequestDataDto = ResponseRequestDat
     collectDate=r"01/01/2021",
     id=collect_request.uuid,
     processStatus=9,
+    note="this is a note",
     create=datetime_provider.prettify_date_time_obj(date_time_obj=collect_request.create),
     update=datetime_provider.prettify_date_time_obj(date_time_obj=collect_request.update),
 )
@@ -190,4 +192,5 @@ collect_request_find_by_status_fixture_1: CollectRequestFindByStatusResDto = Col
 collect_request_modify_by_id_req_dto_fixture_1: CollectRequestModifyByIdReqDto = CollectRequestModifyByIdReqDto(
     collectReqId=collect_request.uuid,
     processStatus=9,
+    note="this is a note",
 )
