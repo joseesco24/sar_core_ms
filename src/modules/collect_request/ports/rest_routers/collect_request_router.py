@@ -13,7 +13,7 @@ from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos im
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestFindByStatusResDto
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestCreateRequestDto
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestModifyByIdReqDto
-from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestSetFInishedDto
+from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestIdDto
 
 # ** info: app core imports
 from src.modules.collect_request.cores.business.collect_request_core import CollectRequestCore
@@ -78,6 +78,30 @@ async def api_modify_request_by_id(request_modify_request_by_id: CollectRequestM
     response_model=CollectRequestFullDataResponseDto,
     status_code=status.HTTP_200_OK,
 )
-async def api_set_collect_request_to_finished(collect_request_set_finished: CollectRequestSetFInishedDto = Body(...)) -> CollectRequestFullDataResponseDto:
+async def api_set_collect_request_to_finished(collect_request_set_finished: CollectRequestIdDto = Body(...)) -> CollectRequestFullDataResponseDto:
     request_create_response: CollectRequestFullDataResponseDto = await _collect_request_core.driver_set_collect_request_to_finished(collect_request_set_finished)
+    return request_create_response
+
+
+@collect_request_router.post(
+    description="modify the collect request status by to approved by its id",
+    summary="modify the collect request status by to approved by its id",
+    path=_path_provider.build_posix_path("status", "update", "approved"),
+    response_model=CollectRequestFullDataResponseDto,
+    status_code=status.HTTP_200_OK,
+)
+async def api_set_collect_request_to_approved(collect_request_set_finished: CollectRequestIdDto = Body(...)) -> CollectRequestFullDataResponseDto:
+    request_create_response: CollectRequestFullDataResponseDto = await _collect_request_core.driver_set_collect_request_to_approved(collect_request_set_finished)
+    return request_create_response
+
+
+@collect_request_router.post(
+    description="modify the collect request status by to rejected by its id",
+    summary="modify the collect request status by to rejected by its id",
+    path=_path_provider.build_posix_path("status", "update", "rejected"),
+    response_model=CollectRequestFullDataResponseDto,
+    status_code=status.HTTP_200_OK,
+)
+async def api_set_collect_request_to_rejected(collect_request_set_finished: CollectRequestIdDto = Body(...)) -> CollectRequestFullDataResponseDto:
+    request_create_response: CollectRequestFullDataResponseDto = await _collect_request_core.driver_set_collect_request_to_rejected(collect_request_set_finished)
     return request_create_response

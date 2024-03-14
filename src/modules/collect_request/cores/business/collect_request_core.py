@@ -25,9 +25,9 @@ from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos im
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestFullDataResponseDto  # type: ignore
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestCreateRequestDto  # type: ignore
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestModifyByIdReqDto  # type: ignore
-from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestSetFInishedDto  # type: ignore
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import ResponseRequestDataDto  # type: ignore
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import ResponseWasteDataDto  # type: ignore
+from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestIdDto  # type: ignore
 
 # ** info: entities imports
 from src.modules.collect_request.adapters.database_providers_entities.collect_request_entity import CollectRequest  # type: ignore
@@ -100,14 +100,34 @@ class CollectRequestCore:
         logging.info("driver_modify_request_by_id ended")
         return request_create_response
 
-    async def driver_set_collect_request_to_finished(self: Self, collect_request_set_finished: CollectRequestSetFInishedDto) -> CollectRequestFullDataResponseDto:
+    async def driver_set_collect_request_to_finished(self: Self, collect_request_just_id_req: CollectRequestIdDto) -> CollectRequestFullDataResponseDto:
         logging.info("starting driver_set_collect_request_to_finished")
         collect_request_info, wastes_info = await self._update_collect_request_and_child_wastes_at_once(
-            collect_request_id=collect_request_set_finished.collectReqId,
+            collect_request_id=collect_request_just_id_req.collectReqId,
             collect_request_new_status=CollectRequestStates.finished,
         )
         request_create_response: CollectRequestFullDataResponseDto = await self._map_collect_response(collect_request_info=collect_request_info, wastes_info=wastes_info)
         logging.info("driver_set_collect_request_to_finished ended")
+        return request_create_response
+
+    async def driver_set_collect_request_to_approved(self: Self, collect_request_just_id_req: CollectRequestIdDto) -> CollectRequestFullDataResponseDto:
+        logging.info("starting driver_set_collect_request_to_approved")
+        collect_request_info, wastes_info = await self._update_collect_request_and_child_wastes_at_once(
+            collect_request_id=collect_request_just_id_req.collectReqId,
+            collect_request_new_status=CollectRequestStates.approved,
+        )
+        request_create_response: CollectRequestFullDataResponseDto = await self._map_collect_response(collect_request_info=collect_request_info, wastes_info=wastes_info)
+        logging.info("driver_set_collect_request_to_approved ended")
+        return request_create_response
+
+    async def driver_set_collect_request_to_rejected(self: Self, collect_request_just_id_req: CollectRequestIdDto) -> CollectRequestFullDataResponseDto:
+        logging.info("starting api_set_collect_request_to_rejected")
+        collect_request_info, wastes_info = await self._update_collect_request_and_child_wastes_at_once(
+            collect_request_id=collect_request_just_id_req.collectReqId,
+            collect_request_new_status=CollectRequestStates.rejected,
+        )
+        request_create_response: CollectRequestFullDataResponseDto = await self._map_collect_response(collect_request_info=collect_request_info, wastes_info=wastes_info)
+        logging.info("api_set_collect_request_to_rejected ended")
         return request_create_response
 
     # !------------------------------------------------------------------------

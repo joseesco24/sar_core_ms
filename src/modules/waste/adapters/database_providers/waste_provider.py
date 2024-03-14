@@ -105,7 +105,7 @@ class WasteProvider:
             request_uuid=request_uuid,
             type=type,
             packaging=packaging,
-            process_status=WasteStates.waste_treatement_in_course,
+            process_status=WasteStates.in_review,
             weight_in_kg=weight_in_kg,
             volume_in_l=volume_in_l,
             description=description,

@@ -18,6 +18,7 @@ from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos_me
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos_metadata import collect_request_find_by_status_req_dto
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos_metadata import collect_request_find_by_status_res_dto
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos_metadata import collect_request_modify_state_by_id_req_dto
+from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos_metadata import collect_request_id_dto
 
 # ** info: sidecards.artifacts imports
 from src.general_sidecards.artifacts.datetime_provider import DatetimeProvider
@@ -195,7 +196,7 @@ class CollectRequestFindByStatusReqDto(BaseModel):
     model_config = collect_request_find_by_status_req_dto
 
 
-class CollectRequestSetFInishedDto(BaseModel):
+class CollectRequestIdDto(BaseModel):
     collectReqId: str = Field(...)
 
     @field_validator("collectReqId")
@@ -207,7 +208,7 @@ class CollectRequestSetFInishedDto(BaseModel):
             raise ValueError(f"{info.field_name} is not a valid uuid input")
         return value
 
-    model_config = collect_request_modify_state_by_id_req_dto
+    model_config = collect_request_id_dto
 
 
 class CollectRequestModifyByIdReqDto(BaseModel):
