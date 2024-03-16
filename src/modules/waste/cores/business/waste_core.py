@@ -42,12 +42,6 @@ from src.modules.waste.adapters.rest_services.brms_service import BrmsService  #
 # ** info: sidecards.artifacts imports
 from src.general_sidecards.artifacts.datetime_provider import DatetimeProvider  # type: ignore
 
-# ** info: cachetools imports
-from cachetools import TTLCache  # type: ignore
-
-# ** info: asyncache imports
-from asyncache import cached as async_cached  # type: ignore
-
 __all__: list[str] = ["WasteCore"]
 
 
@@ -328,7 +322,6 @@ class WasteCore:
     async def _update_warehouse_current_capacity(self: Self, warehouse_id: int, new_warehouse_capacity: float) -> float:
         return await self._warehouse_ms_service.update_warehouse_current_capacity(warehouse_id=warehouse_id, new_warehouse_capacity=new_warehouse_capacity)
 
-    @async_cached(cache=TTLCache(ttl=240, maxsize=20))
     async def _search_wastes_by_ids(self: Self, uuids: tuple[str, ...]) -> List[Waste]:
         return self._waste_provider.search_wastes_by_ids(uuids=tuple(uuids))
 

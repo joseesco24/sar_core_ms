@@ -30,6 +30,9 @@ from asyncache import cached as async_cached
 
 __all__: list[str] = ["BrmsService"]
 
+# ** info: creating a shared cache for all the brms service instances
+brms_service_cache: TTLCache = TTLCache(ttl=60, maxsize=20)
+
 
 class BrmsService:
     def __init__(self: Self):
@@ -37,7 +40,10 @@ class BrmsService:
         self.base_url: str = str(self._env_provider.sar_brms_base_url)
         self._httpx_client: httpx.AsyncClient = httpx.AsyncClient()
 
-    @async_cached(cache=TTLCache(ttl=240, maxsize=20))
+    def clear_cache(self: Self) -> None:
+        brms_service_cache.clear()
+
+    @async_cached(brms_service_cache)
     @retry(on=HTTPException, attempts=4, wait_initial=0.4, wait_exp_base=2)
     async def obtain_waste_clasification(self: Self, state_waste: str, weight_in_kg: float, isotopes_number: float) -> int:
         logging.debug("obtaining waste classification from brms")

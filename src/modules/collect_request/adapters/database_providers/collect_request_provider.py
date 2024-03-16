@@ -38,6 +38,9 @@ from cachetools import cached
 
 __all__: list[str] = ["CollectRequestProvider"]
 
+# ** info: creating a shared cache for all the collect request provider instances
+collect_request_provider_cache: TTLCache = TTLCache(ttl=240, maxsize=20)
+
 
 class CollectRequestProvider:
     def __init__(self: Self) -> None:
@@ -54,7 +57,10 @@ class CollectRequestProvider:
             query={"charset": "utf8"},
         )
 
-    @cached(cache=TTLCache(ttl=60, maxsize=20))
+    def clear_cache(self: Self) -> None:
+        collect_request_provider_cache.clear()
+
+    @cached(collect_request_provider_cache)
     @retry(on=Exception, attempts=4, wait_initial=0.08, wait_exp_base=2)
     def search_collect_request_by_id(self: Self, uuid: str) -> CollectRequest:
         logging.debug(f"searching collect request by id {uuid}")
@@ -81,19 +87,23 @@ class CollectRequestProvider:
         session.add(new_collect_request)
         session.commit()
         session.refresh(new_collect_request)
+        self.clear_cache()
         logging.debug("new collect request created")
         return new_collect_request
 
-    @cached(cache=TTLCache(ttl=60, maxsize=20))
+    @cached(collect_request_provider_cache)
     @retry(on=Exception, attempts=4, wait_initial=0.08, wait_exp_base=2)
     def find_collects_requests_by_state(self: Self, process_status: int) -> list[CollectRequest]:
+        logging.debug(f"searching collect requests by state {process_status}")
         session: Session = self._session_manager.obtain_session()
         query: Any = select(CollectRequest).where(CollectRequest.process_status == process_status)
         find_collect_request_by_state_result: list[CollectRequest] = session.exec(statement=query).all()
+        logging.debug("searching collect requests by state ended")
         return find_collect_request_by_state_result
 
     @retry(on=Exception, attempts=4, wait_initial=0.08, wait_exp_base=2)
     def modify_collect_request_by_id(self: Self, uuid: str, process_status: int, collect_request_note: str) -> CollectRequest:
+        logging.debug(f"modifying collect request by id {uuid}")
         session: Session = self._session_manager.obtain_session()
         query: Any = select(CollectRequest).where(CollectRequest.uuid == uuid)
         CollectRequest_data: CollectRequest = session.exec(statement=query).first()
@@ -105,4 +115,6 @@ class CollectRequestProvider:
         session.add(CollectRequest_data)
         session.commit()
         session.refresh(CollectRequest_data)
+        self.clear_cache()
+        logging.debug(f"collect request {uuid} modified")
         return CollectRequest_data

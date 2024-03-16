@@ -39,6 +39,9 @@ from cachetools import cached
 
 __all__: list[str] = ["WasteProvider"]
 
+# ** info: creating a shared cache for all the waste provider instances
+waste_provider_cache: TTLCache = TTLCache(ttl=240, maxsize=20)
+
 
 class WasteProvider:
     def __init__(self: Self) -> None:
@@ -55,7 +58,10 @@ class WasteProvider:
             query={"charset": "utf8"},
         )
 
-    @cached(cache=TTLCache(ttl=60, maxsize=20))
+    def clear_cache(self: Self) -> None:
+        waste_provider_cache.clear()
+
+    @cached(waste_provider_cache)
     @retry(on=Exception, attempts=4, wait_initial=0.08, wait_exp_base=2)
     def search_waste_by_id(self: Self, uuid: str) -> Waste:
         logging.debug(f"searching waste by id {uuid}")
@@ -65,7 +71,7 @@ class WasteProvider:
         logging.debug("searching waste by id ended")
         return search_waste_by_id_result
 
-    @cached(cache=TTLCache(ttl=60, maxsize=10))
+    @cached(waste_provider_cache)
     @retry(on=Exception, attempts=4, wait_initial=0.08, wait_exp_base=2)
     def list_wastes_by_process_status(self: Self, process_status: int) -> list[Waste]:
         logging.debug(f"searching wastes by process status {process_status}")
@@ -75,7 +81,7 @@ class WasteProvider:
         logging.debug("searching wastes by process status ended")
         return search_waste_by_domain_result
 
-    @cached(cache=TTLCache(ttl=60, maxsize=10))
+    @cached(waste_provider_cache)
     @retry(on=Exception, attempts=4, wait_initial=0.08, wait_exp_base=2)
     def list_wastes_by_collect_request_id(self: Self, collect_request_uuid: str) -> list[Waste]:
         logging.debug(f"searching wastes by collect request id {collect_request_uuid}")
@@ -116,6 +122,7 @@ class WasteProvider:
         session.add(new_waste)
         session.commit()
         session.refresh(new_waste)
+        self.clear_cache()
         logging.debug("new waste with basic info created")
         return new_waste
 
@@ -135,6 +142,7 @@ class WasteProvider:
         session.add(waste_data)
         session.commit()
         session.refresh(waste_data)
+        self.clear_cache()
         logging.debug(f"waste {uuid} internal classification info updated")
         return waste_data
 
@@ -151,6 +159,7 @@ class WasteProvider:
         session.add(waste_data)
         session.commit()
         session.refresh(waste_data)
+        self.clear_cache()
         logging.debug(f"waste {uuid} status updated")
         return waste_data
 
@@ -171,6 +180,7 @@ class WasteProvider:
         for waste in wastes:
             session.refresh(waste)
             return_wastes.append(waste)
+        self.clear_cache()
         logging.debug(f"waste {request_uuid} status updated")
         return return_wastes
 
@@ -192,10 +202,11 @@ class WasteProvider:
         for waste in wastes:
             session.refresh(waste)
             return_wastes.append(waste)
+        self.clear_cache()
         logging.debug(f"waste {request_uuid} status updated")
         return return_wastes
 
-    @cached(cache=TTLCache(ttl=60, maxsize=20))
+    @cached(waste_provider_cache)
     @retry(on=Exception, attempts=4, wait_initial=0.08, wait_exp_base=2)
     def search_wastes_by_ids(self: Self, uuids: tuple[str, ...]) -> list[Waste]:
         logging.debug(f"searching wastes by ids {", ".join(uuids)}")

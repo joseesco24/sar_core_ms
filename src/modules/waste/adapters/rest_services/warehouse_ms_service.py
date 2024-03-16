@@ -26,7 +26,16 @@ from src.modules.waste.adapters.rest_services_dtos.warehouse_ms_dtos import Ware
 # ** info: sidecards.artifacts imports
 from src.general_sidecards.artifacts.env_provider import EnvProvider
 
+# ** info: cachetools imports
+from cachetools import TTLCache
+
+# ** info: asyncache imports
+from asyncache import cached as async_cached
+
 __all__: list[str] = ["WarehouseMsService"]
+
+# ** info: creating a shared cache for all the warehouse ms service instances
+warehouse_ms_service_cache: TTLCache = TTLCache(ttl=10, maxsize=20)
 
 
 class WarehouseMsService:
@@ -35,6 +44,10 @@ class WarehouseMsService:
         self.base_url: str = str(self._env_provider.sar_warehouse_ms_base_url)
         self._httpx_client: httpx.AsyncClient = httpx.AsyncClient()
 
+    def clear_cache(self: Self) -> None:
+        warehouse_ms_service_cache.clear()
+
+    @async_cached(warehouse_ms_service_cache)
     @retry(on=HTTPException, attempts=8, wait_initial=0.4, wait_exp_base=2)
     async def obtain_warehouse_full_data(self: Self, warehouse_id: int) -> WarehouseFullDataResponseDto:
         logging.debug("obtaining warehouse full data from warehouse ms")
@@ -82,6 +95,7 @@ class WarehouseMsService:
         except Exception:
             logging.critical("error parsing response from warehouse ms")
             raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        self.clear_cache()
         logging.debug("warehouse full data updated on warehouse ms")
         return warehouse_full_data
 

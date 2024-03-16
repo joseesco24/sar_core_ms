@@ -32,6 +32,9 @@ from cachetools import cached
 
 __all__: list[str] = ["ParameterProvider"]
 
+# ** info: creating a shared cache for all the parameter provider instances
+parameter_provider_cache: TTLCache = TTLCache(ttl=300, maxsize=60)
+
 
 class ParameterProvider:
     def __init__(self: Self) -> None:
@@ -47,7 +50,10 @@ class ParameterProvider:
             query={"charset": "utf8"},
         )
 
-    @cached(cache=TTLCache(ttl=240, maxsize=20))
+    def clear_cache(self: Self) -> None:
+        parameter_provider_cache.clear()
+
+    @cached(parameter_provider_cache)
     @retry(on=Exception, attempts=4, wait_initial=0.08, wait_exp_base=2)
     def search_parameters_by_domain(self: Self, domain: str) -> List[Parameter]:
         logging.debug(f"searching parameters by domain {domain}")
