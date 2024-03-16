@@ -42,6 +42,12 @@ from src.business_sidecards.artifacts.business_glossary_translate_provider impor
 from src.business_sidecards.constants.collect_request_states_constants import CollectRequestStates  # type: ignore
 from src.general_sidecards.artifacts.datetime_provider import DatetimeProvider  # type: ignore
 
+# ** info: cachetools imports
+from cachetools import TTLCache  # type: ignore
+
+# ** info: asyncache imports
+from asyncache import cached as async_cached  # type: ignore
+
 __all__: list[str] = ["CollectRequestCore"]
 
 
@@ -105,7 +111,7 @@ class CollectRequestCore:
     async def driver_set_collect_request_to_finished(self: Self, collect_request_id_plus_store_id_req: CollectRequestIdNoteStoreIdDto) -> CollectRequestFullDataResponseDto:
         logging.info("starting driver_set_collect_request_to_finished")
         wastes_ids: list[str] = await self._get_wastes_ids_by_collect_request_id(collect_request_uuid=collect_request_id_plus_store_id_req.collectReqId)
-        await self._check_if_wastes_batch_are_assignable_to_warehouse(warehouse_id=collect_request_id_plus_store_id_req.storeId, wastes_ids=wastes_ids)
+        await self._check_if_wastes_batch_are_assignable_to_warehouse(warehouse_id=collect_request_id_plus_store_id_req.storeId, wastes_ids=tuple(wastes_ids))
         collect_request_info, wastes_info = await self._update_collect_request_and_child_wastes_with_store_id_at_once(
             collect_request_id=collect_request_id_plus_store_id_req.collectReqId,
             collect_request_new_status=CollectRequestStates.finished,
@@ -342,10 +348,12 @@ class CollectRequestCore:
             self._cam_wc_update_waste_status_and_store_by_request_id(collect_request_id=collect_request_id, process_status_waste=updated_waste_status, store_id=store_id),
         )
 
-    async def _check_if_wastes_batch_are_assignable_to_warehouse(self: Self, warehouse_id: int, wastes_ids: list[str]) -> None:
-        await self.cam_wc_check_if_wastes_batch_are_assignable_to_warehouse(warehouse_id=warehouse_id, wastes_ids=wastes_ids)
+    @async_cached(cache=TTLCache(ttl=240, maxsize=20))
+    async def _check_if_wastes_batch_are_assignable_to_warehouse(self: Self, warehouse_id: int, wastes_ids: tuple[str, ...]) -> None:
+        await self.cam_wc_check_if_wastes_batch_are_assignable_to_warehouse(warehouse_id=warehouse_id, wastes_ids=list(wastes_ids))
         return None
 
+    @async_cached(cache=TTLCache(ttl=240, maxsize=20))
     async def _get_wastes_ids_by_collect_request_id(self: Self, collect_request_uuid: str) -> list[str]:
         wastes: list[Waste] = await self._waste_core.cpm_get_wastes_by_collect_request_id(collect_request_uuid=collect_request_uuid)
         wastes_ids: list[str] = list(map(lambda waste: waste.uuid, wastes))

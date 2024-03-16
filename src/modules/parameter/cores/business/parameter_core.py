@@ -22,6 +22,12 @@ from src.modules.parameter.adapters.database_providers.parameter_provider import
 # ** info: sidecards.helpers imports
 from src.general_sidecards.helpers.singleton_helper import Singleton  # type: ignore
 
+# ** info: cachetools imports
+from cachetools import TTLCache  # type: ignore
+
+# ** info: asyncache imports
+from asyncache import cached as async_cached  # type: ignore
+
 __all__: list[str] = ["ParameterCore"]
 
 
@@ -80,6 +86,7 @@ class ParameterCore(metaclass=Singleton):
     # ! warning: a method only can be declared in this section if it is going to be called from inside this core
     # !------------------------------------------------------------------------
 
+    @async_cached(cache=TTLCache(ttl=240, maxsize=20))
     async def _search_by_domain(self: Self, domain: str) -> List[Parameter]:
         parameters: List[Parameter] = self._parameter_provider.search_parameters_by_domain(domain=domain)
         return parameters
