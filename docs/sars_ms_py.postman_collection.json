@@ -70,7 +70,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n    \"processStatus\": 22,\n    \"collectReqId\": \"d8f4e416-8bb5-457f-8a62-8a92d82dfdff\"\n}",
+													"raw": "{\n    \"processStatus\": 22,\n    \"collectReqId\": \"d8f4e416-8bb5-457f-8a62-8a92d82dfdff\",\n    \"note\": \"test note\"\n}",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -105,7 +105,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n    \"collectReqId\": \"d4a2a394-0008-43b9-8ae8-a8a47981a0f6\"\n}",
+													"raw": "{\n    \"collectReqId\": \"9c03099c-9c88-4015-be25-6940af62bbc0\",\n    \"note\": \"test note\",\n    \"storeId\": 9\n}",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -141,7 +141,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n    \"collectReqId\": \"d4a2a394-0008-43b9-8ae8-a8a47981a0f6\"\n}",
+													"raw": "{\n    \"collectReqId\": \"9c03099c-9c88-4015-be25-6940af62bbc0\",\n    \"note\": \"test note\"\n}",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -177,7 +177,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n    \"collectReqId\": \"d8f4e416-8bb5-457f-8a62-8a92d82dfdff\"\n}",
+													"raw": "{\n    \"collectReqId\": \"9c03099c-9c88-4015-be25-6940af62bbc0\",\n    \"note\": \"test note\"\n}",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -215,7 +215,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"processStatus\": 22\n}",
+											"raw": "{\n    \"processStatus\": 21\n}",
 											"options": {
 												"raw": {
 													"language": "json"
