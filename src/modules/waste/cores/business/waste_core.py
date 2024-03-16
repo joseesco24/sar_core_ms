@@ -194,7 +194,9 @@ class WasteCore:
         wastes_ids: list[str],
     ) -> None:
         logging.info("starting cpm_wc_get_warehouse_capacity")
-        warehouse_current_capacity, wastes_by_ids = await gather(self._get_warehouse_current_capacity(warehouse_id=warehouse_id), self._search_wastes_by_ids(uuids=wastes_ids))
+        warehouse_current_capacity, wastes_by_ids = await gather(
+            self._get_warehouse_current_capacity(warehouse_id=warehouse_id), self._search_wastes_by_ids(uuids=tuple(wastes_ids))
+        )
         wastes_total_weight = await self._compute_wastes_total_weight(wastes=wastes_by_ids)
         if warehouse_current_capacity < wastes_total_weight:
             logging.error(f"warehouse capacity {warehouse_current_capacity} is less than wastes total weight {wastes_total_weight}")
@@ -213,7 +215,9 @@ class WasteCore:
 
     async def cpm_wc_copute_new_warehouse_capacity_assigning_new_wastes(self: Self, warehouse_id: int, wastes_ids: list[str]) -> float:
         logging.info("starting cpm_wc_copute_new_warehouse_capacity_assigning_new_wastes")
-        warehouse_current_capacity, wastes_by_ids = await gather(self._get_warehouse_current_capacity(warehouse_id=warehouse_id), self._search_wastes_by_ids(uuids=wastes_ids))
+        warehouse_current_capacity, wastes_by_ids = await gather(
+            self._get_warehouse_current_capacity(warehouse_id=warehouse_id), self._search_wastes_by_ids(uuids=tuple(wastes_ids))
+        )
         wastes_total_weight = await self._compute_wastes_total_weight(wastes=wastes_by_ids)
         new_warehouse_capacity = await self._compute_new_warehouse_capacity(warehouse_current_capacity=warehouse_current_capacity, waste_weight_in_kg=wastes_total_weight)
         logging.info("ending cpm_wc_copute_new_warehouse_capacity_assigning_new_wastes")
@@ -325,7 +329,7 @@ class WasteCore:
         return await self._warehouse_ms_service.update_warehouse_current_capacity(warehouse_id=warehouse_id, new_warehouse_capacity=new_warehouse_capacity)
 
     @async_cached(cache=TTLCache(ttl=240, maxsize=20))
-    async def _search_wastes_by_ids(self: Self, uuids: list[str]) -> List[Waste]:
+    async def _search_wastes_by_ids(self: Self, uuids: tuple[str, ...]) -> List[Waste]:
         return self._waste_provider.search_wastes_by_ids(uuids=tuple(uuids))
 
     async def _compute_wastes_total_weight(self: Self, wastes: list[Waste]) -> float:
