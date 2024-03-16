@@ -13,6 +13,7 @@ from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos im
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestFindByStatusResDto
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestCreateRequestDto
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestModifyByIdReqDto
+from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestIdNoteStoreIdDto
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestIdNoteDto
 
 # ** info: app core imports
@@ -78,7 +79,7 @@ async def api_modify_request_by_id(request_modify_request_by_id: CollectRequestM
     response_model=CollectRequestFullDataResponseDto,
     status_code=status.HTTP_200_OK,
 )
-async def api_set_collect_request_to_finished(collect_request_set_finished: CollectRequestIdNoteDto = Body(...)) -> CollectRequestFullDataResponseDto:
+async def api_set_collect_request_to_finished(collect_request_set_finished: CollectRequestIdNoteStoreIdDto = Body(...)) -> CollectRequestFullDataResponseDto:
     request_create_response: CollectRequestFullDataResponseDto = await _collect_request_core.driver_set_collect_request_to_finished(collect_request_set_finished)
     return request_create_response
 

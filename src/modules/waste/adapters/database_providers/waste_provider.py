@@ -173,3 +173,34 @@ class WasteProvider:
             return_wastes.append(waste)
         logging.debug(f"waste {request_uuid} status updated")
         return return_wastes
+
+    @retry(on=Exception, attempts=4, wait_initial=0.08, wait_exp_base=2)
+    def update_waste_status_and_store_id_by_request_id(self: Self, request_uuid: str, process_status: int, store_id: int) -> list[Waste]:
+        logging.debug(f"updating waste {request_uuid} status")
+        return_wastes: list[Waste] = []
+        session: Session = self._session_manager.obtain_session()
+        query: Any = select(Waste).where(Waste.request_uuid == request_uuid)
+        wastes: list[Waste] = session.exec(statement=query).all()
+        if wastes is None:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="wastes not found")
+        for waste in wastes:
+            waste.update = self._datetime_provider.get_current_time()
+            waste.process_status = process_status
+            waste.store = store_id
+            session.add(waste)
+        session.commit()
+        for waste in wastes:
+            session.refresh(waste)
+            return_wastes.append(waste)
+        logging.debug(f"waste {request_uuid} status updated")
+        return return_wastes
+
+    @cached(cache=TTLCache(ttl=60, maxsize=20))
+    @retry(on=Exception, attempts=4, wait_initial=0.08, wait_exp_base=2)
+    def search_wastes_by_ids(self: Self, uuids: tuple[str, ...]) -> list[Waste]:
+        logging.debug(f"searching wastes by ids {", ".join(uuids)}")
+        session: Session = self._session_manager.obtain_session()
+        query: Any = select(Waste).where(Waste.uuid.in_(uuids))
+        search_waste_by_id_result: list[Waste] = session.exec(statement=query).all()
+        logging.debug("searching wastes by ids ended")
+        return search_waste_by_id_result

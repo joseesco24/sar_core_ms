@@ -27,6 +27,7 @@ from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos im
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestModifyByIdReqDto  # type: ignore
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import ResponseRequestDataDto  # type: ignore
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import ResponseWasteDataDto  # type: ignore
+from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestIdNoteStoreIdDto  # type: ignore
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestIdNoteDto  # type: ignore
 
 # ** info: entities imports
@@ -101,13 +102,20 @@ class CollectRequestCore:
         logging.info("driver_modify_request_by_id ended")
         return request_create_response
 
-    async def driver_set_collect_request_to_finished(self: Self, collect_request_just_id_req: CollectRequestIdNoteDto) -> CollectRequestFullDataResponseDto:
+    async def driver_set_collect_request_to_finished(self: Self, collect_request_id_plus_store_id_req: CollectRequestIdNoteStoreIdDto) -> CollectRequestFullDataResponseDto:
         logging.info("starting driver_set_collect_request_to_finished")
-        collect_request_info, wastes_info = await self._update_collect_request_and_child_wastes_at_once(
-            collect_request_id=collect_request_just_id_req.collectReqId,
+        wastes_ids: list[str] = await self._get_wastes_ids_by_collect_request_id(collect_request_uuid=collect_request_id_plus_store_id_req.collectReqId)
+        await self._check_if_wastes_batch_are_assignable_to_warehouse(warehouse_id=collect_request_id_plus_store_id_req.storeId, wastes_ids=wastes_ids)
+        collect_request_info, wastes_info = await self._update_collect_request_and_child_wastes_with_store_id_at_once(
+            collect_request_id=collect_request_id_plus_store_id_req.collectReqId,
             collect_request_new_status=CollectRequestStates.finished,
-            collect_request_note=collect_request_just_id_req.note,
+            collect_request_note=collect_request_id_plus_store_id_req.note,
+            store_id=collect_request_id_plus_store_id_req.storeId,
         )
+        new_warehouse_capacity: float = await self._compute_new_warehouse_capacity_assigning_new_wastes(
+            warehouse_id=collect_request_id_plus_store_id_req.storeId, new_wastes_ids=wastes_ids
+        )
+        await self._update_warehouse_current_capacity(warehouse_id=collect_request_id_plus_store_id_req.storeId, new_warehouse_capacity=new_warehouse_capacity)
         request_create_response: CollectRequestFullDataResponseDto = await self._map_collect_response(collect_request_info=collect_request_info, wastes_info=wastes_info)
         logging.info("driver_set_collect_request_to_finished ended")
         return request_create_response
@@ -166,10 +174,19 @@ class CollectRequestCore:
         return wastes
 
     # ** info: cam wc are initials for core adapter methods waste core
-    async def _cam_wc_update_waste_by_request_id(self: Self, collect_request_id: str, process_status_waste: int) -> list[Waste]:
-        logging.info("starting _cam_wc_update_waste_by_request_id")
-        updated_wastes: list[Waste] = await self._waste_core.cpm_wc_update_waste_by_request_id(request_uuid=collect_request_id, process_status=process_status_waste)
-        logging.info("ending _cam_wc_update_waste_by_request_id")
+    async def _cam_wc_update_waste_status_by_request_id(self: Self, collect_request_id: str, process_status_waste: int) -> list[Waste]:
+        logging.info("starting _cam_wc_update_waste_status_by_request_id")
+        updated_wastes: list[Waste] = await self._waste_core.cpm_wc_update_waste_status_by_request_id(request_uuid=collect_request_id, process_status=process_status_waste)
+        logging.info("ending _cam_wc_update_waste_status_by_request_id")
+        return updated_wastes
+
+    # ** info: cam wc are initials for core adapter methods waste core
+    async def _cam_wc_update_waste_status_and_store_by_request_id(self: Self, collect_request_id: str, process_status_waste: int, store_id: int) -> list[Waste]:
+        logging.info("starting _cam_wc_update_waste_status_and_store_by_request_id")
+        updated_wastes: list[Waste] = await self._waste_core.cpm_wc_update_waste_status_and_store_by_request_id(
+            request_uuid=collect_request_id, process_status=process_status_waste, store_id=store_id
+        )
+        logging.info("ending _cam_wc_update_waste_status_and_store_by_request_id")
         return updated_wastes
 
     # ** info: cam wc are initials for core adapter methods waste core
@@ -178,6 +195,35 @@ class CollectRequestCore:
         list_wastes_by_collect_request_id: list[Waste] = await self._waste_core.cpm_wc_list_wastes_by_collect_request_id(collect_request_uuid=collect_request_uuid)
         logging.info("ending _cam_wc_list_wastes_by_collect_request_id")
         return list_wastes_by_collect_request_id
+
+    # ** info: cam wc are initials for core adapter methods waste core
+    async def cam_wc_check_if_wastes_batch_are_assignable_to_warehouse(self: Self, warehouse_id: int, wastes_ids: list[str]) -> None:
+        logging.info("starting cam_wc_get_warehouse_capacity")
+        await self._waste_core.cpm_wc_check_if_wastes_batch_are_assignable_to_warehouse(warehouse_id=warehouse_id, wastes_ids=wastes_ids)
+        logging.info("ending cam_wc_get_warehouse_capacity")
+        return None
+
+    # ** info: cam wc are initials for core adapter methods waste core
+    async def cam_get_wastes_by_collect_request_id(self: Self, collect_request_uuid: str) -> list[Waste]:
+        logging.info("starting cpm_get_wastes_by_collect_request_id")
+        list_wastes_by_collect_request_id: list[Waste] = await self._waste_core.cpm_get_wastes_by_collect_request_id(collect_request_uuid=collect_request_uuid)
+        logging.info("ending cpm_get_wastes_by_collect_request_id")
+        return list_wastes_by_collect_request_id
+
+    # ** info: cam wc are initials for core adapter methods waste core
+    async def cam_wc_copute_new_warehouse_capacity_assigning_new_wastes(self: Self, warehouse_id: int, new_wastes_ids: list[str]) -> float:
+        logging.info("starting cam_wc_copute_new_warehouse_capacity_assigning_new_wastes")
+        new_warehouse_capacity: float = await self._waste_core.cpm_wc_copute_new_warehouse_capacity_assigning_new_wastes(warehouse_id=warehouse_id, wastes_ids=new_wastes_ids)
+        logging.info("ending cam_wc_copute_new_warehouse_capacity_assigning_new_wastes")
+        return new_warehouse_capacity
+
+    async def cam_wc_update_warehouse_current_capacity(self: Self, warehouse_id: int, new_warehouse_capacity: float) -> float:
+        logging.info("starting cam_update_warehouse_current_capacity")
+        updated_warehouse_capacity: float = await self._waste_core.cpm_wc_update_warehouse_current_capacity(
+            warehouse_id=warehouse_id, new_warehouse_capacity=new_warehouse_capacity
+        )
+        logging.info("ending cam_update_warehouse_current_capacity")
+        return updated_warehouse_capacity
 
     # !------------------------------------------------------------------------
     # ! info: core port methods section start
@@ -284,5 +330,29 @@ class CollectRequestCore:
         updated_waste_status: int = await self._select_waste_status_by_collect_request_status(process_status=collect_request_new_status)
         return await gather(
             self._modify_collect_request(collect_request_id=collect_request_id, process_status=collect_request_new_status, collect_request_note=collect_request_note),
-            self._cam_wc_update_waste_by_request_id(collect_request_id=collect_request_id, process_status_waste=updated_waste_status),
+            self._cam_wc_update_waste_status_by_request_id(collect_request_id=collect_request_id, process_status_waste=updated_waste_status),
         )
+
+    async def _update_collect_request_and_child_wastes_with_store_id_at_once(
+        self: Self, collect_request_id: str, collect_request_new_status: int, collect_request_note: str, store_id: int
+    ) -> tuple[CollectRequest, list[Waste]]:
+        updated_waste_status: int = await self._select_waste_status_by_collect_request_status(process_status=collect_request_new_status)
+        return await gather(
+            self._modify_collect_request(collect_request_id=collect_request_id, process_status=collect_request_new_status, collect_request_note=collect_request_note),
+            self._cam_wc_update_waste_status_and_store_by_request_id(collect_request_id=collect_request_id, process_status_waste=updated_waste_status, store_id=store_id),
+        )
+
+    async def _check_if_wastes_batch_are_assignable_to_warehouse(self: Self, warehouse_id: int, wastes_ids: list[str]) -> None:
+        await self.cam_wc_check_if_wastes_batch_are_assignable_to_warehouse(warehouse_id=warehouse_id, wastes_ids=wastes_ids)
+        return None
+
+    async def _get_wastes_ids_by_collect_request_id(self: Self, collect_request_uuid: str) -> list[str]:
+        wastes: list[Waste] = await self._waste_core.cpm_get_wastes_by_collect_request_id(collect_request_uuid=collect_request_uuid)
+        wastes_ids: list[str] = list(map(lambda waste: waste.uuid, wastes))
+        return wastes_ids
+
+    async def _compute_new_warehouse_capacity_assigning_new_wastes(self: Self, warehouse_id: int, new_wastes_ids: list[str]) -> float:
+        return await self.cam_wc_copute_new_warehouse_capacity_assigning_new_wastes(warehouse_id=warehouse_id, new_wastes_ids=new_wastes_ids)
+
+    async def _update_warehouse_current_capacity(self: Self, warehouse_id: int, new_warehouse_capacity: float) -> float:
+        return await self.cam_wc_update_warehouse_current_capacity(warehouse_id=warehouse_id, new_warehouse_capacity=new_warehouse_capacity)

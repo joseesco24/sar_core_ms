@@ -18,6 +18,8 @@ collect_request_modify_state_by_id_res_dto = {
     }
 }
 
+collect_request_id_note_store_id_dto_req = {"json_schema_extra": {"examples": [{"id": "09fe7cbc-8acf-4147-9b45-d3d79f19ceda", "note": "this is a note", "storeId": 12}]}}
+
 collect_request_id_note_dto = {"json_schema_extra": {"examples": [{"id": "09fe7cbc-8acf-4147-9b45-d3d79f19ceda", "note": "this is a note"}]}}
 
 collect_request_find_by_status_req_dto = {"json_schema_extra": {"examples": [{"processStatus": 9}]}}

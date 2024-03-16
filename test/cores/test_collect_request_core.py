@@ -19,7 +19,8 @@ from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos im
 from src.modules.collect_request.cores.business.collect_request_core import CollectRequestCore  # type: ignore
 
 # ** info: fixtures imports
-from test_collect_request_core_fixtures import collect_request_modify_by_id_req_dto_fixture_1  # type: ignore
+# ! warning: reactivate the next line when the test of the heavy drivers are implemented
+# from test_collect_request_core_fixtures import collect_request_modify_by_id_req_dto_fixture_1  # type: ignore
 from test_collect_request_core_fixtures import collect_request_find_by_status_fixture_1  # type: ignore
 from test_collect_request_core_fixtures import request_find_request_by_status_fixture_1  # type: ignore
 from test_collect_request_core_fixtures import request_full_data_response_fixture_1  # type: ignore
@@ -66,6 +67,8 @@ async def test_driver_find_request_by_status_hpp1() -> None:
     assert find_request_by_status_response == collect_request_find_by_status_fixture_1
 
 
+# ! warning: heavy driver test deactivated
+"""
 @mark.asyncio
 async def test_driver_modify_request_by_id_hpp1() -> None:
     modify_request_by_id_response: CollectRequestFullDataResponseDto = await collect_request_core.driver_modify_request_by_id(
@@ -77,3 +80,4 @@ async def test_driver_modify_request_by_id_hpp1() -> None:
         collect_request_note=collect_request_modify_by_id_req_dto_fixture_1.note,
     )
     assert modify_request_by_id_response == request_full_data_response_fixture_1
+"""

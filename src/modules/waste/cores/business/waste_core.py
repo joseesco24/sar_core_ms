@@ -4,6 +4,7 @@
 import logging
 
 # ** info: asyncio imports
+from functools import reduce
 from asyncio import gather
 
 # ** info: typing imports
@@ -156,7 +157,7 @@ class WasteCore:
         return new_waste
 
     # ** info: cpm wc are initials for core port methods waste core
-    async def cpm_wc_update_waste_by_request_id(
+    async def cpm_wc_update_waste_status_by_request_id(
         self: Self,
         request_uuid: str,
         process_status: int,
@@ -165,6 +166,58 @@ class WasteCore:
         updated_wastes: list[Waste] = self._waste_provider.update_waste_status_by_request_id(request_uuid=request_uuid, process_status=process_status)
         logging.info("ending cpm_wc_update_waste_by_requestId")
         return updated_wastes
+
+    # ** info: cpm wc are initials for core port methods waste core
+    async def cpm_wc_update_waste_status_and_store_by_request_id(
+        self: Self,
+        request_uuid: str,
+        process_status: int,
+        store_id: int,
+    ) -> list[Waste]:
+        logging.info("starting cpm_wc_update_waste_status_and_store_by_request_id")
+        updated_wastes: list[Waste] = self._waste_provider.update_waste_status_and_store_id_by_request_id(
+            request_uuid=request_uuid, process_status=process_status, store_id=store_id
+        )
+        logging.info("ending cpm_wc_update_waste_status_and_store_by_request_id")
+        return updated_wastes
+
+    # ** info: cpm wc are initials for core port methods waste core
+    async def cpm_wc_check_if_wastes_batch_are_assignable_to_warehouse(
+        self: Self,
+        warehouse_id: int,
+        wastes_ids: list[str],
+    ) -> None:
+        logging.info("starting cpm_wc_get_warehouse_capacity")
+        warehouse_current_capacity, wastes_by_ids = await gather(self._get_warehouse_current_capacity(warehouse_id=warehouse_id), self._search_wastes_by_ids(uuids=wastes_ids))
+        wastes_total_weight = await self._compute_wastes_total_weight(wastes=wastes_by_ids)
+        if warehouse_current_capacity < wastes_total_weight:
+            logging.error(f"warehouse capacity {warehouse_current_capacity} is less than wastes total weight {wastes_total_weight}")
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail=f"warehouse capacity {warehouse_current_capacity} is less than wastes total weight {wastes_total_weight}"
+            )
+        logging.info("ending cpm_wc_get_warehouse_capacity")
+        return None
+
+    # ** info: cpm wc are initials for core port methods waste core
+    async def cpm_get_wastes_by_collect_request_id(self: Self, collect_request_uuid: str) -> list[Waste]:
+        logging.info("starting cpm_get_wastes_by_collect_request_id")
+        list_wastes_by_collect_request_id: list[Waste] = self._waste_provider.list_wastes_by_collect_request_id(collect_request_uuid=collect_request_uuid)
+        logging.info("ending cpm_get_wastes_by_collect_request_id")
+        return list_wastes_by_collect_request_id
+
+    async def cpm_wc_copute_new_warehouse_capacity_assigning_new_wastes(self: Self, warehouse_id: int, wastes_ids: list[str]) -> float:
+        logging.info("starting cpm_wc_copute_new_warehouse_capacity_assigning_new_wastes")
+        warehouse_current_capacity, wastes_by_ids = await gather(self._get_warehouse_current_capacity(warehouse_id=warehouse_id), self._search_wastes_by_ids(uuids=wastes_ids))
+        wastes_total_weight = await self._compute_wastes_total_weight(wastes=wastes_by_ids)
+        new_warehouse_capacity = await self._compute_new_warehouse_capacity(warehouse_current_capacity=warehouse_current_capacity, waste_weight_in_kg=wastes_total_weight)
+        logging.info("ending cpm_wc_copute_new_warehouse_capacity_assigning_new_wastes")
+        return new_warehouse_capacity
+
+    async def cpm_wc_update_warehouse_current_capacity(self: Self, warehouse_id: int, new_warehouse_capacity: float) -> float:
+        logging.info("starting cpm_wc_update_warehouse_capacity")
+        updated_warehouse_capacity = await self._update_warehouse_current_capacity(warehouse_id=warehouse_id, new_warehouse_capacity=new_warehouse_capacity)
+        logging.info("ending cpm_wc_update_warehouse_capacity")
+        return updated_warehouse_capacity
 
     # ** info: cpm wc are initials for core port methods waste core
     async def cpm_wc_list_wastes_by_collect_request_id(
@@ -264,3 +317,9 @@ class WasteCore:
 
     async def _update_warehouse_current_capacity(self: Self, warehouse_id: int, new_warehouse_capacity: float) -> float:
         return await self._warehouse_ms_service.update_warehouse_current_capacity(warehouse_id=warehouse_id, new_warehouse_capacity=new_warehouse_capacity)
+
+    async def _search_wastes_by_ids(self: Self, uuids: list[str]) -> List[Waste]:
+        return self._waste_provider.search_wastes_by_ids(uuids=tuple(uuids))
+
+    async def _compute_wastes_total_weight(self: Self, wastes: list[Waste]) -> float:
+        return reduce(lambda weight_1, weight_2: weight_1 + weight_2, list(map(lambda waste: float(waste.weight_in_kg), wastes)))

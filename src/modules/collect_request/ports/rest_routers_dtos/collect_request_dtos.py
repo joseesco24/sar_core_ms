@@ -12,6 +12,7 @@ from typing import Optional
 from typing import List
 
 # **info: metadata for the model imports
+from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos_metadata import collect_request_id_note_store_id_dto_req
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos_metadata import collect_request_creation_req_ex
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos_metadata import collect_request_creation_res_ex
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos_metadata import collect_request_modify_state_by_id_res_dto
@@ -211,6 +212,32 @@ class CollectRequestIdNoteDto(BaseModel):
         return value
 
     model_config = collect_request_id_note_dto
+
+
+class CollectRequestIdNoteStoreIdDto(BaseModel):
+    collectReqId: str = Field(...)
+    note: str = Field(...)
+    storeId: int = Field(...)
+
+    @field_validator("collectReqId")
+    @classmethod
+    def uuid_validator(cls, value: str, info: ValidationInfo) -> int:
+        if UuidProvider.check_str_uuid(value):
+            value = str(value)
+        else:
+            raise ValueError(f"{info.field_name} is not a valid uuid input")
+        return value
+
+    @field_validator("storeId")
+    @classmethod
+    def int_validator(cls, value: int, info: ValidationInfo) -> int:
+        if isinstance(value, int):
+            value = int(value)
+        else:
+            raise ValueError(f"{info.field_name} is not a integer input")
+        return value
+
+    model_config = collect_request_id_note_store_id_dto_req
 
 
 class CollectRequestModifyByIdReqDto(BaseModel):
