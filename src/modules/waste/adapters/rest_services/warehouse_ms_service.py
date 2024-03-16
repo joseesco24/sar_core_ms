@@ -66,7 +66,6 @@ class WarehouseMsService:
         try:
             data: WarehouseFullDataRequestDto = await self._map_warehouse_full_data_dto_to_ms_dict(warehouse_full_data=warehouse_current_full_data)
             raw_data: dict[str, any] = data.model_dump_json()
-            print(raw_data)
         except Exception:
             logging.critical("error parsing request for warehouse ms")
             raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
