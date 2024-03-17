@@ -14,7 +14,7 @@ __all__: list[str] = ["heart_beat_router"]
 _path_provider: PathProvider = PathProvider()
 
 # ** info: building router
-heart_beat_router: APIRouter = APIRouter(prefix=_path_provider.build_posix_path("heart-beat"), tags=["Hart Beat"])
+heart_beat_router: APIRouter = APIRouter(prefix=_path_provider.build_posix_path("heart-beat"), tags=["Heart Beat"])
 
 
 @heart_beat_router.post(
