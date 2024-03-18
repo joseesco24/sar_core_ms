@@ -24,6 +24,7 @@ collect_request_classify_res_ex = {
                 "storeType": 4,
                 "description": "nuclear wastes",
                 "note": "this is a note",
+                "storeId": 1,
                 "create": "2024-03-02 23:22:57.000000",
                 "update": "2024-03-02 23:22:57.000000",
             }
@@ -49,6 +50,7 @@ waste_full_data_response_list_ex = {
                         "storeType": None,
                         "description": "bone scan wastes",
                         "note": None,
+                        "storeId": 1,
                         "create": "2024-03-03 05:08:30.000000",
                         "update": "2024-03-03 05:08:30.000000",
                     },
@@ -65,6 +67,7 @@ waste_full_data_response_list_ex = {
                         "storeType": None,
                         "description": "nuclear wastes",
                         "note": "this is a note",
+                        "storeId": 1,
                         "create": "2024-03-03 02:54:12.000000",
                         "update": "2024-03-03 02:54:12.000000",
                     },

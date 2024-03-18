@@ -286,6 +286,7 @@ class WasteCore:
             packaging=waste_info.packaging,
             type=waste_info.type,
             note=waste_info.note,
+            storeId=waste_info.store,
             id=waste_info.uuid,
             create=created,
             update=updated,

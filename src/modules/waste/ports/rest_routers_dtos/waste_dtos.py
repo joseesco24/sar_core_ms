@@ -166,6 +166,7 @@ class WasteFullDataResponseDto(BaseModel):
     storeType: Optional[int] = None
     description: str = Field(...)
     note: Optional[str] = None
+    storeId: Optional[int] = None
     create: str = Field(...)
     update: str = Field(...)
 

@@ -94,6 +94,7 @@ waste_full_data_response_fixture_1: WasteFullDataResponseDto = WasteFullDataResp
     storeType=1,
     description="",
     note="",
+    storeId=1,
     create=datetime_provider.prettify_date_time_obj(date_time_obj=waste_1.create),
     update=datetime_provider.prettify_date_time_obj(date_time_obj=waste_1.update),
 )
@@ -111,6 +112,7 @@ waste_full_data_response_fixture_2: WasteFullDataResponseDto = WasteFullDataResp
     storeType=1,
     description="",
     note="",
+    storeId=1,
     create=datetime_provider.prettify_date_time_obj(date_time_obj=waste_2.create),
     update=datetime_provider.prettify_date_time_obj(date_time_obj=waste_2.update),
 )
