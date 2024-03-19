@@ -20,7 +20,7 @@ from src.modules.waste.ports.rest_routers_dtos.waste_dtos_metadata import collec
 from src.modules.waste.ports.rest_routers_dtos.waste_dtos_metadata import collect_request_classify_res_ex
 from src.modules.waste.ports.rest_routers_dtos.waste_dtos_metadata import waste_clasification_req_ex
 from src.modules.waste.ports.rest_routers_dtos.waste_dtos_metadata import waste_clasification_res_ex
-from src.modules.waste.ports.rest_routers_dtos.waste_dtos_metadata import waste_update_status_req
+from src.modules.waste.ports.rest_routers_dtos.waste_dtos_metadata import waste_update_store_req
 
 # ** info: sidecards.artifacts imports
 from src.general_sidecards.artifacts.uuid_provider import UuidProvider
@@ -116,9 +116,10 @@ class WasteFilterByStatusRequestDto(BaseModel):
     model_config = waste_filter_by_status_request_dto
 
 
-class WasteUpdateStatusRequestDto(BaseModel):
+class WasteUpdateStoreRequestDto(BaseModel):
     wasteId: str = Field(...)
-    processStatus: int = Field(...)
+    finalStore: int = Field(...)
+    note: str = Field(...)
 
     @field_validator("wasteId")
     @classmethod
@@ -129,7 +130,7 @@ class WasteUpdateStatusRequestDto(BaseModel):
             raise ValueError(f"{info.field_name} is not a valid uuid input")
         return value
 
-    @field_validator("processStatus")
+    @field_validator("finalStore")
     @classmethod
     def int_validator(cls, value: int, info: ValidationInfo) -> int:
         if isinstance(value, int):
@@ -138,7 +139,7 @@ class WasteUpdateStatusRequestDto(BaseModel):
             raise ValueError(f"{info.field_name} is not a integer input")
         return value
 
-    model_config = waste_update_status_req
+    model_config = waste_update_store_req
 
 
 # !------------------------------------------------------------------------

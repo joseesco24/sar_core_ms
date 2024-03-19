@@ -24,7 +24,7 @@ from test_waste_core_fixtures import update_waste_casification_request_fixture_1
 from test_waste_core_fixtures import waste_filter_by_status_request_fixture_1  # type: ignore
 from test_waste_core_fixtures import waste_full_data_list_response_fixture_1  # type: ignore
 from test_waste_core_fixtures import waste_clasification_response_fixture_1  # type: ignore
-from test_waste_core_fixtures import waste_update_status_request_fixture_1  # type: ignore
+from test_waste_core_fixtures import waste_update_store_request_fixture_1  # type: ignore
 from test_waste_core_fixtures import parameter_search_request_fixture_1  # type: ignore
 from test_waste_core_fixtures import waste_full_data_response_fixture_1  # type: ignore
 from test_waste_core_fixtures import waste_full_data_response_fixture_2  # type: ignore
@@ -44,7 +44,7 @@ waste_core._waste_provider.update_waste_internal_classification_info = MagicMock
 waste_core._warehouse_ms_service.obtain_warehouse_current_capacity = AsyncMock(return_value=100.00)  # type: ignore
 waste_core._warehouse_ms_service.update_warehouse_current_capacity = AsyncMock(return_value=20.00)  # type: ignore
 waste_core._waste_provider.list_wastes_by_process_status = MagicMock(return_value=wastes_list)  # type: ignore
-waste_core._waste_provider.update_waste_status = MagicMock(return_value=waste_2)  # type: ignore
+waste_core._waste_provider.update_waste_store = MagicMock(return_value=waste_2)  # type: ignore
 waste_core._brms_service.obtain_waste_clasification = AsyncMock(return_value=1)  # type: ignore
 waste_core._waste_provider.search_waste_by_id = MagicMock(return_value=waste_1)  # type: ignore
 
@@ -85,7 +85,7 @@ async def test_driver_search_waste_by_status_hpp1() -> None:
 
 
 @mark.asyncio
-async def test_driver_update_waste_status_hpp1() -> None:
-    waste_update_status_response: WasteFullDataResponseDto = await waste_core.driver_update_waste_status(waste_update_status_request=waste_update_status_request_fixture_1)
+async def test_driver_update_waste_store_hpp1() -> None:
+    waste_update_store_response: WasteFullDataResponseDto = await waste_core.driver_update_waste_store(waste_update_store_request=waste_update_store_request_fixture_1)
     waste_core._waste_provider.list_wastes_by_process_status.assert_called_with(process_status=9)
-    assert waste_update_status_response == waste_full_data_response_fixture_2
+    assert waste_update_store_response == waste_full_data_response_fixture_2
