@@ -2,6 +2,7 @@
 # type: ignore
 
 # ** info: python imports
+from calendar import month_name
 from datetime import timedelta
 from datetime import datetime
 from datetime import UTC
@@ -14,6 +15,10 @@ __all__: list[str] = ["DatetimeProvider"]
 
 
 class DatetimeProvider:
+
+    def get_month_literal(self: Self, month_number: int) -> str:
+        return month_name[month_number].lower() if 1 <= month_number <= 12 else "undefined"
+
     def get_current_time(self: Self) -> datetime:
         return self.get_utc_time()
 

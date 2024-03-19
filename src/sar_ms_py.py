@@ -25,8 +25,9 @@ from fastapi import FastAPI
 from starlette.middleware.base import BaseHTTPMiddleware
 
 # ** info: rest based routers imports
-from src.modules.heart_beat.ports.rest_routers.heart_beat_router import heart_beat_router  # type: ignore
+from src.modules.centralized_analytics.ports.rest_routers.centralized_analytics_router import centralized_analytics_router  # type: ignore
 from src.modules.collect_request.ports.rest_routers.collect_request_router import collect_request_router  # type: ignore
+from src.modules.heart_beat.ports.rest_routers.heart_beat_router import heart_beat_router  # type: ignore
 from src.modules.parameter.ports.rest_routers.parameter_router import parameter_router
 from src.modules.waste.ports.rest_routers.waster_router import waste_router
 
@@ -87,6 +88,7 @@ rest_router: APIRouter = APIRouter(prefix=path_provider.build_posix_path("rest")
 # ** info: setting rest routers
 # ---------------------------------------------------------------------------------------------------------------------
 
+rest_router.include_router(router=centralized_analytics_router)
 rest_router.include_router(router=collect_request_router)
 rest_router.include_router(router=parameter_router)
 rest_router.include_router(router=waste_router)
