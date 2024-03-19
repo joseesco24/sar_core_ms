@@ -31,12 +31,13 @@ __all__: list[str] = ["LoggingProvider"]
 
 
 class LoggingProvider:
+    _datetime_provider: DatetimeProvider = DatetimeProvider()
     _extras: Dict[str, str] = {
         "internalId": "397d4343-2855-4c92-b64b-58ee82006e0b",
         "externalId": "397d4343-2855-4c92-b64b-58ee82006e0b",
-        "version": "v2.9.0",
+        "startTimestamp": _datetime_provider.get_current_time(),
+        "version": "v2.10.0",
     }
-    _datetime_provider: DatetimeProvider = DatetimeProvider()
 
     @classmethod
     def setup_pretty_logging(cls) -> None:
@@ -111,10 +112,11 @@ class LoggingProvider:
     def _custom_serializer(cls, record) -> str:
         subset: Dict[str, Any] = {
             "severity": record["level"].name,
-            "timestamp": cls._datetime_provider.get_utc_pretty_string(),
             "message": record["message"],
             "externalId": record["extra"]["externalId"],
             "internalId": record["extra"]["internalId"],
+            "timestamp": cls._datetime_provider.get_utc_pretty_string(),
+            "startTime": cls._datetime_provider.prettify_date_time_obj(record["extra"]["startTimestamp"]),
             "version": record["extra"]["version"],
         }
 

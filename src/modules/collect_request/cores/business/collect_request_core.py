@@ -10,6 +10,7 @@ from asyncio import gather
 from typing import Self
 from typing import List
 from typing import Set
+from typing import Any
 
 # ** info: fastapi imports
 from fastapi import HTTPException
@@ -230,6 +231,12 @@ class CollectRequestCore:
     # ! warning: all the methods in this section are the ones that are going to be called from another core
     # ! warning: a method only can be declared in this section if it is going to be called from another core
     # !------------------------------------------------------------------------
+
+    async def cpm_collect_req_quantity_by_year(self: Self, year: int) -> Any:
+        logging.info("starting cpm_collect_req_quantity_by_year")
+        collect_req_quantity_by_year = self._collect_request_provider.collect_req_quantity_by_year(year=year)
+        logging.info("ending cpm_collect_req_quantity_by_year")
+        return collect_req_quantity_by_year
 
     # !------------------------------------------------------------------------
     # ! info: private class methods section start

@@ -16,6 +16,7 @@ from starlette.responses import StreamingResponse
 from starlette.requests import Request
 
 # ** info: sidecards.artifacts imports
+from src.general_sidecards.artifacts.datetime_provider import DatetimeProvider
 from src.general_sidecards.artifacts.uuid_provider import UuidProvider
 
 
@@ -25,6 +26,7 @@ __all__: list[str] = ["LoggerContextualizerMiddleware"]
 class LoggerContextualizerMiddleware:
 
     def __init__(self: Self) -> None:
+        self._datetime_provider: DatetimeProvider = DatetimeProvider()
         self._uuid_provider: UuidProvider = UuidProvider()
 
     async def __call__(
@@ -40,6 +42,7 @@ class LoggerContextualizerMiddleware:
         response: StreamingResponse
 
         with logger.contextualize(
+            startTimestamp=self._datetime_provider.get_current_time(),
             internalId=internal_id,
             externalId=external_id,
         ):

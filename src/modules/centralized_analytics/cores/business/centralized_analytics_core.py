@@ -4,12 +4,13 @@
 import logging
 
 # ** info: asyncio imports
-# from asyncio import gather
+from asyncio import gather
 
 # ** info: typing imports
 from typing import Self
 from typing import List
 from typing import Dict
+from typing import Any
 
 # ** info: cores imports
 from src.modules.collect_request.cores.business.collect_request_core import CollectRequestCore  # type: ignore
@@ -53,7 +54,8 @@ class CentralyzedAnalyticsCore:
 
     async def driver_obtain_wcr_yearly_analytics(self: Self, year_data_request: YearDataRequestDto) -> YearDataResponseDto:
         logging.info("starting driver_obtain_wcr_yearly_analytics")
-        months_merged_info: List[Dict] = [{"collect_request_quantity": 12, "wastes_quantity": 18, "month": 2}, {"collect_request_quantity": 1, "wastes_quantity": 1, "month": 1}]
+        collect_request_year_data, wastes_year_data = await self._get_year_wcr_data(year=year_data_request.year)
+        months_merged_info: List[Dict[str, int]] = await self._merge_wcr_data(collect_request_year_data=collect_request_year_data, wastes_year_data=wastes_year_data)
         year_data_response: YearDataResponseDto = await self._map_year_wcr_response(months_merged_info=months_merged_info)
         logging.info("starting driver_obtain_wcr_yearly_analytics")
         return year_data_response
@@ -63,6 +65,18 @@ class CentralyzedAnalyticsCore:
     # ! warning: all the methods in this section are the ones that are going to call methods from another core
     # ! warning: a method only can be declared in this section if it is going to call a port method from another core
     # !------------------------------------------------------------------------
+
+    async def cam_collect_req_quantity_by_year(self: Self, year: int) -> Any:
+        logging.info("starting cam_collect_req_quantity_by_year")
+        collect_req_quantity_by_year = await self._collect_request_core.cpm_collect_req_quantity_by_year(year=year)
+        logging.info("ending cam_collect_req_quantity_by_year")
+        return collect_req_quantity_by_year
+
+    async def cam_waste_quantity_by_year(self: Self, year: int) -> Any:
+        logging.info("starting cam_waste_quantity_by_year")
+        collect_req_quantity_by_year = await self._waste_core.cpm_waste_quantity_by_year(year=year)
+        logging.info("ending cam_waste_quantity_by_year")
+        return collect_req_quantity_by_year
 
     # !------------------------------------------------------------------------
     # ! info: core port methods section start
@@ -98,3 +112,17 @@ class CentralyzedAnalyticsCore:
             wastesQuantity=wastes_quantity,
             monthNumber=month,
         )
+
+    async def _get_year_wcr_data(self: Self, year: int) -> tuple[Any, Any]:
+        return await gather(self.cam_collect_req_quantity_by_year(year=year), self.cam_waste_quantity_by_year(year=year))
+
+    async def _merge_wcr_data(self: Self, collect_request_year_data: List[Dict[str, int]], wastes_year_data: List[Dict[str, int]]) -> List[Dict[str, int]]:
+        merged_data: Dict[str, Dict[str, int]] = {}
+        for month in range(1, 12 + 1):
+            merged_data[str(month)] = {r"collect_request_quantity": 0, r"wastes_quantity": 0, r"month": month}
+        for collect_request_data in collect_request_year_data:
+            merged_data[str(collect_request_data[r"month"])][r"collect_request_quantity"] = collect_request_data[r"quantity"]
+        for waste_data in wastes_year_data:
+            merged_data[str(waste_data[r"month"])][r"wastes_quantity"] = waste_data[r"quantity"]
+        merged_data_return: List[Dict[str, int]] = list(merged_data.values())
+        return merged_data_return

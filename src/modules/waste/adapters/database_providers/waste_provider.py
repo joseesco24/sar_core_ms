@@ -11,8 +11,10 @@ from typing import Self
 from typing import Any
 
 # ** info: sqlmodel imports
+from sqlalchemy import TextClause
 from sqlmodel import Session
 from sqlmodel import select
+from sqlmodel import text
 
 # ** info: stamina imports
 from stamina import retry
@@ -215,3 +217,13 @@ class WasteProvider:
         search_waste_by_id_result: list[Waste] = session.exec(statement=query).all()
         logging.debug("searching wastes by ids ended")
         return search_waste_by_id_result
+
+    @cached(waste_provider_cache)
+    @retry(on=Exception, attempts=4, wait_initial=0.08, wait_exp_base=2)
+    def waste_quantity_by_year(self: Self, year: int) -> Any:
+        logging.debug(f"searching wastes quantity by year {year}")
+        session: Session = self._session_manager.obtain_session()
+        query: TextClause = text("select month(`create`) as month, count(*) as quantity from `waste` where year(`create`) = :year group by month(`create`);").bindparams(year=year)
+        collect_req_quantity_by_year: Any = session.exec(statement=query)
+        logging.debug("searching wastes quantity by year ended")
+        return collect_req_quantity_by_year.mappings().all()

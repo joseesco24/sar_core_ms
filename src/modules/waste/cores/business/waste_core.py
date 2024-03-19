@@ -11,6 +11,7 @@ from asyncio import gather
 from typing import Union
 from typing import List
 from typing import Self
+from typing import Any
 from typing import Set
 
 # ** info: fastapi imports
@@ -232,6 +233,12 @@ class WasteCore:
         list_wastes_by_collect_request_id: list[Waste] = self._waste_provider.list_wastes_by_collect_request_id(collect_request_uuid=collect_request_uuid)
         logging.info("ending cpm_wc_list_wastes_by_collect_request_id")
         return list_wastes_by_collect_request_id
+
+    async def cpm_waste_quantity_by_year(self: Self, year: int) -> Any:
+        logging.info("starting cpm_waste_quantity_by_year")
+        waste_quantity_by_year = self._waste_provider.waste_quantity_by_year(year=year)
+        logging.info("ending cpm_waste_quantity_by_year")
+        return waste_quantity_by_year
 
     # !------------------------------------------------------------------------
     # ! info: private class methods section start
