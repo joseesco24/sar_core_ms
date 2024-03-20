@@ -43,6 +43,9 @@ class DatetimeProvider:
     def prettify_date_obj(self: Self, date_time_obj: datetime) -> str:
         return date_time_obj.strftime("%d/%m/%Y")
 
+    def get_time_delta_in_ms(self: Self, start_time: datetime, end_time: datetime) -> int:
+        return int((end_time - start_time).total_seconds() * 1000)
+
     def prettify_time_delta_obj(self: Self, time_delta_obj: timedelta) -> str:
         delta_days: int = time_delta_obj.days
         delta_houres: int = time_delta_obj.seconds // 3600

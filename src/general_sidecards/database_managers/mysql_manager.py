@@ -63,10 +63,8 @@ class MySQLManager:
 
         logging.info("connection obtained")
 
-        instanes_ids: str = r",".join(str(s) for s in MySQLManager.instances)
         instances_count: int = MySQLManager.instances.__len__()
-        logging.debug(f"instances count: {instances_count}")
-        logging.debug(f"instances ids: {instanes_ids}")
+        logging.debug(f"mysql instances count: {instances_count}")
 
         return self._session
 

@@ -2,6 +2,7 @@
 # type: ignore
 
 # ** info: python imports
+from datetime import datetime
 import traceback
 import logging
 import json
@@ -33,9 +34,9 @@ __all__: list[str] = ["LoggingProvider"]
 class LoggingProvider:
     _datetime_provider: DatetimeProvider = DatetimeProvider()
     _extras: Dict[str, str] = {
+        "rqStartTime": _datetime_provider.get_current_time(),
         "internalId": "397d4343-2855-4c92-b64b-58ee82006e0b",
-        "externalId": "397d4343-2855-4c92-b64b-58ee82006e0b",
-        "startTimestamp": _datetime_provider.get_current_time(),
+        "externalId": "97c3cb45-453f-4bd0-b0d5-d06cd568be27",
         "version": "v2.11.0",
     }
 
@@ -46,9 +47,7 @@ class LoggingProvider:
         written with the new overwritten configuration
         """
 
-        fmt: str = (
-            "[{extra[version]}][<fg #66a3ff>{time:YYYY-MM-DD HH:mm:ss.SSSSSS!UTC}</fg #66a3ff>:<fg #fc03cf>{extra[internalId]}</fg #fc03cf>] <level>{level}</level>: {message}"
-        )
+        fmt: str = "[{extra[version]}][<fg #66a3ff>{extra[currentTime]}</fg #66a3ff>:<fg #fc03cf>{extra[internalId]}</fg #fc03cf>] <level>{level}</level>: {message} <fg #ff0404>+{extra[sinceLastLogMsDif]}</fg #ff0404> <fg #54ff04>{extra[sinceRqStartMsDif]}</fg #54ff04>"  # noqa # fmt: skip
 
         # ** info: overwriting all the loggers configs with the new one
         logging.root.handlers = [cls._CustomInterceptHandler()]
@@ -87,22 +86,48 @@ class LoggingProvider:
 
         # ** info: loguru configs
         loguru_configs: dict = {
-            "sink": cls._pretty_log_sink,
+            "sink": cls._structured_log_sink,
             "serialize": True,
             "colorize": False,
             "format": fmt,
         }
 
-        logger.configure(extra=cls._extras, handlers=[loguru_configs])
+        logger.configure(patcher=lambda record: cls._structured_record_patcher(record), extra=cls._extras, handlers=[loguru_configs])
 
     @classmethod
     def _pretty_record_patcher(cls, record: logging.LogRecord) -> logging.LogRecord:
+
+        end_time: datetime = cls._datetime_provider.get_current_time()
+        last_log_time: datetime = record["extra"]["lastLogTime"]
+        start_time: datetime = record["extra"]["rqStartTime"]
+
+        elapsed_since_last_log: int = cls._datetime_provider.get_time_delta_in_ms(start_time=last_log_time, end_time=end_time)
+        elapsed_miliseconds: int = cls._datetime_provider.get_time_delta_in_ms(start_time=start_time, end_time=end_time)
+
+        record["extra"]["sinceLastLogMsDif"] = f"{elapsed_since_last_log}ms"
+        record["extra"]["sinceRqStartMsDif"] = f"{elapsed_miliseconds}ms"
+
         if record["level"].name == "INFO" or record["level"].name == "DEBUG":
             record["message"] = str(record["message"]).replace("\n", " ")
+
         return record
 
     @classmethod
-    def _pretty_log_sink(cls, message: str) -> None:
+    def _structured_record_patcher(cls, record: logging.LogRecord) -> logging.LogRecord:
+        end_time: datetime = cls._datetime_provider.get_current_time()
+        last_log_time: datetime = record["extra"]["lastLogTime"]
+        start_time: datetime = record["extra"]["rqStartTime"]
+
+        elapsed_since_last_log: int = cls._datetime_provider.get_time_delta_in_ms(start_time=last_log_time, end_time=end_time)
+        elapsed_miliseconds: int = cls._datetime_provider.get_time_delta_in_ms(start_time=start_time, end_time=end_time)
+
+        record["extra"]["sinceLastLogMsDif"] = elapsed_since_last_log
+        record["extra"]["sinceRqStartMsDif"] = elapsed_miliseconds
+
+        return record
+
+    @classmethod
+    def _structured_log_sink(cls, message: str) -> None:
         serialized = cls._custom_serializer(message.record)
         sys.stdout.write(serialized)
         sys.stdout.write("\n")
@@ -115,8 +140,11 @@ class LoggingProvider:
             "message": record["message"],
             "externalId": record["extra"]["externalId"],
             "internalId": record["extra"]["internalId"],
-            "timestamp": cls._datetime_provider.get_utc_pretty_string(),
-            "startTime": cls._datetime_provider.prettify_date_time_obj(record["extra"]["startTimestamp"]),
+            "rqStartTime": cls._datetime_provider.prettify_date_time_obj(date_time_obj=record["extra"]["rqStartTime"]),
+            "currentTime": cls._datetime_provider.prettify_date_time_obj(date_time_obj=record["extra"]["currentTime"]),
+            "lastLogTime": cls._datetime_provider.prettify_date_time_obj(date_time_obj=record["extra"]["lastLogTime"]),
+            "sinceLastLogMsDif": f"{record['extra']['sinceLastLogMsDif']}ms",
+            "sinceRqStartMsDif": f"{record["extra"]["sinceRqStartMsDif"]}ms",
             "version": record["extra"]["version"],
         }
 
@@ -139,6 +167,9 @@ class LoggingProvider:
         return json.dumps(subset)
 
     class _CustomInterceptHandler(logging.Handler):
+        _datetime_provider: DatetimeProvider = DatetimeProvider()
+        _last_log_time: datetime = _datetime_provider.get_current_time()
+
         def emit(self: Self, record: logging.LogRecord):
             level: Union[str, int]
 
@@ -154,4 +185,8 @@ class LoggingProvider:
                 frame = frame.f_back
                 depth += 1
 
-            logger.opt(depth=depth, exception=record.exc_info).log(level, record.getMessage())
+            current_time = self._datetime_provider.get_current_time()
+
+            logger.opt(depth=depth, exception=record.exc_info).bind(currentTime=current_time, lastLogTime=self._last_log_time).log(level, record.getMessage())
+
+            self._last_log_time = current_time

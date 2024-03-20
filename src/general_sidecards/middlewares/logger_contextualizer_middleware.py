@@ -42,7 +42,7 @@ class LoggerContextualizerMiddleware:
         response: StreamingResponse
 
         with logger.contextualize(
-            startTimestamp=self._datetime_provider.get_current_time(),
+            rqStartTime=self._datetime_provider.get_current_time(),
             internalId=internal_id,
             externalId=external_id,
         ):
