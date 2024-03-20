@@ -37,7 +37,7 @@ class LoggingProvider:
         "rqStartTime": _datetime_provider.get_current_time(),
         "internalId": "397d4343-2855-4c92-b64b-58ee82006e0b",
         "externalId": "97c3cb45-453f-4bd0-b0d5-d06cd568be27",
-        "version": "v2.11.0",
+        "version": "v2.12.0",
     }
 
     @classmethod
