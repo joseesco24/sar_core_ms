@@ -4,6 +4,7 @@
 from os.path import join
 from os import path
 import logging
+import locale
 import sys
 
 # ** info: typing imports
@@ -47,6 +48,12 @@ from src.general_sidecards.middlewares.error_handler_middleware import ErrorHand
 
 path_provider: PathProvider = PathProvider()
 env_provider: EnvProvider = EnvProvider()  # type: ignore
+
+# ---------------------------------------------------------------------------------------------------------------------
+# ** info: setting up app locale configuration
+# ---------------------------------------------------------------------------------------------------------------------
+
+locale.setlocale(category=locale.LC_ALL, locale=env_provider.app_posix_locale.value)
 
 # ---------------------------------------------------------------------------------------------------------------------
 # ** info: setting up global app logging

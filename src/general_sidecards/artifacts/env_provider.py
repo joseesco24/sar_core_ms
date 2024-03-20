@@ -30,6 +30,16 @@ class LoggingMode(str, Enum):
     pretty: str = "pretty"
 
 
+class SupportedLocales(str, Enum):
+    colombia: str = "es_CO.UTF-8"
+    usa: str = "en_US.UTF-8"
+
+
+class SupportedTimeZones(str, Enum):
+    colombia: str = "America/Bogota"
+    usa: str = "America/New_York"
+
+
 class EnvProvider(BaseSettings):
     # ** info: app configs
     app_environment_mode: EnvironmentMode = Field(..., validation_alias="APP_ENVIRONMENT_MODE")
@@ -38,6 +48,8 @@ class EnvProvider(BaseSettings):
     app_authentication_handler_middleware_exclude: Set[str] = Field(..., validation_alias="APP_AUTHENTICATION_HANDLER_MIDDLEWARE_EXCLUDE")
     app_use_authentication_handler_middleware: bool = Field(..., validation_alias="APP_USE_AUTHENTICATION_HANDLER_MIDDLEWARE")
     app_swagger_docs: bool = Field(..., validation_alias="APP_SWAGGER_DOCS")
+    app_posix_locale: SupportedLocales = Field(..., validation_alias="APP_POSIX_LOCALE")
+    app_time_zone: SupportedTimeZones = Field(..., validation_alias="APP_TIME_ZONE")
 
     # ** info: users database credentials
     database_password: str = Field(..., validation_alias="DATABASE_PASSWORD")
