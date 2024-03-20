@@ -26,7 +26,7 @@ from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteClasificat
 from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteFilterByStatusRequestDto  # type: ignore
 from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteClasificationRequestDto  # type: ignore
 from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteFullDataResponseListDto  # type: ignore
-from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteUpdateStatusRequestDto  # type: ignore
+from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteUpdateStoreRequestDto  # type: ignore
 from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteFullDataResponseDto  # type: ignore
 from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteClassifyRequestDto  # type: ignore
 
@@ -106,13 +106,14 @@ class WasteCore:
         logging.info("driver_search_waste_by_status ended")
         return filtered_wastes_response
 
-    async def driver_update_waste_status(self: Self, waste_update_status_request: WasteUpdateStatusRequestDto) -> WasteFullDataResponseDto:
-        logging.info("starting driver_update_waste_status")
-        await self._validate_waste_process_status(process_status=waste_update_status_request.processStatus)
-        waste_info: Waste = self._waste_provider.update_waste_status(uuid=waste_update_status_request.wasteId, process_status=waste_update_status_request.processStatus)
-        waste_update_status_response: WasteFullDataResponseDto = await self._map_full_data_response(waste_info=waste_info)
-        logging.info("driver_update_waste_status ended")
-        return waste_update_status_response
+    async def driver_update_waste_store(self: Self, waste_update_store_request: WasteUpdateStoreRequestDto) -> WasteFullDataResponseDto:
+        logging.info("starting driver_update_waste_store")
+        waste_info: Waste = self._waste_provider.update_waste_store(
+            uuid=waste_update_store_request.wasteId, store=waste_update_store_request.finalStore, note=waste_update_store_request.note
+        )
+        waste_update_store_response: WasteFullDataResponseDto = await self._map_full_data_response(waste_info=waste_info)
+        logging.info("driver_update_waste_store ended")
+        return waste_update_store_response
 
     # !------------------------------------------------------------------------
     # ! info: core adapter methods section start

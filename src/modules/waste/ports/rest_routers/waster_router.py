@@ -1,7 +1,6 @@
 # !/usr/bin/python3
 
 # ** info: fastapi imports
-from fastapi import HTTPException
 from fastapi import APIRouter
 from fastapi import status
 from fastapi import Body
@@ -11,7 +10,7 @@ from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteClasificat
 from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteFilterByStatusRequestDto  # type: ignore
 from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteFullDataResponseListDto  # type: ignore
 from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteClasificationRequestDto  # type: ignore
-from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteUpdateStatusRequestDto  # type: ignore
+from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteUpdateStoreRequestDto  # type: ignore
 from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteFullDataResponseDto  # type: ignore
 from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteClassifyRequestDto  # type: ignore
 
@@ -70,14 +69,13 @@ async def api_search_waste_by_status(filter_waste_by_status_request: WasteFilter
 
 
 @waste_router.post(
-    description="allow to change the waste status",
-    summary="allow to change the waste status",
-    path=_path_provider.build_posix_path("status", "update"),
+    description="allow to update the waste status, a note and a temporal store",
+    summary="allow to update the waste status, a note and a temporal store",
+    path=_path_provider.build_posix_path("store", "update"),
     response_model=WasteFullDataResponseDto,
     status_code=status.HTTP_200_OK,
     deprecated=True,
 )
-async def api_update_waste_status(waste_update_status_request: WasteUpdateStatusRequestDto = Body(...)) -> WasteFullDataResponseDto:
-    raise HTTPException(status_code=status.HTTP_501_NOT_IMPLEMENTED, detail="api deprecated")
-    waste_update_status_response: WasteFullDataResponseDto = await _waste_core.driver_update_waste_status(waste_update_status_request)
-    return waste_update_status_response
+async def api_update_waste_store(waste_update_store_request: WasteUpdateStoreRequestDto = Body(...)) -> WasteFullDataResponseDto:
+    waste_update_store_response: WasteFullDataResponseDto = await _waste_core.driver_update_waste_store(waste_update_store_request)
+    return waste_update_store_response
