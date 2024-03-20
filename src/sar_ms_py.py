@@ -53,7 +53,7 @@ env_provider: EnvProvider = EnvProvider()  # type: ignore
 # ** info: setting up app locale configuration
 # ---------------------------------------------------------------------------------------------------------------------
 
-locale.setlocale(category=locale.LC_ALL, locale=env_provider.app_posix_locale.value)
+locale.setlocale(category=locale.LC_ALL, locale=env_provider.app_posix_locale)
 
 # ---------------------------------------------------------------------------------------------------------------------
 # ** info: setting up global app logging
@@ -74,7 +74,7 @@ metadata: Dict[str, Any] = {
     "description": "This repository corresponds to the a small python microservice that is going to be used used in the sar system.",
     "summary": "Service incharge of managing wastes, collect request, and system parameters.",
     "title": "Sar Python Microservice",
-    "version": "v2.12.0",
+    "version": "v2.12.1",
 }
 
 sar_ms_py: FastAPI

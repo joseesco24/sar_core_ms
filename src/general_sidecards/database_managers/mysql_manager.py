@@ -45,7 +45,6 @@ class MySQLManager:
         )
         self._date_time_provider: DatetimeProvider = DatetimeProvider()
         self._engine = create_engine(url=self._url, echo=self.env_provider.database_logs)
-        self._session_creation: str = self._date_time_provider.get_utc_iso_string()
         self._connection_id: str = self._uuid_provider.get_str_uuid()
         self._session = Session(bind=self._engine, autobegin=True, expire_on_commit=False, autoflush=False)
         self._post_init()
