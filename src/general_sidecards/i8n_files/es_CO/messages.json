@@ -1,0 +1,8 @@
+{
+    "hola": {
+        "message": "Hola, mundo!"
+    },
+    "bienvenido": {
+        "message": "Bienvenido a la aplicación"
+    }
+}
