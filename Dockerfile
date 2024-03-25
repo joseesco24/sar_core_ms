@@ -33,7 +33,7 @@ COPY ["src", "$WORKDIR/src"]
 
 # ** info: copying environment file from the building context to the working directory
 # !! warning: the .env file is copied just in the testing stage on the prod image it is not copied
-COPY [".env", "$WORKDIR/.env"]
+COPY ["./env/docker.env", "$WORKDIR/.env"]
 
 # ** info: running the application tests
 RUN python -m pytest
