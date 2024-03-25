@@ -1,8 +1,5 @@
 {
-    "hola": {
-        "message": "Hola, mundo!"
-    },
-    "bienvenido": {
-        "message": "Bienvenido a la aplicación"
+    "waste": {
+        "EM001": "el estado de proceso {{ process_status }} no es válido"
     }
 }

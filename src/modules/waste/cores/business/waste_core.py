@@ -42,6 +42,7 @@ from src.modules.waste.adapters.rest_services.brms_service import BrmsService  #
 
 # ** info: sidecards.artifacts imports
 from src.general_sidecards.artifacts.datetime_provider import DatetimeProvider  # type: ignore
+from src.general_sidecards.artifacts.i8n_provider import I8nProvider  # type: ignore
 
 __all__: list[str] = ["WasteCore"]
 
@@ -52,7 +53,7 @@ class WasteCore:
     # ! info: core slots section start
     # !------------------------------------------------------------------------
 
-    __slots__ = ["_parameter_core", "_waste_provider", "_warehouse_ms_service", "_brms_service", "_datetime_provider"]
+    __slots__ = ["_parameter_core", "_waste_provider", "_warehouse_ms_service", "_brms_service", "_datetime_provider", "_i8n"]
 
     # !------------------------------------------------------------------------
     # ! info: core atributtes and constructor section start
@@ -68,6 +69,7 @@ class WasteCore:
         self._brms_service: BrmsService = BrmsService()
         # ** info: sidecards building
         self._datetime_provider: DatetimeProvider = DatetimeProvider()
+        self._i8n: I8nProvider = I8nProvider(module="waste")
 
     # !------------------------------------------------------------------------
     # ! info: driver methods section start
@@ -258,7 +260,7 @@ class WasteCore:
         if process_status not in waste_state_ids:
             valid_state_waste: str = r",".join(str(s) for s in waste_state_ids)
             logging.error(f"process status {process_status} is not valid valid types are {valid_state_waste}")
-            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"process status {process_status} is not valid")
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=self._i8n.message(message_key="EM001", process_status=process_status))
 
     async def _validate_wastes_state(self: Self, waste_classify_request: WasteClassifyRequestDto) -> None:
         waste_state_ids: Set[int] = await self._cam_pc_get_set_of_parameter_ids_by_domain(domain=r"stateWaste")
