@@ -21,6 +21,7 @@ cachetools = "^5.3.3"
 stamina = "^24.2.0"
 asyncache = "^0.3.1"
 pytz = "^2024.1"
+ariadne = "^0.23.0"
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.2.0"

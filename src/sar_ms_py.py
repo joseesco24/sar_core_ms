@@ -8,6 +8,7 @@ import locale
 import sys
 
 # ** info: typing imports
+from typing import List
 from typing import Dict
 from typing import Any
 
@@ -24,11 +25,17 @@ from fastapi import FastAPI
 
 # ** info: starlette imports
 from starlette.middleware.base import BaseHTTPMiddleware
+from starlette.routing import BaseRoute
+from starlette.routing import Mount
+from starlette.routing import Route
+
+# ** info: graphql based routers imports
+from src.modules.waste.ports.graphql_routers.waste_router import waste_gpl_router  # type: ignore
 
 # ** info: rest based routers imports
 from src.modules.centralized_analytics.ports.rest_routers.centralized_analytics_router import centralized_analytics_router  # type: ignore
 from src.modules.collect_request.ports.rest_routers.collect_request_router import collect_request_router  # type: ignore
-from src.modules.heart_beat.ports.rest_routers.heart_beat_router import heart_beat_router  # type: ignore
+from src.modules.heart_beat.ports.rest_routers.heart_beat_router import heart_beat_router
 from src.modules.parameter.ports.rest_routers.parameter_router import parameter_router
 from src.modules.waste.ports.rest_routers.waster_router import waste_router
 
@@ -67,6 +74,24 @@ else:
     logging.info(f"logger setup on {env_provider.app_logging_mode.lower()} mode")
 
 # ---------------------------------------------------------------------------------------------------------------------
+# ** info: initializing graphql based routers
+# ---------------------------------------------------------------------------------------------------------------------
+
+routes: List[Route] = []
+
+# ---------------------------------------------------------------------------------------------------------------------
+# ** info: setting graphql based routers
+# ---------------------------------------------------------------------------------------------------------------------
+
+routes.append(waste_gpl_router)
+
+# ---------------------------------------------------------------------------------------------------------------------
+# ** info: mounting graphql based routers
+# ---------------------------------------------------------------------------------------------------------------------
+
+graphql_routers: List[BaseRoute] = [Mount(path=path_provider.build_posix_path("graphql"), routes=routes)]
+
+# ---------------------------------------------------------------------------------------------------------------------
 # ** info: initializing app metadata and documentation
 # ---------------------------------------------------------------------------------------------------------------------
 
@@ -79,10 +104,10 @@ metadata: Dict[str, Any] = {
 
 sar_ms_py: FastAPI
 if env_provider.app_swagger_docs is True:
-    sar_ms_py = FastAPI(swagger_ui_parameters={"defaultModelsExpandDepth": -1}, redoc_url=None, **metadata)  # type: ignore
+    sar_ms_py = FastAPI(routes=graphql_routers, swagger_ui_parameters={"defaultModelsExpandDepth": -1}, redoc_url=None, **metadata)  # type: ignore
     logging.warning("swagger docs active")
 else:
-    sar_ms_py = FastAPI(docs_url=None, redoc_url=None, **metadata)
+    sar_ms_py = FastAPI(routes=graphql_routers, docs_url=None, redoc_url=None, **metadata)
     logging.warning("swagger docs inactive")
 
 # ---------------------------------------------------------------------------------------------------------------------

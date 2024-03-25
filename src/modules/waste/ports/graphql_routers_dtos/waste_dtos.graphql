@@ -1,0 +1,27 @@
+# ** info: this schema works as a contract between the app and the client
+
+scalar Integer
+
+type Query {
+  wastesByStatus(
+    processStatus: Integer
+  ): [Waste!]!
+}
+
+type Waste {
+    id: String!
+    requestId: String!
+    type: Integer!
+    packaging: Integer!
+    processStatus: Integer!
+    weightInKg: String!
+    volumeInL: String!
+    isotopesNumber: String
+    stateWaste: Integer
+    storeType: Integer
+    description: String!
+    note: String
+    storeId: Integer
+    create: String!
+    update: String!
+}
