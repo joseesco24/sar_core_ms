@@ -16,7 +16,7 @@ from pydantic import Field
 
 __all__: list[str] = ["EnvProvider"]
 
-load_dotenv(override=True, verbose=True, dotenv_path=find_dotenv(".env"))
+load_dotenv(override=False, verbose=False, dotenv_path=find_dotenv(".env"))
 
 
 class EnvironmentMode(str, Enum):

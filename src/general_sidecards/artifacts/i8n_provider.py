@@ -23,7 +23,8 @@ class I8nProvider:
     __slots__ = ["_locale_dir", "_messages_dict", "_logs_dict"]
 
     def __init__(self: Self, module: str) -> None:
-        self._locale_dir: str = join(dirname(realpath(__file__)), "..", "i8n_files", locale.getlocale()[0])
+        locale_languaje: str = locale.getdefaultlocale()[0] if locale.getdefaultlocale()[0] != "C" else "en_US"
+        self._locale_dir: str = join(dirname(realpath(__file__)), "..", "i8n_files", locale_languaje)
         self._messages_dict: dict[str, str] = json.load(open(join(self._locale_dir, "messages.json")))[module]
 
     def message(self: Self, message_key: str, **kwargs) -> str:

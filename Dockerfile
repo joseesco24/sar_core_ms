@@ -29,6 +29,7 @@ RUN pip check
 COPY ["test", "$WORKDIR/test"]
 
 # ** info: copying the source code of the application from the building context to the working directory
+# !!warning: the .env file is copied just in the testing stage on the prod image it is not copied
 COPY ["src", "$WORKDIR/src"]
 
 # ** info: running the application tests
