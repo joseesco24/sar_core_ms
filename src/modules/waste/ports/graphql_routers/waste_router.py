@@ -22,6 +22,7 @@ from ariadne import QueryType
 
 # ** info: artifacts imports
 from src.general_sidecards.graphql.custom_scalars_serializer import integer_scalar
+from src.general_sidecards.graphql.custom_scalars_serializer import float_scalar
 from src.general_sidecards.graphql.error_formatter import error_formatter
 from src.general_sidecards.artifacts.path_provider import PathProvider
 from src.general_sidecards.artifacts.env_provider import EnvProvider
@@ -68,7 +69,7 @@ async def users_public_data_facade(*_: Any, processStatus: int) -> WasteFullData
 # ** info: assembling schema literal with schema executable
 # ---------------------------------------------------------------------------------------------------------------------
 
-schema_executable: GraphQLSchema = make_executable_schema(schema_literal, query, integer_scalar)
+schema_executable: GraphQLSchema = make_executable_schema(schema_literal, query, integer_scalar, float_scalar)
 
 # ---------------------------------------------------------------------------------------------------------------------
 # ** info: assembling schema executable with graphql endpoint

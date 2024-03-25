@@ -532,7 +532,7 @@
 								"body": {
 									"mode": "graphql",
 									"graphql": {
-										"query": "query {\n    residuos: wastesByStatus (\n        processStatus: 9\n        ) {\n        idSistema: id\n    }\n}",
+										"query": "query {\n    residuos: wastesByStatus (\n        processStatus: 9\n        ) {\n        idSistema: id\n        volumenEnLitros: volumeInL\n    }\n}",
 										"variables": ""
 									}
 								},

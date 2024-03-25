@@ -1,6 +1,7 @@
 # ** info: this schema works as a contract between the app and the client
 
 scalar Integer
+scalar Float
 
 type Query {
   wastesByStatus(
@@ -14,9 +15,9 @@ type Waste {
     type: Integer!
     packaging: Integer!
     processStatus: Integer!
-    weightInKg: String!
-    volumeInL: String!
-    isotopesNumber: String
+    weightInKg: Float!
+    volumeInL: Float!
+    isotopesNumber: Float
     stateWaste: Integer
     storeType: Integer
     description: String!

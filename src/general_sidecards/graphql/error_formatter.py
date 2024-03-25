@@ -30,11 +30,7 @@ class ErrorFormatter:
             return formatted
 
         formatted: dict = error.formatted  # type: ignore
-
-        if error.extensions == {}:
-            formatted["message"] = "Internal Server Error"
-        else:
-            formatted["message"] = error.message
+        formatted["message"] = error.message
 
         del formatted["locations"]
         del formatted["path"]
