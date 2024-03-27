@@ -57,15 +57,15 @@ class WarehouseMsService:
         try:
             raw_response: Response = await self._httpx_client.get(url=url, timeout=10)
         except Exception:
-            logging.critical("error unable to connect to warehouse ms")
+            logging.error("error unable to connect to warehouse ms")
             raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE)
         if raw_response.status_code != status.HTTP_200_OK:
-            logging.critical("the warehouse ms didnt respond correctly")
+            logging.error("the warehouse ms didnt respond correctly")
             raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE)
         try:
             warehouse_full_data = await self._map_warehouse_ms_dict_to_full_data_dto(warehouse_full_data_dict=raw_response.json())
         except Exception:
-            logging.critical("error parsing response from warehouse ms")
+            logging.error("error parsing response from warehouse ms")
             raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
         logging.debug("warehouse full data obtained from warehouse ms")
         return warehouse_full_data
@@ -80,20 +80,20 @@ class WarehouseMsService:
             data: WarehouseFullDataRequestDto = await self._map_warehouse_full_data_dto_to_ms_dict(warehouse_full_data=warehouse_current_full_data)
             raw_data: dict[str, any] = data.model_dump_json()
         except Exception:
-            logging.critical("error parsing request for warehouse ms")
+            logging.error("error parsing request for warehouse ms")
             raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
         try:
             raw_response: Response = await self._httpx_client.put(url=url, content=raw_data, timeout=10)
         except Exception:
-            logging.critical("error unable to connect to warehouse ms")
+            logging.error("error unable to connect to warehouse ms")
             raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE)
         if raw_response.status_code != status.HTTP_200_OK:
-            logging.critical("the warehouse ms didnt respond correctly")
+            logging.error("the warehouse ms didnt respond correctly")
             raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE)
         try:
             warehouse_full_data = await self._map_warehouse_ms_dict_to_full_data_dto(warehouse_full_data_dict=raw_response.json())
         except Exception:
-            logging.critical("error parsing response from warehouse ms")
+            logging.error("error parsing response from warehouse ms")
             raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
         self.clear_cache()
         logging.debug("warehouse full data updated on warehouse ms")

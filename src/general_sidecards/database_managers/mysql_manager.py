@@ -73,9 +73,9 @@ class MySQLManager:
             return
 
         if self._connection_id is None:
-            logging.critical(r"connection not established trying to stablish a new one")
+            logging.error(r"connection not established trying to stablish a new one")
         else:
-            logging.critical(f"connection {self._connection_id} is unhealthy")
+            logging.error(f"connection {self._connection_id} is unhealthy")
 
         self._restart_session()
 
@@ -83,11 +83,11 @@ class MySQLManager:
             logging.info(f"connection {self._connection_id} is healthy")
             return
 
-        logging.critical("connection is still unhealthy after restart")
-        logging.critical("shutting down connection")
+        logging.error("connection is still unhealthy after restart")
+        logging.error("shutting down connection")
         self._end_session_and_engine()
-        logging.critical("connection shuted down")
-        logging.critical("a new attempt to restart the connection is going to be executed on the next database request")
+        logging.error("connection shuted down")
+        logging.error("a new attempt to restart the connection is going to be executed on the next database request")
         raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE)
 
     def _test_qeury(self: Self) -> bool:
@@ -99,7 +99,7 @@ class MySQLManager:
             return True
 
         except Exception:
-            logging.critical("connection test query failed")
+            logging.error("connection test query failed")
             return False
 
     def _restart_session(self: Self) -> None:

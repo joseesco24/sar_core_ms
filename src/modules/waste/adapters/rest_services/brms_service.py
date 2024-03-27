@@ -54,18 +54,18 @@ class BrmsService:
         try:
             raw_response: Response = await self._httpx_client.post(url=url, json=data, timeout=10)
         except Exception:
-            logging.critical("error unable to connect to brms")
+            logging.error("error unable to connect to brms")
             raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE)
         if raw_response.status_code != status.HTTP_200_OK:
-            logging.critical("the brms service didnt respond correctly")
+            logging.error("the brms service didnt respond correctly")
             raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE)
         try:
             response = int(raw_response.text)
         except Exception:
-            logging.critical("error parsing response from brms")
+            logging.error("error parsing response from brms")
             raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
         if response == 0:
-            logging.critical("the waste was not classified by the brms")
+            logging.error("the waste was not classified by the brms")
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="waste not classifiable")
         logging.debug("waste classification obtained from brms")
         return response

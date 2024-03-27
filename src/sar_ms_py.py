@@ -6,6 +6,7 @@ from os import path
 import logging
 import locale
 import sys
+import gc
 
 # ** info: typing imports
 from typing import List
@@ -20,6 +21,7 @@ import uvicorn
 
 # ** info: fastapi imports
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi import HTTPException
 from fastapi import APIRouter
 from fastapi import FastAPI
 
@@ -40,6 +42,7 @@ from src.modules.parameter.ports.rest_routers.parameter_router import parameter_
 from src.modules.waste.ports.rest_routers.waster_router import waste_router
 
 # ** info: sidecards.artifacts imports
+from src.general_sidecards.database_managers.mysql_manager import MySQLManager  # type: ignore
 from src.general_sidecards.artifacts.logging_provider import LoggingProvider  # type: ignore
 from src.general_sidecards.artifacts.env_provider import EnvProvider  # type: ignore
 from src.general_sidecards.artifacts.path_provider import PathProvider  # type: ignore
@@ -145,6 +148,35 @@ else:
 sar_ms_py.add_middleware(middleware_class=BaseHTTPMiddleware, dispatch=ErrorHandlerMiddleware())
 sar_ms_py.add_middleware(middleware_class=BaseHTTPMiddleware, dispatch=LoggerContextualizerMiddleware())
 sar_ms_py.add_middleware(CORSMiddleware, allow_credentials=True, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
+
+# ---------------------------------------------------------------------------------------------------------------------
+# ** info: testing database connection
+# ---------------------------------------------------------------------------------------------------------------------
+
+try:
+    mysql_manager: MySQLManager = MySQLManager(
+        password=env_provider.database_password,
+        database=env_provider.database_name,
+        username=env_provider.database_user,
+        host=env_provider.database_host,
+        port=env_provider.database_port,
+        drivername=r"mysql+pymysql",
+        query={"charset": "utf8"},
+    )
+    mysql_manager.obtain_session()
+    logging.info("database initial connection successful")
+except HTTPException:
+    del mysql_manager
+    logging.critical("database initial connection failed")
+    logging.critical("not raising the server check the database connection and credentials")
+    raise SystemExit
+
+# ---------------------------------------------------------------------------------------------------------------------
+# ** info: erasing unnecessary artifacts builded during the app setup
+# ---------------------------------------------------------------------------------------------------------------------
+
+del path_provider
+gc.collect()
 
 # ---------------------------------------------------------------------------------------------------------------------
 # ** info: hot reload notification
