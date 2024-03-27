@@ -402,7 +402,7 @@
 										"header": [
 											{
 												"key": "request-id",
-												"value": "joseesco24",
+												"value": "782ff804-00e4-4abe-b90b-d720fc468a2f",
 												"type": "text"
 											}
 										],
@@ -468,6 +468,79 @@
 							]
 						}
 					]
+				},
+				{
+					"name": "user",
+					"item": [
+						{
+							"name": "create",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "request-id",
+										"value": "joseesco24",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"pedro.perez@correo.com.co\",\n    \"lastName\": \"Perez Sarmiento\",\n    \"name\": \"Pedro Alejandro\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/rest/user/create",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"rest",
+										"user",
+										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "search-by-email",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "request-id",
+										"value": "joseesco24",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"pedro.perez@correo.com\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{HOST}}/rest/user/search-by-email",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"rest",
+										"user",
+										"search-by-email"
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				}
 			]
 		},
@@ -528,7 +601,13 @@
 							],
 							"request": {
 								"method": "POST",
-								"header": [],
+								"header": [
+									{
+										"key": "request-id",
+										"value": "782ff804-00e4-4abe-b90b-d720fc468a2f",
+										"type": "text"
+									}
+								],
 								"body": {
 									"mode": "graphql",
 									"graphql": {

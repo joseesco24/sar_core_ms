@@ -29,7 +29,7 @@ __all__: list[str] = ["CollectRequestFullDataResponseDto", "CollectRequestCreate
 
 
 # !------------------------------------------------------------------------
-# ! info: sumbodule dtos section start
+# ! info: sub module dtos section start
 # ! warning: all models in this section are the ones that are going to be used as submodels in request or response models
 # ! warning: a model only can be declared in this section if it is going to be used as a submodel in a request or response models
 # !------------------------------------------------------------------------

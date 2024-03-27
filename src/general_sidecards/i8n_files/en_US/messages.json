@@ -1,5 +1,8 @@
 {
     "waste": {
         "EM001": "process status {{ process_status }} is not valid"
+    },
+    "user": {
+        "EM001": "the email {{ email }} already exist on the system"
     }
 }

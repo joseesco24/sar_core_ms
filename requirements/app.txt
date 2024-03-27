@@ -8,6 +8,8 @@ cffi==1.16.0 ; python_version >= "3.12" and python_version < "4.0" and platform_
 click==8.1.7 ; python_version >= "3.12" and python_version < "4.0"
 colorama==0.4.6 ; python_version >= "3.12" and python_version < "4.0" and (sys_platform == "win32" or platform_system == "Windows")
 cryptography==42.0.5 ; python_version >= "3.12" and python_version < "4.0"
+dnspython==2.6.1 ; python_version >= "3.12" and python_version < "4.0"
+email-validator==2.1.1 ; python_version >= "3.12" and python_version < "4.0"
 fastapi==0.110.0 ; python_version >= "3.12" and python_version < "4.0"
 graphql-core==3.2.3 ; python_version >= "3.12" and python_version < "4"
 greenlet==3.0.3 ; python_version >= "3.12" and python_version < "4.0" and (platform_machine == "aarch64" or platform_machine == "ppc64le" or platform_machine == "x86_64" or platform_machine == "amd64" or platform_machine == "AMD64" or platform_machine == "win32" or platform_machine == "WIN32")
@@ -22,6 +24,7 @@ pycparser==2.21 ; python_version >= "3.12" and python_version < "4.0" and platfo
 pydantic-core==2.16.3 ; python_version >= "3.12" and python_version < "4.0"
 pydantic-settings==2.2.1 ; python_version >= "3.12" and python_version < "4.0"
 pydantic==2.6.4 ; python_version >= "3.12" and python_version < "4.0"
+pydantic[email]==2.6.4 ; python_version >= "3.12" and python_version < "4.0"
 pymysql==1.1.0 ; python_version >= "3.12" and python_version < "4.0"
 python-dotenv==1.0.1 ; python_version >= "3.12" and python_version < "4.0"
 pytz==2024.1 ; python_version >= "3.12" and python_version < "4.0"

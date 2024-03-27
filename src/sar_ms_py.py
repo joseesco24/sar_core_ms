@@ -40,6 +40,7 @@ from src.modules.collect_request.ports.rest_routers.collect_request_router impor
 from src.modules.heart_beat.ports.rest_routers.heart_beat_router import heart_beat_router
 from src.modules.parameter.ports.rest_routers.parameter_router import parameter_router
 from src.modules.waste.ports.rest_routers.waster_router import waste_router
+from src.modules.user.ports.rest_routers.user_router import user_router
 
 # ** info: sidecards.artifacts imports
 from src.general_sidecards.database_managers.mysql_manager import MySQLManager  # type: ignore
@@ -127,6 +128,7 @@ rest_router.include_router(router=centralized_analytics_router)
 rest_router.include_router(router=collect_request_router)
 rest_router.include_router(router=parameter_router)
 rest_router.include_router(router=waste_router)
+rest_router.include_router(router=user_router)
 
 # ---------------------------------------------------------------------------------------------------------------------
 # ** info: mounting rest based routers
