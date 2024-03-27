@@ -51,7 +51,7 @@ class LoggingProvider:
         """
 
         # todo: repair this line currently the formatter is not workiing in this line
-        fmt: str = "[{extra[version]}][<fg #66a3ff>{extra[currentTime]}</fg #66a3ff>:<fg #fc03cf>{extra[internalId]}</fg #fc03cf>] <level>{level}</level>: {message} <fg #ff0404>+{extra[sinceLastLogMsDif]}</fg #ff0404> <fg #54ff04>{extra[sinceRqStartMsDif]}</fg #54ff04>"  # noqa # fmt: skip
+        fmt: str = "[{extra[version]}][<fg #66a3ff>{extra[currentTime]}</fg #66a3ff>:<fg #fc03cf>{extra[externalId]}</fg #fc03cf>] <level>{level}</level>: {message} <fg #ff0404>+{extra[sinceLastLogMsDif]}</fg #ff0404> <fg #54ff04>{extra[sinceRqStartMsDif]}</fg #54ff04>"  # noqa # fmt: skip
 
         # ** info: overwriting all the loggers configs with the new one
         logging.root.handlers = [cls._CustomInterceptHandler()]

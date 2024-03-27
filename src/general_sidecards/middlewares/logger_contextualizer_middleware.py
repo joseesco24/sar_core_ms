@@ -35,9 +35,15 @@ class LoggerContextualizerMiddleware:
         call_next: Callable,
     ) -> StreamingResponse:
 
-        external_id: str = request.headers[r"request-id"] if r"request-id" in request.headers else r"unknown"
+        request_id_is_uuid: bool = UuidProvider.check_str_uuid(request.headers[r"request-id"]) if r"request-id" in request.headers else False
         internal_id: str = self._uuid_provider.get_str_uuid()
+        external_id: str = request.headers[r"request-id"] if request_id_is_uuid is True else internal_id
         full_url: str = str(request.url)
+
+        if request_id_is_uuid is False:
+            logging.warning(f"request-id header is not a valid uuid, using internal id: {internal_id}")
+        else:
+            logging.info(f"request-id header is a valid uuid: {external_id}")
 
         response: StreamingResponse
 

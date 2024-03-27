@@ -28,7 +28,8 @@ class I8nProvider:
 
     def _get_locale_languaje(self: Self) -> str:
         # todo: repalir thie method currently the linter is not recognizing the locale.getdefaultlocale() method
-        locale_languaje: str = locale.getdefaultlocale()[0] if locale.getdefaultlocale()[0] != "C" else "en_US"
+        current_locale: str = locale.getlocale()[0]
+        locale_languaje: str = current_locale if current_locale != "C" else "en_US"
         return locale_languaje
 
     def message(self: Self, message_key: str, **kwargs) -> str:
