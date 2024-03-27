@@ -27,7 +27,6 @@ class I8nProvider:
         self._messages_dict: dict[str, str] = json.load(open(join(self._locale_dir, "messages.json")))[module]
 
     def _get_locale_languaje(self: Self) -> str:
-        # todo: repalir thie method currently the linter is not recognizing the locale.getdefaultlocale() method
         current_locale: str = locale.getlocale()[0]
         locale_languaje: str = current_locale if current_locale != "C" else "en_US"
         return locale_languaje

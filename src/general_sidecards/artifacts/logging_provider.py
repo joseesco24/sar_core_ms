@@ -37,11 +37,11 @@ class LoggingProvider:
     _level: str = _env_provider.app_logging_level.value
     _datetime_provider: DatetimeProvider = DatetimeProvider()
     _extras: Dict[str, str] = {
-            "rqStartTime": _datetime_provider.get_current_time(),
-            "internalId": "397d4343-2855-4c92-b64b-58ee82006e0b",
-            "externalId": "97c3cb45-453f-4bd0-b0d5-d06cd568be27",
-            "version": "v3.0.0",
-        }
+        "rqStartTime": _datetime_provider.get_current_time(),
+        "internalId": "397d4343-2855-4c92-b64b-58ee82006e0b",
+        "externalId": "97c3cb45-453f-4bd0-b0d5-d06cd568be27",
+        "version": "v3.0.0",
+    }
 
     @classmethod
     def setup_pretty_logging(cls) -> None:
@@ -50,7 +50,6 @@ class LoggingProvider:
         written with the new overwritten configuration
         """
 
-        # todo: repair this line currently the formatter is not workiing in this line
         fmt: str = "[{extra[version]}][<fg #66a3ff>{extra[currentTime]}</fg #66a3ff>:<fg #fc03cf>{extra[externalId]}</fg #fc03cf>] <level>{level}</level>: {message} <fg #ff0404>+{extra[sinceLastLogMsDif]}</fg #ff0404> <fg #54ff04>{extra[sinceRqStartMsDif]}</fg #54ff04>"  # noqa # fmt: skip
 
         # ** info: overwriting all the loggers configs with the new one
@@ -139,6 +138,10 @@ class LoggingProvider:
 
     @classmethod
     def _custom_serializer(cls, record) -> str:
+
+        req_ms_dif: int = record["extra"]["sinceRqStartMsDif"]
+        log_ms_dif: int = record["extra"]["sinceLastLogMsDif"]
+
         subset: Dict[str, Any] = {
             "severity": record["level"].name,
             "message": record["message"],
@@ -147,8 +150,8 @@ class LoggingProvider:
             "rqStartTime": cls._datetime_provider.prettify_date_time_obj(date_time_obj=record["extra"]["rqStartTime"]),
             "currentTime": cls._datetime_provider.prettify_date_time_obj(date_time_obj=record["extra"]["currentTime"]),
             "lastLogTime": cls._datetime_provider.prettify_date_time_obj(date_time_obj=record["extra"]["lastLogTime"]),
-            "sinceLastLogMsDif": f"{record['extra']['sinceLastLogMsDif']}ms",
-            "sinceRqStartMsDif": f"{record["extra"]["sinceRqStartMsDif"]}ms",
+            "sinceLastLogMsDif": f"{log_ms_dif}ms",
+            "sinceRqStartMsDif": f"{req_ms_dif}ms",
             "version": record["extra"]["version"],
         }
 
