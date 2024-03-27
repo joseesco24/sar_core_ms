@@ -16,13 +16,20 @@ from pydantic import Field
 
 __all__: list[str] = ["EnvProvider"]
 
-load_dotenv(override=False, verbose=False, dotenv_path=find_dotenv(".env"))
+load_dotenv(override=True, verbose=True, dotenv_path=find_dotenv(".env"))
 
 
 class EnvironmentMode(str, Enum):
     development: str = "development"
     production: str = "production"
-    testing: str = "testing"
+
+
+class LoggingLevel(str, Enum):
+    debug: str = "DEBUG"
+    info: str = "INFO"
+    warning: str = "WARNING"
+    error: str = "ERROR"
+    critical: str = "CRITICAL"
 
 
 class LoggingMode(str, Enum):
@@ -44,6 +51,7 @@ class EnvProvider(BaseSettings):
     # ** info: app configs
     app_environment_mode: EnvironmentMode = Field(..., validation_alias="APP_ENVIRONMENT_MODE")
     app_logging_mode: LoggingMode = Field(..., validation_alias="APP_LOGGING_MODE")
+    app_logging_level: LoggingLevel = Field(..., validation_alias="APP_LOGGING_LEVEL")
     app_server_port: int = Field(..., validation_alias="APP_SERVER_PORT")
     app_authentication_handler_middleware_exclude: Set[str] = Field(..., validation_alias="APP_AUTHENTICATION_HANDLER_MIDDLEWARE_EXCLUDE")
     app_use_authentication_handler_middleware: bool = Field(..., validation_alias="APP_USE_AUTHENTICATION_HANDLER_MIDDLEWARE")

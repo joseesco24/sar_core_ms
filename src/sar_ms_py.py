@@ -171,6 +171,7 @@ uvicorn_server_configs: Dict[str, Any] = {
     "host": "0.0.0.0",
 }
 
+logging.info(f"logger level set to {env_provider.app_logging_level.value} mode")
 logging.info(f"application starting on port {env_provider.app_server_port}")
 logging.info(f"application timezone set to {env_provider.app_time_zone.value}")
 logging.info(f"application locale set to {env_provider.app_posix_locale.value}")

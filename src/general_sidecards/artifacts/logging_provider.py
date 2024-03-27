@@ -26,19 +26,22 @@ from loguru._recattrs import RecordException
 
 # ** info: sidecards.artifacts imports
 from src.general_sidecards.artifacts.datetime_provider import DatetimeProvider
+from src.general_sidecards.artifacts.env_provider import EnvProvider
 
 
 __all__: list[str] = ["LoggingProvider"]
 
 
 class LoggingProvider:
+    _env_provider: EnvProvider = EnvProvider()
+    _level: str = _env_provider.app_logging_level.value
     _datetime_provider: DatetimeProvider = DatetimeProvider()
     _extras: Dict[str, str] = {
-        "rqStartTime": _datetime_provider.get_current_time(),
-        "internalId": "397d4343-2855-4c92-b64b-58ee82006e0b",
-        "externalId": "97c3cb45-453f-4bd0-b0d5-d06cd568be27",
-        "version": "v3.0.0",
-    }
+            "rqStartTime": _datetime_provider.get_current_time(),
+            "internalId": "397d4343-2855-4c92-b64b-58ee82006e0b",
+            "externalId": "97c3cb45-453f-4bd0-b0d5-d06cd568be27",
+            "version": "v3.0.0",
+        }
 
     @classmethod
     def setup_pretty_logging(cls) -> None:
@@ -52,7 +55,7 @@ class LoggingProvider:
 
         # ** info: overwriting all the loggers configs with the new one
         logging.root.handlers = [cls._CustomInterceptHandler()]
-        logging.root.setLevel(logging.DEBUG)
+        logging.root.setLevel(cls._level)
 
         for name in logging.root.manager.loggerDict.keys():
             logging.getLogger(name).handlers = list()
@@ -79,7 +82,7 @@ class LoggingProvider:
 
         # ** info: overwriting all the loggers configs with the new one
         logging.root.handlers = [cls._CustomInterceptHandler()]
-        logging.root.setLevel(logging.DEBUG)
+        logging.root.setLevel(cls._level)
 
         for name in logging.root.manager.loggerDict.keys():
             logging.getLogger(name).handlers = list()
