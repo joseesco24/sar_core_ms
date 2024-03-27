@@ -3,6 +3,7 @@
         "EM001": "el estado de proceso {{ process_status }} no es válido"
     },
     "user": {
-        "EM001": "el correo {{ email }} ya fué registrado en el sistema"
+        "EM001": "el correo {{ email }} ya fué registrado en el sistema",
+        "EM002": "el usuario con el correo {{ email }} no fue encontrado"
     }
 }

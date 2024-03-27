@@ -64,6 +64,8 @@ class UserCore:
     async def driver_get_user_by_email(self: Self, user_by_email_request: UserByEmailRequestDto) -> UserCreationResponseDto:
         logging.info("starting driver_get_user_by_email")
         user_data: User = await self._search_user_by_email(email=user_by_email_request.email)
+        if not user_data:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=self._i8n.message(message_key="EM002", email=user_by_email_request.email))
         user_creation_response: UserCreationResponseDto = await self._map_user_to_user_creation_response_dto(user=user_data)
         logging.info("starting driver_get_user_by_email")
         return user_creation_response

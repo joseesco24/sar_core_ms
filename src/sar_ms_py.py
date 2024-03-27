@@ -5,7 +5,6 @@ from os.path import join
 from os import path
 import logging
 import locale
-import time
 import sys
 import gc
 
@@ -104,7 +103,7 @@ metadata: Dict[str, Any] = {
     "description": "This repository corresponds to the a small python microservice that is going to be used used in the sar system.",
     "summary": "Service incharge of managing wastes, collect request, and system parameters.",
     "title": "Sar Python Microservice",
-    "version": "v3.1.1",
+    "version": "v3.1.2",
 }
 
 sar_ms_py: FastAPI
@@ -151,12 +150,6 @@ else:
 sar_ms_py.add_middleware(middleware_class=BaseHTTPMiddleware, dispatch=ErrorHandlerMiddleware())
 sar_ms_py.add_middleware(middleware_class=BaseHTTPMiddleware, dispatch=LoggerContextualizerMiddleware())
 sar_ms_py.add_middleware(CORSMiddleware, allow_credentials=True, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
-
-# ---------------------------------------------------------------------------------------------------------------------
-# ** info: awaits before testing the connections
-# ---------------------------------------------------------------------------------------------------------------------
-
-time.sleep(8)
 
 # ---------------------------------------------------------------------------------------------------------------------
 # ** info: testing database connection

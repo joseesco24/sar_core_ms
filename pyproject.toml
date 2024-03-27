@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "sar_ms_py"
-version = "v3.1.1"
+version = "v3.1.2"
 description = "This repository corresponds to the a small python microservice that is going to be used used in the sar system."
 authors = ["joseesco24 <josed.escobar@outlook.com>"]
 readme = "readme.md"
