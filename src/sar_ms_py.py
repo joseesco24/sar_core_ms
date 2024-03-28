@@ -13,8 +13,15 @@ from typing import List
 from typing import Dict
 from typing import Any
 
-# **info: appending src path to the system paths for absolute imports from src path
+# ---------------------------------------------------------------------------------------------------------------------
+# ** info: appending src path to the system paths for absolute imports from src path
+# ---------------------------------------------------------------------------------------------------------------------
+
 sys.path.append(join(path.dirname(path.realpath(__file__)), "..", "."))
+
+# ---------------------------------------------------------------------------------------------------------------------
+# ** info: continuing with the app setup
+# ---------------------------------------------------------------------------------------------------------------------
 
 # ** info: uvicorn imports
 import uvicorn
@@ -25,33 +32,17 @@ from fastapi import HTTPException
 from fastapi import APIRouter
 from fastapi import FastAPI
 
-# ** info: starlette imports
-from starlette.middleware.base import BaseHTTPMiddleware
-from starlette.routing import BaseRoute
-from starlette.routing import Mount
-from starlette.routing import Route
-
-# ** info: graphql based routers imports
-from src.modules.waste.ports.graphql_routers.waste_router import waste_gpl_router  # type: ignore
-
-# ** info: rest based routers imports
-from src.modules.centralized_analytics.ports.rest_routers.centralized_analytics_router import centralized_analytics_router  # type: ignore
-from src.modules.collect_request.ports.rest_routers.collect_request_router import collect_request_router  # type: ignore
-from src.modules.heart_beat.ports.rest_routers.heart_beat_router import heart_beat_router
-from src.modules.parameter.ports.rest_routers.parameter_router import parameter_router
-from src.modules.waste.ports.rest_routers.waster_router import waste_router
-from src.modules.user.ports.rest_routers.user_router import user_router
-
 # ** info: sidecards.artifacts imports
 from src.general_sidecards.database_managers.mysql_manager import MySQLManager  # type: ignore
 from src.general_sidecards.artifacts.logging_provider import LoggingProvider  # type: ignore
 from src.general_sidecards.artifacts.env_provider import EnvProvider  # type: ignore
 from src.general_sidecards.artifacts.path_provider import PathProvider  # type: ignore
 
-# ** info: sidecard.middlewares imports
-from src.general_sidecards.middlewares.authentication_handler_middleware import AuthenticationHandlerMiddleware  # type: ignore
-from src.general_sidecards.middlewares.logger_contextualizer_middleware import LoggerContextualizerMiddleware  # type: ignore
-from src.general_sidecards.middlewares.error_handler_middleware import ErrorHandlerMiddleware  # type: ignore
+# ** info: starlette imports
+from starlette.middleware.base import BaseHTTPMiddleware
+from starlette.routing import BaseRoute
+from starlette.routing import Mount
+from starlette.routing import Route
 
 # ---------------------------------------------------------------------------------------------------------------------
 # ** info: building needed artifacts
@@ -65,6 +56,27 @@ env_provider: EnvProvider = EnvProvider()  # type: ignore
 # ---------------------------------------------------------------------------------------------------------------------
 
 locale.setlocale(category=locale.LC_ALL, locale=env_provider.app_posix_locale)
+
+# ---------------------------------------------------------------------------------------------------------------------
+# ** info: continuing with the app setup
+# ---------------------------------------------------------------------------------------------------------------------
+
+# ** info: graphql based routers imports
+from src.modules.waste.ports.graphql_routers.waste_router import waste_gpl_router  # type: ignore
+from src.modules.user.ports.graphql_routers.user_router import user_gpl_router  # type: ignore
+
+# ** info: rest based routers imports
+from src.modules.centralized_analytics.ports.rest_routers.centralized_analytics_router import centralized_analytics_router  # type: ignore
+from src.modules.collect_request.ports.rest_routers.collect_request_router import collect_request_router  # type: ignore
+from src.modules.heart_beat.ports.rest_routers.heart_beat_router import heart_beat_router
+from src.modules.parameter.ports.rest_routers.parameter_router import parameter_router
+from src.modules.waste.ports.rest_routers.waster_router import waste_router
+from src.modules.user.ports.rest_routers.user_router import user_router
+
+# ** info: sidecard.middlewares imports
+from src.general_sidecards.middlewares.authentication_handler_middleware import AuthenticationHandlerMiddleware  # type: ignore
+from src.general_sidecards.middlewares.logger_contextualizer_middleware import LoggerContextualizerMiddleware  # type: ignore
+from src.general_sidecards.middlewares.error_handler_middleware import ErrorHandlerMiddleware  # type: ignore
 
 # ---------------------------------------------------------------------------------------------------------------------
 # ** info: setting up global app logging
@@ -88,6 +100,7 @@ routes: List[Route] = []
 # ---------------------------------------------------------------------------------------------------------------------
 
 routes.append(waste_gpl_router)
+routes.append(user_gpl_router)
 
 # ---------------------------------------------------------------------------------------------------------------------
 # ** info: mounting graphql based routers
@@ -103,12 +116,12 @@ metadata: Dict[str, Any] = {
     "description": "This repository corresponds to the a small python microservice that is going to be used used in the sar system.",
     "summary": "Service incharge of managing wastes, collect request, and system parameters.",
     "title": "Sar Python Microservice",
-    "version": "v3.1.2",
+    "version": "v3.1.3",
 }
 
 sar_ms_py: FastAPI
 if env_provider.app_swagger_docs is True:
-    sar_ms_py = FastAPI(routes=graphql_routers, swagger_ui_parameters={"defaultModelsExpandDepth": -1}, redoc_url=None, **metadata)  # type: ignore
+    sar_ms_py = FastAPI(routes=graphql_routers, docs_url=path_provider.build_posix_path("rest", "docs"), redoc_url=None, swagger_ui_parameters={"defaultModelsExpandDepth": -1}, **metadata)  # noqa # fmt: skip
     logging.warning("swagger docs active")
 else:
     sar_ms_py = FastAPI(routes=graphql_routers, docs_url=None, redoc_url=None, **metadata)
@@ -126,6 +139,7 @@ rest_router: APIRouter = APIRouter(prefix=path_provider.build_posix_path("rest")
 
 rest_router.include_router(router=centralized_analytics_router)
 rest_router.include_router(router=collect_request_router)
+rest_router.include_router(router=heart_beat_router)
 rest_router.include_router(router=parameter_router)
 rest_router.include_router(router=waste_router)
 rest_router.include_router(router=user_router)
@@ -134,7 +148,6 @@ rest_router.include_router(router=user_router)
 # ** info: mounting rest based routers
 # ---------------------------------------------------------------------------------------------------------------------
 
-sar_ms_py.include_router(heart_beat_router)
 sar_ms_py.include_router(rest_router)
 
 # ---------------------------------------------------------------------------------------------------------------------

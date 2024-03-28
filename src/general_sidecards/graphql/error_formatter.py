@@ -1,9 +1,6 @@
 # !/usr/bin/python3
 # type: ignore
 
-# ** info: python imports
-import logging
-
 # ** info: typing imports
 from typing import Self
 
@@ -22,16 +19,12 @@ class ErrorFormatter:
 
     @staticmethod
     def formatter(error: GraphQLError, debug: bool) -> dict:
-        if error.extensions == {}:
-            logging.error(f"a not handled graphql error has occurred on the api server, error message: {error.message}")
 
         if debug is True:
             formatted: dict = format_error(error=error, debug=True)  # type: ignore
             return formatted
 
         formatted: dict = error.formatted  # type: ignore
-        formatted["message"] = error.message
-
         del formatted["locations"]
         del formatted["path"]
 

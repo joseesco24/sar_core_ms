@@ -19,13 +19,10 @@ from src.modules.parameter.adapters.database_providers_entities.parameter_entity
 # ** info: providers imports
 from src.modules.parameter.adapters.database_providers.parameter_provider import ParameterProvider  # type: ignore
 
-# ** info: sidecards.helpers imports
-from src.general_sidecards.helpers.singleton_helper import Singleton  # type: ignore
-
 __all__: list[str] = ["ParameterCore"]
 
 
-class ParameterCore(metaclass=Singleton):
+class ParameterCore:
 
     # !------------------------------------------------------------------------
     # ! info: core slots section start

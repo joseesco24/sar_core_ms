@@ -27,17 +27,17 @@ from src.general_sidecards.graphql.error_formatter import error_formatter
 from src.general_sidecards.artifacts.path_provider import PathProvider
 from src.general_sidecards.artifacts.env_provider import EnvProvider
 
-# ** info: users dtos imports
-from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteFilterByStatusRequestDto
-from src.modules.waste.ports.rest_routers_dtos.waste_dtos import WasteFullDataResponseListDto
+# ** info: dtos imports
+from src.modules.user.ports.rest_routers_dtos.user_dtos import UserCreationResponseDto  # type: ignore
+from src.modules.user.ports.rest_routers_dtos.user_dtos import UserByEmailRequestDto  # type: ignore
 
 # ** info: app core imports
-from src.modules.waste.cores.business.waste_core import WasteCore
+from src.modules.user.core.business.user_core import UserCore
 
-__all__: list[str] = ["waste_gpl_router"]
+__all__: list[str] = ["user_gpl_router"]
 
 # ** info: building router core
-_waste_core: WasteCore = WasteCore()
+_user_core: UserCore = UserCore()
 
 # ** info: building sidecards
 _path_provider: PathProvider = PathProvider()
@@ -48,7 +48,7 @@ _env_provider: EnvProvider = EnvProvider()
 # ---------------------------------------------------------------------------------------------------------------------
 
 current_file_path: Path = Path(__file__).parent.resolve()
-schema_path: Path = Path(current_file_path, "..", "graphql_routers_dtos", "waste_dtos.graphql")
+schema_path: Path = Path(current_file_path, "..", "graphql_routers_dtos", "user_dtos.graphql")
 schema_literal: str = load_schema_from_path(path=str(schema_path))
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -58,11 +58,11 @@ schema_literal: str = load_schema_from_path(path=str(schema_path))
 query: QueryType = QueryType()
 
 
-@query.field("wastesByStatus")
-async def wastes_by_status(*_: Any, processStatus: int) -> WasteFullDataResponseListDto:
-    filter_waste_by_status_request: WasteFilterByStatusRequestDto = WasteFilterByStatusRequestDto(processStatus=processStatus)
-    filtered_wastes_response: WasteFullDataResponseListDto = await _waste_core.driver_search_waste_by_status(filter_waste_by_status_request)
-    return filtered_wastes_response.values
+@query.field("userByEmail")
+async def user_by_email(*_: Any, email: str) -> UserCreationResponseDto:
+    user_by_email_request: UserByEmailRequestDto = UserByEmailRequestDto(email=email)
+    user_full_data_reponse: UserCreationResponseDto = await _user_core.driver_get_user_by_email(user_by_email_request)
+    return user_full_data_reponse
 
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -87,7 +87,7 @@ graphql_endpoint_definition: GraphQL = GraphQL(
 # ** info: assembling graphql endpoint with the main router
 # ---------------------------------------------------------------------------------------------------------------------
 
-waste_gpl_router: Route = Route(
-    path=_path_provider.build_posix_path("waste"),
+user_gpl_router: Route = Route(
+    path=_path_provider.build_posix_path("user"),
     endpoint=graphql_endpoint_definition,
 )

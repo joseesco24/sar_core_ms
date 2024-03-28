@@ -88,6 +88,6 @@ class UserProvider:
         logging.debug(f"searching user by email {email}")
         session: Session = self._session_manager.obtain_session()
         query: Any = select(User).where(User.email == email)
-        search_waste_by_id_result: User = session.exec(statement=query).first()
+        query_result: User = session.exec(statement=query).first()
         logging.debug("searching user by email ended")
-        return search_waste_by_id_result
+        return query_result
