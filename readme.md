@@ -6,6 +6,6 @@ This repository corresponds to the a small python microservice that is going to 
 
 execute the next command 
 
-docker compose -f docker_compose/docker.yaml up
+docker compose -f docker_compose/deploy.full.yaml up
 
 <br/>
