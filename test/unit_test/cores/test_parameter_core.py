@@ -8,7 +8,7 @@ from os import path
 import sys
 
 # **info: appending src path to the system paths for absolute imports from src path
-sys.path.append(join(path.dirname(path.realpath(__file__)), "..", "..", "."))
+sys.path.append(join(path.dirname(path.realpath(__file__)), "..", "..", "..", "."))
 
 # ** info: dtos imports
 from src.modules.parameter.ports.rest_routers_dtos.parameter_dtos import ParameterSearchResponseDto  # type: ignore
