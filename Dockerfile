@@ -5,22 +5,22 @@ FROM python:3.12.0-slim-bullseye
 COPY ["/requirements/app.txt","$WORKDIR/"]
 
 # ** info: installing the dependencies and upgrading pip, wheel and setuptools
-RUN pip install --no-cache -r $WORKDIR/app.txt
+RUN pip install -r $WORKDIR/app.txt
+
+# ** info: removing the app requirements file
+RUN rm app.txt
 
 # ** info: copying source code of the application from the testing image
 COPY ["src", "$WORKDIR/src"]
+
+# ** info: cleaning the python __pycache__ files
+RUN find . | grep -E "(/__pycache__$|\.pyc$|\.pyo$)" | xargs rm -rf
 
 # ** info: adding support to es_CO.UTF-8 and en_US.UTF-8 locales
 RUN apt-get update && apt-get install -y locales && rm -r /var/lib/apt/lists/*
 RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
 RUN sed -i -e 's/# es_CO.UTF-8 UTF-8/es_CO.UTF-8 UTF-8/' /etc/locale.gen
 RUN dpkg-reconfigure --frontend=noninteractive locales
-
-# ** info: cleaning the python __pycache__ files
-RUN find . | grep -E "(/__pycache__$|\.pyc$|\.pyo$)" | xargs rm -rf
-
-# ** info: removing the app requirements file
-RUN rm -r app.txt
 
 # ** info: executing the app
 ENTRYPOINT ["python", "src/sar_ms_py.py"]
