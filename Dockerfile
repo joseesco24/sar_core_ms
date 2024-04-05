@@ -2,7 +2,7 @@
 FROM python:3.12.0-slim-bullseye
 
 # ** info: copying the app requirements file from the testing image
-COPY ["/requirements/app.txt","$WORKDIR/"]
+COPY ["/req/app.txt","$WORKDIR/"]
 
 # ** info: installing the dependencies and upgrading pip, wheel and setuptools
 RUN pip install -r $WORKDIR/app.txt
