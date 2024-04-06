@@ -9,7 +9,7 @@
 	"readme": "readme.md",
 	"scripts": {
 		"export-dependencies": "poetry export --without-hashes --only dev --format=requirements.txt > ./req/dev.txt && poetry export --without-hashes --format=requirements.txt > ./req/app.txt",
-		"lint": "flake8 ./src --max-line-length=180 --verbose && mypy --explicit-package-bases ./src && flake8 ./test --max-line-length=180 --verbose && mypy --explicit-package-bases ./test",
+		"lint": "flake8 ./src --max-line-length=180 --verbose && mypy --explicit-package-bases ./src && flake8 ./test/unit_test --max-line-length=180 --verbose && mypy --explicit-package-bases ./test/unit_test",
 		"clean-cache": "find . | grep -E \"(/__pycache__$|\\.pyc$|\\.pyo$)\" | xargs rm -rf && rm -r .mypy_cache .pytest_cache",
 		"docker-dependencies-stop": "docker compose -f ./compose/deploy.dependencies.yaml down",
 		"docker-dependencies-start": "docker compose -f ./compose/deploy.dependencies.yaml up",
@@ -17,13 +17,14 @@
 		"docker-image-push": "docker push ghcr.io/joseesco24/sar_ms_py --all-tags",
 		"docker-full-stop": "docker compose -f ./compose/deploy.full.yaml down",
 		"docker-full-start": "cp -f ./env/docker.env .env && docker compose -f ./compose/deploy.full.yaml up",
-		"format": "black ./src --line-length=180 && black ./test --line-length=180",
+		"format": "black ./src && black ./test/unit_test",
 		"start-dev": "cp -f ./env/development.env .env && python src/sar_ms_py.py",
 		"start-app": "cp -f ./env/production.env .env && python src/sar_ms_py.py",
 		"commitmsg": "bash ./.husky/commit-msg.sh",
 		"precommit": "bash ./.husky/pre-commit.sh",
 		"postinstall": "npx husky install",
-		"test": "pytest --verbose"
+		"load-test": "bash ./test/load_test/k6_scripts/orchestator.sh",
+		"unit-test": "pytest --verbose"
 	},
 	"devDependencies": {
 		"@commitlint/cli": "^19.2.1",
