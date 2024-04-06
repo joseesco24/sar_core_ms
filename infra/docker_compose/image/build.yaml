@@ -5,4 +5,4 @@ services:
     image: ghcr.io/joseesco24/sar_ms_py:v3.2.0
     build:
       dockerfile: Dockerfile
-      context: ../../.
+      context: ../../../.

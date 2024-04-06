@@ -1,0 +1,59 @@
+version: "3.8"
+
+services:
+  sar_ms_py:
+    container_name: sar_ms_py
+    image: ghcr.io/joseesco24/sar_ms_py:v3.2.0
+    environment:
+      APP_AUTHENTICATION_HANDLER_MIDDLEWARE_EXCLUDE: '["health-check/is-everything-ok"]'
+      APP_USE_AUTHENTICATION_HANDLER_MIDDLEWARE: "false"
+      APP_ENVIRONMENT_MODE: "production"
+      APP_LOGGING_MODE: "pretty"
+      APP_LOGGING_LEVEL: "DEBUG"
+      APP_SERVER_PORT: 10048
+      APP_SWAGGER_DOCS: "true"
+      APP_POSIX_LOCALE: "es_CO.UTF-8"
+      APP_TIME_ZONE: "America/Bogota"
+      DATABASE_PASSWORD: "sar_password"
+      DATABASE_HOST: "sar_bd_mysql"
+      DATABASE_USER: "sar_user"
+      DATABASE_LOGS: "false"
+      DATABASE_NAME: "sar_db"
+      DATABASE_PORT: 3306
+      SAR_BRMS_BASE_URL: "http://sar_brms:8080"
+      SAR_WAREHOUSE_MS_BASE_URL: "https://sar_java_ms:8090"
+    networks:
+      - sar_system_network
+    ports:
+      - target: 10048
+        published: 10048
+        protocol: tcp
+    depends_on:
+      - sar_bd_mysql
+      - sar_brms
+
+  sar_bd_mysql:
+    container_name: sar_bd_mysql
+    image: ghcr.io/joseesco24/sar_bd_mysql:v1.4.0
+    networks:
+      - sar_system_network
+    volumes:
+      - type: volume
+        source: sar_bd_mysql_disc
+        target: /var/lib/mysql
+
+  sar_brms:
+    container_name: sar_brms
+    image: ghcr.io/joseesco24/sar_brms:v1.0.0
+    networks:
+      - sar_system_network
+
+networks:
+  sar_system_network:
+    name: sar_system_network
+    external: false
+    driver: bridge
+
+volumes:
+  sar_bd_mysql_disc:
+  portainer_disc:
