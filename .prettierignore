@@ -1,4 +1,4 @@
-# ** info: ignored files
+# ** info: specific ignored files
 package-lock.json
 
 # ** info: ignored file types

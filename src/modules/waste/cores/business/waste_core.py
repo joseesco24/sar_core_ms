@@ -41,8 +41,8 @@ from src.modules.waste.adapters.rest_services.warehouse_ms_service import Wareho
 from src.modules.waste.adapters.rest_services.brms_service import BrmsService  # type: ignore
 
 # ** info: sidecards.artifacts imports
-from src.general_sidecards.artifacts.datetime_provider import DatetimeProvider  # type: ignore
-from src.general_sidecards.artifacts.i8n_provider import I8nProvider  # type: ignore
+from src.sidecard.system.artifacts.datetime_provider import DatetimeProvider  # type: ignore
+from src.sidecard.system.artifacts.i8n_provider import I8nProvider  # type: ignore
 
 __all__: list[str] = ["WasteCore"]
 

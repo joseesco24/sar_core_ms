@@ -22,7 +22,7 @@ from src.modules.centralized_analytics.ports.rest_routers_dtos.centralized_analy
 from src.modules.centralized_analytics.ports.rest_routers_dtos.centralized_analytics_dtos import MonthAnalyticsDto  # type: ignore
 
 # ** info: sidecards.artifacts imports
-from src.general_sidecards.artifacts.datetime_provider import DatetimeProvider  # type: ignore
+from src.sidecard.system.artifacts.datetime_provider import DatetimeProvider  # type: ignore
 
 __all__: list[str] = ["CentralyzedAnalyticsCore"]
 

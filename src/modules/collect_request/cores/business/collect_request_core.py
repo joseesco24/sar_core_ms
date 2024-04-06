@@ -39,9 +39,9 @@ from src.modules.waste.adapters.database_providers_entities.waste_entity import 
 from src.modules.collect_request.adapters.database_providers.collect_request_provider import CollectRequestProvider  # type: ignore
 
 # ** info: sidecards.artifacts imports
-from src.business_sidecards.artifacts.business_glossary_translate_provider import BusinessGlossaryTranslateProvider  # type: ignore
-from src.business_sidecards.constants.collect_request_states_constants import CollectRequestStates  # type: ignore
-from src.general_sidecards.artifacts.datetime_provider import DatetimeProvider  # type: ignore
+from src.sidecard.business.artifacts.business_glossary_translate_provider import BusinessGlossaryTranslateProvider  # type: ignore
+from src.sidecard.business.constants.collect_request_states_constants import CollectRequestStates  # type: ignore
+from src.sidecard.system.artifacts.datetime_provider import DatetimeProvider  # type: ignore
 
 __all__: list[str] = ["CollectRequestCore"]
 

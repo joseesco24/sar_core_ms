@@ -20,7 +20,7 @@ from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos im
 from src.modules.collect_request.cores.business.collect_request_core import CollectRequestCore
 
 # ** info: sidecards.artifacts imports
-from src.general_sidecards.artifacts.path_provider import PathProvider
+from src.sidecard.system.artifacts.path_provider import PathProvider
 
 __all__: list[str] = ["collect_request_router"]
 

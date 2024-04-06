@@ -22,8 +22,8 @@ from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos_me
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos_metadata import collect_request_id_note_dto
 
 # ** info: sidecards.artifacts imports
-from src.general_sidecards.artifacts.datetime_provider import DatetimeProvider
-from src.general_sidecards.artifacts.uuid_provider import UuidProvider
+from src.sidecard.system.artifacts.datetime_provider import DatetimeProvider
+from src.sidecard.system.artifacts.uuid_provider import UuidProvider
 
 __all__: list[str] = ["CollectRequestFullDataResponseDto", "CollectRequestCreateRequestDto"]
 

@@ -6,8 +6,8 @@ from typing import Self
 from typing import Dict
 
 # ** info: sidecards.constants imports
-from src.business_sidecards.constants.collect_request_states_constants import CollectRequestStates  # type: ignore
-from src.business_sidecards.constants.waste_states_constants import WasteStates  # type: ignore
+from src.sidecard.business.constants.collect_request_states_constants import CollectRequestStates  # type: ignore
+from src.sidecard.business.constants.waste_states_constants import WasteStates  # type: ignore
 
 
 __all__: list[str] = ["BusinessGlossaryTranslateProvider"]

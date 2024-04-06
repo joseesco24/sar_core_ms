@@ -6,7 +6,7 @@ from fastapi import Response
 from fastapi import status
 
 # ** info: sidecards.artifacts imports
-from src.general_sidecards.artifacts.path_provider import PathProvider  # type: ignore
+from src.sidecard.system.artifacts.path_provider import PathProvider  # type: ignore
 
 __all__: list[str] = ["heart_beat_router"]
 

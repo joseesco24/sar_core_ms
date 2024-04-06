@@ -27,7 +27,7 @@ from src.modules.collect_request.adapters.database_providers_entities.collect_re
 from src.modules.waste.adapters.database_providers_entities.waste_entity import Waste  # type: ignore
 
 # ** info: sidecards.artifacts imports
-from src.general_sidecards.artifacts.datetime_provider import DatetimeProvider  # type: ignore
+from src.sidecard.system.artifacts.datetime_provider import DatetimeProvider  # type: ignore
 
 # ---------------------------------------------------------------------------------------------------------------------
 # ** info: create needed artifcts

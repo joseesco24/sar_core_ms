@@ -27,13 +27,13 @@ from fastapi import status
 from src.modules.waste.adapters.database_providers_entities.waste_entity import Waste
 
 # ** info: sidecards.database_managers imports
-from src.general_sidecards.database_managers.mysql_manager import MySQLManager
+from src.sidecard.system.database_managers.mysql_manager import MySQLManager
 
 # ** info: sidecards.artifacts imports
-from src.business_sidecards.constants.waste_states_constants import WasteStates
-from src.general_sidecards.artifacts.datetime_provider import DatetimeProvider
-from src.general_sidecards.artifacts.uuid_provider import UuidProvider
-from src.general_sidecards.artifacts.env_provider import EnvProvider
+from src.sidecard.business.constants.waste_states_constants import WasteStates
+from src.sidecard.system.artifacts.datetime_provider import DatetimeProvider
+from src.sidecard.system.artifacts.uuid_provider import UuidProvider
+from src.sidecard.system.artifacts.env_provider import EnvProvider
 
 # ** info: cachetools imports
 from cachetools import TTLCache

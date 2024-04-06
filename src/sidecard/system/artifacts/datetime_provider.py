@@ -10,7 +10,7 @@ from pytz import timezone
 from typing import Self
 
 # ** info: sidecards.artifacts imports
-from src.general_sidecards.artifacts.env_provider import EnvProvider  # type: ignore
+from src.sidecard.system.artifacts.env_provider import EnvProvider  # type: ignore
 
 
 __all__: list[str] = ["DatetimeProvider"]

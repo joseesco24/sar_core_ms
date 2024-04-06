@@ -22,8 +22,8 @@ from src.modules.user.adapters.database_providers_entities.user_entity import Us
 from src.modules.user.adapters.database_providers.user_provider import UserProvider  # type: ignore
 
 # ** info: sidecards.artifacts imports
-from src.general_sidecards.artifacts.datetime_provider import DatetimeProvider  # type: ignore
-from src.general_sidecards.artifacts.i8n_provider import I8nProvider  # type: ignore
+from src.sidecard.system.artifacts.datetime_provider import DatetimeProvider  # type: ignore
+from src.sidecard.system.artifacts.i8n_provider import I8nProvider  # type: ignore
 
 __all__: list[str] = ["UserCore"]
 

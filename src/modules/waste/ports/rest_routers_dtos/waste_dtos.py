@@ -23,7 +23,7 @@ from src.modules.waste.ports.rest_routers_dtos.waste_dtos_metadata import waste_
 from src.modules.waste.ports.rest_routers_dtos.waste_dtos_metadata import waste_update_store_req
 
 # ** info: sidecards.artifacts imports
-from src.general_sidecards.artifacts.uuid_provider import UuidProvider
+from src.sidecard.system.artifacts.uuid_provider import UuidProvider
 
 __all__: list[str] = ["WasteClasificationRequestDto", "WasteClasificationResponseDto", "WasteClassifyRequestDto", "WasteFullDataResponseDto", "WasteFilterByStatusRequestDto"]
 

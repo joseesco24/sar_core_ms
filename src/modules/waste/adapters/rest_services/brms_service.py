@@ -20,7 +20,7 @@ from fastapi import HTTPException
 from fastapi import status
 
 # ** info: sidecards.artifacts imports
-from src.general_sidecards.artifacts.env_provider import EnvProvider
+from src.sidecard.system.artifacts.env_provider import EnvProvider
 
 # ** info: cachetools imports
 from cachetools import TTLCache

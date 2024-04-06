@@ -24,7 +24,7 @@ from src.modules.waste.adapters.rest_services_dtos.warehouse_ms_dtos import Ware
 from src.modules.waste.adapters.rest_services_dtos.warehouse_ms_dtos import WarehouseFullDataRequestDto
 
 # ** info: sidecards.artifacts imports
-from src.general_sidecards.artifacts.env_provider import EnvProvider
+from src.sidecard.system.artifacts.env_provider import EnvProvider
 
 # ** info: cachetools imports
 from cachetools import TTLCache

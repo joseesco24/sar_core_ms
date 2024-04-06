@@ -21,11 +21,11 @@ from ariadne.asgi import GraphQL
 from ariadne import QueryType
 
 # ** info: artifacts imports
-from src.general_sidecards.graphql.custom_scalars_serializer import integer_scalar
-from src.general_sidecards.graphql.custom_scalars_serializer import float_scalar
-from src.general_sidecards.graphql.error_formatter import error_formatter
-from src.general_sidecards.artifacts.path_provider import PathProvider
-from src.general_sidecards.artifacts.env_provider import EnvProvider
+from src.sidecard.system.graphql.custom_scalars_serializer import integer_scalar
+from src.sidecard.system.graphql.custom_scalars_serializer import float_scalar
+from src.sidecard.system.graphql.error_formatter import error_formatter
+from src.sidecard.system.artifacts.path_provider import PathProvider
+from src.sidecard.system.artifacts.env_provider import EnvProvider
 
 # ** info: dtos imports
 from src.modules.user.ports.rest_routers_dtos.user_dtos import UserCreationResponseDto  # type: ignore

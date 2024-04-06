@@ -14,7 +14,7 @@ from src.modules.user.ports.rest_routers_dtos.user_dtos import UserByEmailReques
 from src.modules.user.core.business.user_core import UserCore  # type: ignore
 
 # ** info: sidecards.artifacts imports
-from src.general_sidecards.artifacts.path_provider import PathProvider  # type: ignore
+from src.sidecard.system.artifacts.path_provider import PathProvider  # type: ignore
 
 __all__: list[str] = ["user_router"]
 

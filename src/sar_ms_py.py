@@ -33,10 +33,10 @@ from fastapi import APIRouter
 from fastapi import FastAPI
 
 # ** info: sidecards.artifacts imports
-from src.general_sidecards.database_managers.mysql_manager import MySQLManager  # type: ignore
-from src.general_sidecards.artifacts.logging_provider import LoggingProvider  # type: ignore
-from src.general_sidecards.artifacts.env_provider import EnvProvider  # type: ignore
-from src.general_sidecards.artifacts.path_provider import PathProvider  # type: ignore
+from src.sidecard.system.database_managers.mysql_manager import MySQLManager  # type: ignore
+from src.sidecard.system.artifacts.logging_provider import LoggingProvider  # type: ignore
+from src.sidecard.system.artifacts.env_provider import EnvProvider  # type: ignore
+from src.sidecard.system.artifacts.path_provider import PathProvider  # type: ignore
 
 # ** info: starlette imports
 from starlette.middleware.base import BaseHTTPMiddleware
@@ -74,9 +74,9 @@ from src.modules.waste.ports.rest_routers.waster_router import waste_router
 from src.modules.user.ports.rest_routers.user_router import user_router
 
 # ** info: sidecard.middlewares imports
-from src.general_sidecards.middlewares.authentication_handler_middleware import AuthenticationHandlerMiddleware  # type: ignore
-from src.general_sidecards.middlewares.logger_contextualizer_middleware import LoggerContextualizerMiddleware  # type: ignore
-from src.general_sidecards.middlewares.error_handler_middleware import ErrorHandlerMiddleware  # type: ignore
+from src.sidecard.system.middlewares.authentication_handler_middleware import AuthenticationHandlerMiddleware  # type: ignore
+from src.sidecard.system.middlewares.logger_contextualizer_middleware import LoggerContextualizerMiddleware  # type: ignore
+from src.sidecard.system.middlewares.error_handler_middleware import ErrorHandlerMiddleware  # type: ignore
 
 # ---------------------------------------------------------------------------------------------------------------------
 # ** info: setting up global app logging
@@ -116,7 +116,7 @@ metadata: Dict[str, Any] = {
     "description": "This repository corresponds to the a small python microservice that is going to be used used in the sar system.",
     "summary": "Service incharge of managing wastes, collect request, and system parameters.",
     "title": "Sar Python Microservice",
-    "version": "v3.1.3",
+    "version": "v3.2.0",
 }
 
 sar_ms_py: FastAPI

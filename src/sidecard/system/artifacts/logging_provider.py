@@ -25,8 +25,8 @@ from loguru import logger
 from loguru._recattrs import RecordException
 
 # ** info: sidecards.artifacts imports
-from src.general_sidecards.artifacts.datetime_provider import DatetimeProvider
-from src.general_sidecards.artifacts.env_provider import EnvProvider
+from src.sidecard.system.artifacts.datetime_provider import DatetimeProvider
+from src.sidecard.system.artifacts.env_provider import EnvProvider
 
 
 __all__: list[str] = ["LoggingProvider"]
@@ -40,7 +40,7 @@ class LoggingProvider:
         "rqStartTime": _datetime_provider.get_current_time(),
         "internalId": "397d4343-2855-4c92-b64b-58ee82006e0b",
         "externalId": "97c3cb45-453f-4bd0-b0d5-d06cd568be27",
-        "version": "v3.1.3",
+        "version": "v3.2.0",
     }
 
     @classmethod

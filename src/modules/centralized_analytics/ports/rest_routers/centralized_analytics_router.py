@@ -11,10 +11,10 @@ from src.modules.centralized_analytics.ports.rest_routers_dtos.centralized_analy
 from src.modules.centralized_analytics.ports.rest_routers_dtos.centralized_analytics_dtos import YearDataRequestDto
 
 # ** info: app core imports
-from src.modules.centralized_analytics.cores.business.centralized_analytics_core import CentralyzedAnalyticsCore
+from src.modules.centralized_analytics.cores.analytics.centralized_analytics_core import CentralyzedAnalyticsCore
 
 # ** info: sidecards.artifacts imports
-from src.general_sidecards.artifacts.path_provider import PathProvider
+from src.sidecard.system.artifacts.path_provider import PathProvider
 
 __all__: list[str] = ["centralized_analytics_router"]
 

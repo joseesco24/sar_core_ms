@@ -16,8 +16,8 @@ from starlette.responses import StreamingResponse
 from starlette.requests import Request
 
 # ** info: sidecards.artifacts imports
-from src.general_sidecards.artifacts.datetime_provider import DatetimeProvider
-from src.general_sidecards.artifacts.uuid_provider import UuidProvider
+from src.sidecard.system.artifacts.datetime_provider import DatetimeProvider
+from src.sidecard.system.artifacts.uuid_provider import UuidProvider
 
 
 __all__: list[str] = ["LoggerContextualizerMiddleware"]
