@@ -31,7 +31,7 @@ else
 fi
 
 # ** info: executing tests
-print_title "Executing Tests"
+print_title "Executing Unit Tests"
 pytest --quiet
 
 # ** info: cleaning cache
@@ -40,7 +40,11 @@ find . | grep -E "(/__pycache__$|\.pyc$|\.pyo$)" | xargs rm -rf
 
 # ** info: formatting files
 print_title "Formatting Files"
-black ./src --line-length=180 && black ./test --line-length=180
+black ./src
+printf "\n"
+black ./test/unit_test
+printf "\n"
+prettier ./test/**/*.js --write
 
 # ** info: exporting dependencies if needed
 if [[ " ${staged_files[@]} " =~ " poetry.lock " ]]; then
@@ -62,12 +66,14 @@ fi
 
 # ** info: linting files
 print_title "Linting Files"
-flake8 ./test --max-line-length=180 --verbose
-flake8 ./src --max-line-length=180 --verbose
+flake8 ./test/unit_test --verbose
+printf "\n"
+flake8 ./src --verbose
 
 # ** info: validating typos
 print_title "Validating Typos"
-mypy --explicit-package-bases ./test
+mypy --explicit-package-bases ./test/unit_test
+printf "\n"
 mypy --explicit-package-bases ./src
 
 # ** info: linting files
