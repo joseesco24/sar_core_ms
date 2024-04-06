@@ -44,7 +44,9 @@ black ./src
 printf "\n"
 black ./test/unit_test
 printf "\n"
-prettier ./test/**/*.js --write
+prettier ./test/load_test/k6/**/*.js --write
+printf "\n"
+prettier ./**/*.{yaml,json,md,graphql} --write
 
 # ** info: exporting dependencies if needed
 if [[ " ${staged_files[@]} " =~ " poetry.lock " ]]; then

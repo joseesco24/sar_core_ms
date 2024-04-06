@@ -4,15 +4,15 @@ scalar Integer
 scalar Float
 
 type Query {
-  userByEmail(email: String): User!
+	userByEmail(email: String): User!
 }
 
 type User {
-  id: ID!
-  active: Boolean!
-  email: String!
-  name: String!
-  lastName: String!
-  create: String!
-  update: String!
+	id: ID!
+	active: Boolean!
+	email: String!
+	name: String!
+	lastName: String!
+	create: String!
+	update: String!
 }

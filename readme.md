@@ -4,7 +4,7 @@ This repository corresponds to the a small python microservice that is going to 
 
 ## Steps
 
-execute the next command 
+execute the next command
 
 docker compose -f docker_compose/deploy.full.yaml up
 

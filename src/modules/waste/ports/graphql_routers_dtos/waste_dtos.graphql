@@ -4,23 +4,23 @@ scalar Integer
 scalar Float
 
 type Query {
-  wastesByStatus(processStatus: Integer): [Waste!]!
+	wastesByStatus(processStatus: Integer): [Waste!]!
 }
 
 type Waste {
-  id: ID!
-  requestId: String!
-  type: Integer!
-  packaging: Integer!
-  processStatus: Integer!
-  weightInKg: Float!
-  volumeInL: Float!
-  isotopesNumber: Float
-  stateWaste: Integer
-  storeType: Integer
-  description: String!
-  note: String
-  storeId: Integer
-  create: String!
-  update: String!
+	id: ID!
+	requestId: String!
+	type: Integer!
+	packaging: Integer!
+	processStatus: Integer!
+	weightInKg: Float!
+	volumeInL: Float!
+	isotopesNumber: Float
+	stateWaste: Integer
+	storeType: Integer
+	description: String!
+	note: String
+	storeId: Integer
+	create: String!
+	update: String!
 }
