@@ -23,7 +23,7 @@
 		"commitmsg": "bash ./.husky/commit-msg.sh",
 		"precommit": "bash ./.husky/pre-commit.sh",
 		"postinstall": "npx husky install",
-		"load-test": "bash ./test/load_test/k6_scripts/orchestator.sh",
+		"load-test": "bash ./test/load_test/k6/orchestator.sh",
 		"unit-test": "pytest --verbose"
 	},
 	"devDependencies": {
