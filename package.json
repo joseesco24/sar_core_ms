@@ -19,7 +19,7 @@
 		"docker-start": "docker compose -f ./docker-compose.yaml up",
 		"docker-full-stop": "docker compose -f ./infra/docker_compose/deploy/full.yaml down",
 		"docker-full-start": "cp -f ./envs/docker.env .env && docker compose -f ./infra/docker_compose/deploy/full.yaml up",
-		"format": "black ./src && printf \"\n\" && black ./test/unit_test && printf \"\n\" && prettier \"./test/load_test/k6/**/*.js\" --write && printf \"\n\" && prettier \"./**/*.{yaml,json,md,graphql,sh,env,gitignore,prettierignore}\" --write && printf \"\n\" && prettier \"./**/*Dockerfile\" --write",
+		"format": "black ./src && printf \"\n\" && black ./test/unit_test && printf \"\n\" && prettier \"./test/load_test/k6/**/*.js\" --write && printf \"\n\" && prettier \"./**/*.{yaml,json,md,graphql,sh,env,gitignore,prettierignore,feature}\" --write && printf \"\n\" && prettier \"./**/*Dockerfile\" --write",
 		"start-dev": "cp -f ./envs/development.env .env && python src/sar_core_soa.py",
 		"start-app": "cp -f ./envs/production.env .env && python src/sar_core_soa.py",
 		"commitmsg": "bash ./.husky/commit-msg.sh",
@@ -30,6 +30,7 @@
 	},
 	"prettier": {
 		"plugins": [
+			"prettier-plugin-gherkin",
 			"prettier-plugin-sh"
 		],
 		"trailingComma": "es5",
@@ -53,6 +54,7 @@
 		"cucumber": "^6.0.7",
 		"husky": "^9.0.11",
 		"prettier": "^3.2.5",
+		"prettier-plugin-gherkin": "^2.2.1",
 		"prettier-plugin-sh": "^0.14.0"
 	}
 }

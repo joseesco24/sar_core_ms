@@ -46,7 +46,7 @@ black ./test/unit_test
 printf "\n"
 prettier ./test/load_test/k6/**/*.js --write
 printf "\n"
-prettier "./**/*.{yaml,json,md,graphql,sh,env,gitignore,prettierignore}" --write
+prettier "./**/*.{yaml,json,md,graphql,sh,env,gitignore,prettierignore,feature}" --write
 printf "\n"
 prettier "./**/*Dockerfile" --write
 
