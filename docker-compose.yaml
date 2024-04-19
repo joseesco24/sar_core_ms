@@ -3,7 +3,7 @@ version: "3.8"
 services:
   sar_core_soa:
     container_name: sar_core_soa
-    image: ghcr.io/joseesco24/sar_core_soa:v3.2.0
+    image: ghcr.io/joseesco24/sar_core_soa:v3.2.1
     environment:
       APP_AUTHENTICATION_HANDLER_MIDDLEWARE_EXCLUDE: '["health-check/is-everything-ok"]'
       APP_USE_AUTHENTICATION_HANDLER_MIDDLEWARE: "false"
