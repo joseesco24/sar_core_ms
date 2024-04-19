@@ -1,5 +1,5 @@
 {
-	"name": "sar_ms_py",
+	"name": "sar_core_soa",
 	"version": "v3.2.0",
 	"description": "This repository corresponds to the a small python microservice that is going to be used used in the sar system.",
 	"author": {
@@ -14,14 +14,14 @@
 		"docker-dependencies-stop": "docker compose -f ./infra/docker_compose/deploy/dependencies.yaml down",
 		"docker-dependencies-start": "docker compose -f ./infra/docker_compose/deploy/dependencies.yaml up",
 		"docker-image-build": "cp -f ./envs/production.env .env && docker compose -f ./infra/docker_compose/image/build.yaml build",
-		"docker-image-push": "docker push ghcr.io/joseesco24/sar_ms_py --all-tags",
+		"docker-image-push": "docker push ghcr.io/joseesco24/sar_core_soa --all-tags",
 		"docker-stop": "docker compose -f ./docker-compose.yaml down",
 		"docker-start": "docker compose -f ./docker-compose.yaml up",
 		"docker-full-stop": "docker compose -f ./infra/docker_compose/deploy/full.yaml down",
 		"docker-full-start": "cp -f ./envs/docker.env .env && docker compose -f ./infra/docker_compose/deploy/full.yaml up",
 		"format": "black ./src && printf \"\n\" && black ./test/unit_test && printf \"\n\" && prettier \"./test/load_test/k6/**/*.js\" --write && printf \"\n\" && prettier \"./**/*.{yaml,json,md,graphql,sh,env,gitignore,prettierignore}\" --write && printf \"\n\" && prettier \"./**/*Dockerfile\" --write",
-		"start-dev": "cp -f ./envs/development.env .env && python src/sar_ms_py.py",
-		"start-app": "cp -f ./envs/production.env .env && python src/sar_ms_py.py",
+		"start-dev": "cp -f ./envs/development.env .env && python src/sar_core_soa.py",
+		"start-app": "cp -f ./envs/production.env .env && python src/sar_core_soa.py",
 		"commitmsg": "bash ./.husky/commit-msg.sh",
 		"precommit": "bash ./.husky/pre-commit.sh",
 		"postinstall": "npx husky install",
@@ -47,8 +47,8 @@
 		"rangeStart": 0
 	},
 	"devDependencies": {
-		"@commitlint/cli": "^19.2.1",
-		"@commitlint/config-conventional": "^19.1.0",
+		"@commitlint/cli": "^19.2.2",
+		"@commitlint/config-conventional": "^19.2.2",
 		"husky": "^9.0.11",
 		"prettier": "^3.2.5",
 		"prettier-plugin-sh": "^0.14.0"

@@ -1,9 +1,9 @@
 version: "3.8"
 
 services:
-  sar_ms_py:
-    container_name: sar_ms_py
-    image: ghcr.io/joseesco24/sar_ms_py:v3.2.0
+  sar_core_soa:
+    container_name: sar_core_soa
+    image: ghcr.io/joseesco24/sar_core_soa:v3.2.0
     env_file:
       - path: ../../../.env
         required: true
@@ -61,7 +61,7 @@ services:
     depends_on:
       - sar_bd_mysql
       - sar_brms
-      - sar_ms_py
+      - sar_core_soa
 
 networks:
   sar_system_network:

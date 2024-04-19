@@ -119,12 +119,12 @@ metadata: Dict[str, Any] = {
     "version": "v3.2.0",
 }
 
-sar_ms_py: FastAPI
+sar_core_soa: FastAPI
 if env_provider.app_swagger_docs is True:
-    sar_ms_py = FastAPI(routes=graphql_routers, docs_url=path_provider.build_posix_path("rest", "docs"), redoc_url=None, swagger_ui_parameters={"defaultModelsExpandDepth": -1}, **metadata)  # noqa # fmt: skip
+    sar_core_soa = FastAPI(routes=graphql_routers, docs_url=path_provider.build_posix_path("rest", "docs"), redoc_url=None, swagger_ui_parameters={"defaultModelsExpandDepth": -1}, **metadata)  # noqa # fmt: skip
     logging.warning("swagger docs active")
 else:
-    sar_ms_py = FastAPI(routes=graphql_routers, docs_url=None, redoc_url=None, **metadata)
+    sar_core_soa = FastAPI(routes=graphql_routers, docs_url=None, redoc_url=None, **metadata)
     logging.warning("swagger docs inactive")
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -148,7 +148,7 @@ rest_router.include_router(router=user_router)
 # ** info: mounting rest based routers
 # ---------------------------------------------------------------------------------------------------------------------
 
-sar_ms_py.include_router(rest_router)
+sar_core_soa.include_router(rest_router)
 
 # ---------------------------------------------------------------------------------------------------------------------
 # ** info: setting up app middlewares
@@ -156,13 +156,13 @@ sar_ms_py.include_router(rest_router)
 
 if env_provider.app_use_authentication_handler_middleware is True:
     logging.info("authentication middleware active")
-    sar_ms_py.add_middleware(middleware_class=BaseHTTPMiddleware, dispatch=AuthenticationHandlerMiddleware())
+    sar_core_soa.add_middleware(middleware_class=BaseHTTPMiddleware, dispatch=AuthenticationHandlerMiddleware())
 else:
     logging.warning("authentication middleware inactive")
 
-sar_ms_py.add_middleware(middleware_class=BaseHTTPMiddleware, dispatch=ErrorHandlerMiddleware())
-sar_ms_py.add_middleware(middleware_class=BaseHTTPMiddleware, dispatch=LoggerContextualizerMiddleware())
-sar_ms_py.add_middleware(CORSMiddleware, allow_credentials=True, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
+sar_core_soa.add_middleware(middleware_class=BaseHTTPMiddleware, dispatch=ErrorHandlerMiddleware())
+sar_core_soa.add_middleware(middleware_class=BaseHTTPMiddleware, dispatch=LoggerContextualizerMiddleware())
+sar_core_soa.add_middleware(CORSMiddleware, allow_credentials=True, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
 # ---------------------------------------------------------------------------------------------------------------------
 # ** info: testing database connection
@@ -207,7 +207,7 @@ if __name__ != "__main__":
 # ---------------------------------------------------------------------------------------------------------------------
 
 uvicorn_server_configs: Dict[str, Any] = {
-    "app": sar_ms_py if env_provider.app_environment_mode == "production" else "sar_ms_py:sar_ms_py",
+    "app": sar_core_soa if env_provider.app_environment_mode == "production" else "sar_core_soa:sar_core_soa",
     "log_level": "debug" if env_provider.app_environment_mode != "production" else "error",
     "use_colors": False if env_provider.app_environment_mode == "production" else True,
     "reload": False if env_provider.app_environment_mode == "production" else True,

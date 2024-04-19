@@ -12,10 +12,10 @@
     "version": "v3.2.0",
     "configurations": [
       {
-        "name": "sar_ms_py",
+        "name": "sar_core_soa",
         "type": "debugpy",
         "request": "launch",
-        "program": "src/sar_ms_py.py",
+        "program": "src/sar_core_soa.py",
         "console": "integratedTerminal",
         "justMyCode": true,
         "jinja": true,
