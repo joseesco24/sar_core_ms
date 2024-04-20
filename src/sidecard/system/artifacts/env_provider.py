@@ -6,9 +6,6 @@ from dotenv import load_dotenv
 from dotenv import find_dotenv
 from enum import Enum
 
-# ** info: typing imports
-from typing import Set
-
 # ** info: pydantic imports
 from pydantic_settings import BaseSettings
 from pydantic import HttpUrl
@@ -53,12 +50,14 @@ class EnvProvider(BaseSettings):
     app_logging_mode: LoggingMode = Field(..., validation_alias="APP_LOGGING_MODE")
     app_logging_level: LoggingLevel = Field(..., validation_alias="APP_LOGGING_LEVEL")
     app_server_port: int = Field(..., validation_alias="APP_SERVER_PORT")
-    app_authentication_handler_middleware_exclude: Set[str] = Field(..., validation_alias="APP_AUTHENTICATION_HANDLER_MIDDLEWARE_EXCLUDE")
-    app_use_authentication_handler_middleware: bool = Field(..., validation_alias="APP_USE_AUTHENTICATION_HANDLER_MIDDLEWARE")
+    app_mount_authentication_middleware: bool = Field(..., validation_alias="APP_MOUNT_AUTHENTICATION_MIDDLEWARE")
     app_swagger_docs: bool = Field(..., validation_alias="APP_SWAGGER_DOCS")
     app_posix_locale: SupportedLocales = Field(..., validation_alias="APP_POSIX_LOCALE")
     app_time_zone: SupportedTimeZones = Field(..., validation_alias="APP_TIME_ZONE")
     app_activate_new_relic_agent: bool = Field(..., validation_alias="APP_ACTIVATE_NEW_RELIC_AGENT")
+    app_mount_private_endpoints_authentication_middleware: bool = Field(..., validation_alias="APP_MOUNT_PRIVATE_ENDPOINTS_AUTHENTICATION_MIDDLEWARE")
+    app_private_endpoints_api_key: str = Field(..., validation_alias="APP_PRIVATE_ENDPOINTS_API_KEY")
+    app_mount_private_endpoints: bool = Field(..., validation_alias="APP_MOUNT_PRIVATE_ENDPOINTS")
 
     # ** info: users database credentials
     database_password: str = Field(..., validation_alias="DATABASE_PASSWORD")

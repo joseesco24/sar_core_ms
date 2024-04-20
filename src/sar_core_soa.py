@@ -164,7 +164,7 @@ sar_core_soa.include_router(rest_router)
 # ** info: setting up app middlewares
 # ---------------------------------------------------------------------------------------------------------------------
 
-if env_provider.app_use_authentication_handler_middleware is True:
+if env_provider.app_mount_authentication_middleware is True:
     logging.info("authentication middleware active")
     sar_core_soa.add_middleware(middleware_class=BaseHTTPMiddleware, dispatch=AuthenticationHandlerMiddleware())
 else:

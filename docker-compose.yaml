@@ -5,8 +5,7 @@ services:
     container_name: sar_core_soa
     image: ghcr.io/joseesco24/sar_core_soa:v3.3.0
     environment:
-      APP_AUTHENTICATION_HANDLER_MIDDLEWARE_EXCLUDE: '["health-check/is-everything-ok"]'
-      APP_USE_AUTHENTICATION_HANDLER_MIDDLEWARE: "false"
+      APP_MOUNT_AUTHENTICATION_MIDDLEWARE: "false"
       APP_ENVIRONMENT_MODE: "production"
       APP_LOGGING_MODE: "pretty"
       APP_LOGGING_LEVEL: "DEBUG"
@@ -24,6 +23,9 @@ services:
       SAR_WAREHOUSE_MS_BASE_URL: "https://sar_java_ms:8090"
       NEW_RELIC_APP_NAME: "sar_core_soa"
       NEW_RELIC_LICENSE_KEY: "6ee49c0acdaa6b5fd5e25b5da36e737dFFFFNRAL"
+      APP_MOUNT_PRIVATE_ENDPOINTS_AUTHENTICATION_MIDDLEWARE: "false"
+      APP_PRIVATE_ENDPOINTS_API_KEY: "kngkwfvvaorqgejgwoovxxsrdhgwrppb"
+      APP_MOUNT_PRIVATE_ENDPOINTS: "true"
     networks:
       - sar_system_network
     ports:

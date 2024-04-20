@@ -37,35 +37,23 @@ class AuthenticationHandlerMiddleware:
     ) -> StreamingResponse:
         logging.debug("authentication middleware started")
 
-        endpoint_url: str = request.url.replace(request.base_url, "").strip().lower()
-        request_context: Context = contextvars.copy_context()
+        loguru_context: Dict = self._set_values_from_request_context_to_dict(contextvars.copy_context())
+        internal_id: str = loguru_context[r"internalId"]
         is_authenticated: bool = False
-        logger_kwargs: Dict = dict()
-
-        response: StreamingResponse
-        internal_id: str
-
-        for item in request_context.items():
-            if item[0].name == r"loguru_context":
-                logger_kwargs = item[1]
-                break
-
-        internal_id = logger_kwargs[r"internalId"]
-
-        if endpoint_url in self._env_provider.app_authentication_handler_middleware_exclude:
-            logging.info("jumping authentication middleware validations")
-            is_authenticated = True
-        else:
-            # todo: create a real authentication logic here
-            is_authenticated = True
 
         if is_authenticated:
             logging.info(f"the request with id {internal_id} was successfully authorized")
             response: StreamingResponse = await call_next(request)
+            logging.debug("authentication middleware ended")
+            return response
         else:
             logging.error(f"the request with id {internal_id} was not successfully authorized")
             return JSONResponse(status_code=status.HTTP_401_UNAUTHORIZED, content={r"detail": r"Internal Server Error"})
 
-        logging.debug("authentication middleware ended")
-
-        return response
+    async def _set_values_from_request_context_to_dict(self: Self, request_context: Context) -> Dict:
+        kwargs: Dict = dict()
+        for item in request_context.items():
+            if item[0].name == r"loguru_context":
+                kwargs = item[1]
+                break
+        return kwargs
