@@ -40,7 +40,7 @@ async def api_create_user(user_creation_request: UserCreationRequestDto = Body(.
     return user_creation_response
 
 
-@user_router.get(
+@user_router.post(
     description="allow to get a user info by its email",
     summary="allow to get a user info by its email",
     path=_path_provider.build_posix_path("search-by-email"),
