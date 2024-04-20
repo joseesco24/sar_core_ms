@@ -85,7 +85,8 @@ from src.sidecard.system.middlewares.error_handler_middleware import ErrorHandle
 # ** info: newrelic agent initialization
 # ---------------------------------------------------------------------------------------------------------------------
 
-initialize(join(path.dirname(path.realpath(__file__)), "static", "apm", "newrelic.ini")) if env_provider.app_activate_new_relic_agent is True else None
+if env_provider.app_activate_new_relic_agent is True:
+    initialize(join(path.dirname(path.realpath(__file__)), "static", "apm", "newrelic.ini"))
 
 # ---------------------------------------------------------------------------------------------------------------------
 # ** info: setting up global app logging
@@ -217,6 +218,8 @@ logging.info(f"application locale set to {env_provider.app_posix_locale.value}")
 if __name__ == "__main__":
     uvicorn.run(**uvicorn_server_configs)
 
+if env_provider.app_activate_new_relic_agent is True:
+    shutdown_agent(timeout=10)
+
 if env_provider.app_environment_mode == "production":
-    shutdown_agent(timeout=10) if env_provider.app_activate_new_relic_agent is True else None
     logging.debug("application ended")

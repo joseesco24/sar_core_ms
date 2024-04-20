@@ -9,7 +9,7 @@
     "zowe.settings.version": 2
   },
   "launch": {
-    "version": "v3.2.1",
+    "version": "v3.3.0",
     "configurations": [
       {
         "name": "sar_core_soa",
