@@ -2,7 +2,6 @@
 # type: ignore
 
 # ** info: python imports
-from contextvars import Context
 from typing import Callable
 import contextvars
 import logging
@@ -19,13 +18,16 @@ from starlette.requests import Request
 from fastapi.responses import JSONResponse
 from fastapi import status
 
-# ** info: sidecards.artifacts imports
+# ** info: sidecards.system.artifacts imports
 from src.sidecard.system.artifacts.env_provider import EnvProvider
 
-__all__: list[str] = ["AuthenticationHandlerMiddleware"]
+# ** info: sidecards.system.middlewares.inheritables imports
+from src.sidecard.system.middlewares.inheritables.base_middleware import BaseMiddleware
+
+__all__: list[str] = ["AuthenticationMiddleware"]
 
 
-class AuthenticationHandlerMiddleware:
+class AuthenticationMiddleware(BaseMiddleware):
 
     def __init__(self: Self) -> None:
         self._env_provider: EnvProvider = EnvProvider()
@@ -37,7 +39,7 @@ class AuthenticationHandlerMiddleware:
     ) -> StreamingResponse:
         logging.debug("authentication middleware started")
 
-        loguru_context: Dict = self._set_values_from_request_context_to_dict(contextvars.copy_context())
+        loguru_context: Dict = await self._set_values_from_request_context_to_dict(context=contextvars.copy_context(), context_key=r"loguru_context")
         internal_id: str = loguru_context[r"internalId"]
         is_authenticated: bool = False
 
@@ -49,11 +51,3 @@ class AuthenticationHandlerMiddleware:
         else:
             logging.error(f"the request with id {internal_id} was not successfully authorized")
             return JSONResponse(status_code=status.HTTP_401_UNAUTHORIZED, content={r"detail": r"Internal Server Error"})
-
-    async def _set_values_from_request_context_to_dict(self: Self, request_context: Context) -> Dict:
-        kwargs: Dict = dict()
-        for item in request_context.items():
-            if item[0].name == r"loguru_context":
-                kwargs = item[1]
-                break
-        return kwargs

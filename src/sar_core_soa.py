@@ -76,9 +76,9 @@ from src.modules.waste.ports.rest_routers.waster_router import waste_router
 from src.modules.user.ports.rest_routers.user_router import user_router
 
 # ** info: sidecard.middlewares imports
-from src.sidecard.system.middlewares.authentication_handler_middleware import AuthenticationHandlerMiddleware  # type: ignore
-from src.sidecard.system.middlewares.logger_contextualizer_middleware import LoggerContextualizerMiddleware  # type: ignore
-from src.sidecard.system.middlewares.error_handler_middleware import ErrorHandlerMiddleware  # type: ignore
+from src.sidecard.system.middlewares.root.logger_contextualizer_middleware import LoggerContextualizerMiddleware  # type: ignore
+from src.sidecard.system.middlewares.root.authentication_middleware import AuthenticationMiddleware  # type: ignore
+from src.sidecard.system.middlewares.root.error_handler_middleware import ErrorHandlerMiddleware  # type: ignore
 
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -86,7 +86,7 @@ from src.sidecard.system.middlewares.error_handler_middleware import ErrorHandle
 # ---------------------------------------------------------------------------------------------------------------------
 
 if env_provider.app_activate_new_relic_agent is True:
-    initialize(join(path.dirname(path.realpath(__file__)), "static", "apm", "newrelic.ini"))
+    initialize(join(path.dirname(path.realpath(__file__)), "static", "apm", "newrelic", "newrelic.ini"))
 
 # ---------------------------------------------------------------------------------------------------------------------
 # ** info: setting up global app logging
@@ -166,7 +166,7 @@ sar_core_soa.include_router(rest_router)
 
 if env_provider.app_mount_authentication_middleware is True:
     logging.info("authentication middleware active")
-    sar_core_soa.add_middleware(middleware_class=BaseHTTPMiddleware, dispatch=AuthenticationHandlerMiddleware())
+    sar_core_soa.add_middleware(middleware_class=BaseHTTPMiddleware, dispatch=AuthenticationMiddleware())
 else:
     logging.warning("authentication middleware inactive")
 

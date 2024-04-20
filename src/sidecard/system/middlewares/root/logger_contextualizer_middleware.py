@@ -15,15 +15,18 @@ from loguru import logger
 from starlette.responses import StreamingResponse
 from starlette.requests import Request
 
-# ** info: sidecards.artifacts imports
+# ** info: sidecards.system.artifacts imports
 from src.sidecard.system.artifacts.datetime_provider import DatetimeProvider
 from src.sidecard.system.artifacts.uuid_provider import UuidProvider
+
+# ** info: sidecards.system.middlewares.inheritables imports
+from src.sidecard.system.middlewares.inheritables.base_middleware import BaseMiddleware
 
 
 __all__: list[str] = ["LoggerContextualizerMiddleware"]
 
 
-class LoggerContextualizerMiddleware:
+class LoggerContextualizerMiddleware(BaseMiddleware):
 
     def __init__(self: Self) -> None:
         self._datetime_provider: DatetimeProvider = DatetimeProvider()
