@@ -2,18 +2,16 @@
 # type: ignore
 
 # ** info: python imports
-from dotenv import load_dotenv
 from dotenv import find_dotenv
 from enum import Enum
 
 # ** info: pydantic imports
+from pydantic_settings import SettingsConfigDict
 from pydantic_settings import BaseSettings
 from pydantic import HttpUrl
 from pydantic import Field
 
 __all__: list[str] = ["EnvProvider"]
-
-load_dotenv(override=True, verbose=True, dotenv_path=find_dotenv(".env"))
 
 
 class EnvironmentMode(str, Enum):
@@ -45,7 +43,9 @@ class SupportedTimeZones(str, Enum):
 
 
 class EnvProvider(BaseSettings):
-    # ** info: app configs
+
+    model_config = SettingsConfigDict(env_file=find_dotenv(".env"), env_file_encoding="utf-8")
+
     app_environment_mode: EnvironmentMode = Field(..., validation_alias="APP_ENVIRONMENT_MODE")
     app_logging_mode: LoggingMode = Field(..., validation_alias="APP_LOGGING_MODE")
     app_logging_level: LoggingLevel = Field(..., validation_alias="APP_LOGGING_LEVEL")
@@ -59,7 +59,6 @@ class EnvProvider(BaseSettings):
     app_private_endpoints_api_key: str = Field(..., validation_alias="APP_PRIVATE_ENDPOINTS_API_KEY")
     app_mount_private_endpoints: bool = Field(..., validation_alias="APP_MOUNT_PRIVATE_ENDPOINTS")
 
-    # ** info: users database credentials
     database_password: str = Field(..., validation_alias="DATABASE_PASSWORD")
     database_logs: bool = Field(..., validation_alias="DATABASE_LOGS")
     database_host: str = Field(..., validation_alias="DATABASE_HOST")
@@ -67,10 +66,8 @@ class EnvProvider(BaseSettings):
     database_user: str = Field(..., validation_alias="DATABASE_USER")
     database_port: int = Field(..., validation_alias="DATABASE_PORT")
 
-    # ** info: external microservices base urls
     sar_warehouse_ms_base_url: HttpUrl = Field(..., validation_alias="SAR_WAREHOUSE_MS_BASE_URL")
     sar_brms_base_url: HttpUrl = Field(..., validation_alias="SAR_BRMS_BASE_URL")
 
-    # ** info: new relic configs
     new_relic_app_name: str = Field(..., validation_alias="NEW_RELIC_APP_NAME")
     new_relic_license_key: str = Field(..., validation_alias="NEW_RELIC_LICENSE_KEY")
