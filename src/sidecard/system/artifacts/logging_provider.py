@@ -36,6 +36,7 @@ class LoggingProvider:
     _env_provider: EnvProvider = EnvProvider()
     _level: str = _env_provider.app_logging_level.value
     _datetime_provider: DatetimeProvider = DatetimeProvider()
+
     _extras: Dict[str, str] = {
         "rqStartTime": _datetime_provider.get_current_time(),
         "internalId": "397d4343-2855-4c92-b64b-58ee82006e0b",
@@ -62,13 +63,36 @@ class LoggingProvider:
 
         # ** info: loguru configs
         loguru_configs: dict = {
-            "sink": sys.stdout,
+            "sink": cls._pretty_log_sink,
             "serialize": False,
             "colorize": True,
             "format": fmt,
         }
 
         logger.configure(patcher=lambda record: cls._pretty_record_patcher(record), extra=cls._extras, handlers=[loguru_configs])
+
+    @classmethod
+    def _pretty_log_sink(cls, message: str) -> None:
+        sys.stdout.write(message)
+        sys.stdout.flush()
+
+    @classmethod
+    def _pretty_record_patcher(cls, record: logging.LogRecord) -> logging.LogRecord:
+
+        end_time: datetime = cls._datetime_provider.get_current_time()
+        last_log_time: datetime = record["extra"]["lastLogTime"]
+        start_time: datetime = record["extra"]["rqStartTime"]
+
+        elapsed_since_last_log: int = cls._datetime_provider.get_time_delta_in_ms(start_time=last_log_time, end_time=end_time)
+        elapsed_miliseconds: int = cls._datetime_provider.get_time_delta_in_ms(start_time=start_time, end_time=end_time)
+
+        record["extra"]["sinceLastLogMsDif"] = f"{elapsed_since_last_log}ms"
+        record["extra"]["sinceRqStartMsDif"] = f"{elapsed_miliseconds}ms"
+
+        if record["level"].name == "INFO" or record["level"].name == "DEBUG":
+            record["message"] = str(record["message"]).replace("\n", " ")
+
+        return record
 
     @classmethod
     def setup_structured_logging(cls) -> None:
@@ -98,22 +122,11 @@ class LoggingProvider:
         logger.configure(patcher=lambda record: cls._structured_record_patcher(record), extra=cls._extras, handlers=[loguru_configs])
 
     @classmethod
-    def _pretty_record_patcher(cls, record: logging.LogRecord) -> logging.LogRecord:
-
-        end_time: datetime = cls._datetime_provider.get_current_time()
-        last_log_time: datetime = record["extra"]["lastLogTime"]
-        start_time: datetime = record["extra"]["rqStartTime"]
-
-        elapsed_since_last_log: int = cls._datetime_provider.get_time_delta_in_ms(start_time=last_log_time, end_time=end_time)
-        elapsed_miliseconds: int = cls._datetime_provider.get_time_delta_in_ms(start_time=start_time, end_time=end_time)
-
-        record["extra"]["sinceLastLogMsDif"] = f"{elapsed_since_last_log}ms"
-        record["extra"]["sinceRqStartMsDif"] = f"{elapsed_miliseconds}ms"
-
-        if record["level"].name == "INFO" or record["level"].name == "DEBUG":
-            record["message"] = str(record["message"]).replace("\n", " ")
-
-        return record
+    def _structured_log_sink(cls, message: str) -> None:
+        serialized = cls._custom_serializer(message.record)
+        sys.stdout.write(serialized)
+        sys.stdout.write("\n")
+        sys.stdout.flush()
 
     @classmethod
     def _structured_record_patcher(cls, record: logging.LogRecord) -> logging.LogRecord:
@@ -128,13 +141,6 @@ class LoggingProvider:
         record["extra"]["sinceRqStartMsDif"] = elapsed_miliseconds
 
         return record
-
-    @classmethod
-    def _structured_log_sink(cls, message: str) -> None:
-        serialized = cls._custom_serializer(message.record)
-        sys.stdout.write(serialized)
-        sys.stdout.write("\n")
-        sys.stdout.flush()
 
     @classmethod
     def _custom_serializer(cls, record) -> str:

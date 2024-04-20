@@ -58,6 +58,7 @@ class EnvProvider(BaseSettings):
     app_swagger_docs: bool = Field(..., validation_alias="APP_SWAGGER_DOCS")
     app_posix_locale: SupportedLocales = Field(..., validation_alias="APP_POSIX_LOCALE")
     app_time_zone: SupportedTimeZones = Field(..., validation_alias="APP_TIME_ZONE")
+    app_activate_new_relic_agent: bool = Field(..., validation_alias="APP_ACTIVATE_NEW_RELIC_AGENT")
 
     # ** info: users database credentials
     database_password: str = Field(..., validation_alias="DATABASE_PASSWORD")
@@ -70,3 +71,7 @@ class EnvProvider(BaseSettings):
     # ** info: external microservices base urls
     sar_warehouse_ms_base_url: HttpUrl = Field(..., validation_alias="SAR_WAREHOUSE_MS_BASE_URL")
     sar_brms_base_url: HttpUrl = Field(..., validation_alias="SAR_BRMS_BASE_URL")
+
+    # ** info: new relic configs
+    new_relic_app_name: str = Field(..., validation_alias="NEW_RELIC_APP_NAME")
+    new_relic_license_key: str = Field(..., validation_alias="NEW_RELIC_LICENSE_KEY")

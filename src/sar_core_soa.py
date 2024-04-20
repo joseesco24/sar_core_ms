@@ -1,7 +1,8 @@
 # !/usr/bin/python3
 
 # ** info: newrelic imports
-import newrelic.agent  # type: ignore
+from newrelic.agent import shutdown_agent  # type: ignore
+from newrelic.agent import initialize  # type: ignore
 
 # ** info: python imports
 from os.path import join
@@ -24,15 +25,6 @@ sys.path.append(join(path.dirname(path.realpath(__file__)), "..", "."))
 
 # ---------------------------------------------------------------------------------------------------------------------
 # ** info: continuing with the app setup
-# ---------------------------------------------------------------------------------------------------------------------
-# ---------------------------------------------------------------------------------------------------------------------
-# ** info: newrelic agent initialization
-# ---------------------------------------------------------------------------------------------------------------------
-
-newrelic.agent.initialize(join(path.dirname(path.realpath(__file__)), "static", "apm", "newrelic.ini"))
-
-# ---------------------------------------------------------------------------------------------------------------------
-# ** info: newrelic agent initialization
 # ---------------------------------------------------------------------------------------------------------------------
 
 # ** info: uvicorn imports
@@ -87,6 +79,14 @@ from src.modules.user.ports.rest_routers.user_router import user_router
 from src.sidecard.system.middlewares.authentication_handler_middleware import AuthenticationHandlerMiddleware  # type: ignore
 from src.sidecard.system.middlewares.logger_contextualizer_middleware import LoggerContextualizerMiddleware  # type: ignore
 from src.sidecard.system.middlewares.error_handler_middleware import ErrorHandlerMiddleware  # type: ignore
+
+
+# ---------------------------------------------------------------------------------------------------------------------
+# ** info: newrelic agent initialization
+# ---------------------------------------------------------------------------------------------------------------------
+
+if env_provider.app_activate_new_relic_agent is True:
+    initialize(join(path.dirname(path.realpath(__file__)), "static", "apm", "newrelic.ini"))
 
 # ---------------------------------------------------------------------------------------------------------------------
 # ** info: setting up global app logging
@@ -219,4 +219,5 @@ if __name__ == "__main__":
     uvicorn.run(**uvicorn_server_configs)
 
 if env_provider.app_environment_mode == "production":
+    shutdown_agent(timeout=10)
     logging.debug("application ended")
