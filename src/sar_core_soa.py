@@ -28,12 +28,10 @@ import uvicorn
 
 # ** info: fastapi imports
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi import HTTPException
 from fastapi import APIRouter
 from fastapi import FastAPI
 
 # ** info: sidecards.artifacts imports
-from src.sidecard.system.database_managers.mysql_manager import MySQLManager  # type: ignore
 from src.sidecard.system.artifacts.logging_provider import LoggingProvider  # type: ignore
 from src.sidecard.system.artifacts.env_provider import EnvProvider  # type: ignore
 from src.sidecard.system.artifacts.path_provider import PathProvider  # type: ignore
@@ -116,7 +114,7 @@ metadata: Dict[str, Any] = {
     "description": "This repository corresponds to the a small python microservice that is going to be used used in the sar system.",
     "summary": "Service incharge of managing wastes, collect request, and system parameters.",
     "title": "Sar Python Microservice",
-    "version": "v3.2.0",
+    "version": "v3.2.1",
 }
 
 sar_core_soa: FastAPI
@@ -163,28 +161,6 @@ else:
 sar_core_soa.add_middleware(middleware_class=BaseHTTPMiddleware, dispatch=ErrorHandlerMiddleware())
 sar_core_soa.add_middleware(middleware_class=BaseHTTPMiddleware, dispatch=LoggerContextualizerMiddleware())
 sar_core_soa.add_middleware(CORSMiddleware, allow_credentials=True, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
-
-# ---------------------------------------------------------------------------------------------------------------------
-# ** info: testing database connection
-# ---------------------------------------------------------------------------------------------------------------------
-
-try:
-    mysql_manager: MySQLManager = MySQLManager(
-        password=env_provider.database_password,
-        database=env_provider.database_name,
-        username=env_provider.database_user,
-        host=env_provider.database_host,
-        port=env_provider.database_port,
-        drivername=r"mysql+pymysql",
-        query={"charset": "utf8"},
-    )
-    mysql_manager.obtain_session()
-    logging.info("database initial connection successful")
-except HTTPException:
-    del mysql_manager
-    logging.critical("database initial connection failed")
-    logging.critical("not raising the server check the database connection and credentials")
-    raise SystemExit
 
 # ---------------------------------------------------------------------------------------------------------------------
 # ** info: erasing unnecessary artifacts builded during the app setup
