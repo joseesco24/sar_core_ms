@@ -22,6 +22,8 @@ services:
       DATABASE_PORT: 3306
       SAR_BRMS_BASE_URL: "http://sar_brms:8080"
       SAR_WAREHOUSE_MS_BASE_URL: "https://sar_java_ms:8090"
+      NEW_RELIC_APP_NAME: "sar_core_soa"
+      NEW_RELIC_LICENSE_KEY: "6ee49c0acdaa6b5fd5e25b5da36e737dFFFFNRAL"
     networks:
       - sar_system_network
     ports:
