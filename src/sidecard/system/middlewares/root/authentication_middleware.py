@@ -28,16 +28,10 @@ __all__: list[str] = ["AuthenticationMiddleware"]
 
 
 class AuthenticationMiddleware(BaseMiddleware):
-
     def __init__(self: Self) -> None:
         self._env_provider: EnvProvider = EnvProvider()
 
-    async def __call__(
-        self: Self,
-        request: Request,
-        call_next: Callable,
-    ) -> StreamingResponse:
-
+    async def __call__(self: Self, request: Request, call_next: Callable) -> StreamingResponse:
         logging.debug("authentication middleware started")
 
         loguru_context: Dict = await self._set_values_from_request_context_to_dict(context=contextvars.copy_context(), context_key=r"loguru_context")

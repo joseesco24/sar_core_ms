@@ -62,12 +62,7 @@ class LoggingProvider:
             logging.getLogger(name).propagate = True
 
         # ** info: loguru configs
-        loguru_configs: dict = {
-            "sink": cls._pretty_log_sink,
-            "serialize": False,
-            "colorize": True,
-            "format": fmt,
-        }
+        loguru_configs: dict = {"sink": cls._pretty_log_sink, "serialize": False, "colorize": True, "format": fmt}
 
         logger.configure(patcher=lambda record: cls._pretty_record_patcher(record), extra=cls._extras, handlers=[loguru_configs])
 
@@ -78,7 +73,6 @@ class LoggingProvider:
 
     @classmethod
     def _pretty_record_patcher(cls, record: logging.LogRecord) -> logging.LogRecord:
-
         end_time: datetime = cls._datetime_provider.get_current_time()
         last_log_time: datetime = record["extra"]["lastLogTime"]
         start_time: datetime = record["extra"]["rqStartTime"]
@@ -112,12 +106,7 @@ class LoggingProvider:
             logging.getLogger(name).propagate = True
 
         # ** info: loguru configs
-        loguru_configs: dict = {
-            "sink": cls._structured_log_sink,
-            "serialize": True,
-            "colorize": False,
-            "format": fmt,
-        }
+        loguru_configs: dict = {"sink": cls._structured_log_sink, "serialize": True, "colorize": False, "format": fmt}
 
         logger.configure(patcher=lambda record: cls._structured_record_patcher(record), extra=cls._extras, handlers=[loguru_configs])
 
@@ -144,7 +133,6 @@ class LoggingProvider:
 
     @classmethod
     def _custom_serializer(cls, record) -> str:
-
         req_ms_dif: int = record["extra"]["sinceRqStartMsDif"]
         log_ms_dif: int = record["extra"]["sinceLastLogMsDif"]
 
@@ -171,11 +159,7 @@ class LoggingProvider:
 
             string_traceback = "".join(traceback.format_tb(error_traceback))
 
-            subset["erro"] = {
-                "type": error_type,
-                "message": error_message,
-                "traceback": string_traceback,
-            }
+            subset["erro"] = {"type": error_type, "message": error_message, "traceback": string_traceback}
 
         return json.dumps(subset)
 

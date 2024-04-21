@@ -48,7 +48,6 @@ __all__: list[str] = ["WasteCore"]
 
 
 class WasteCore:
-
     # !------------------------------------------------------------------------
     # ! info: core slots section start
     # !------------------------------------------------------------------------
@@ -138,46 +137,24 @@ class WasteCore:
 
     # ** info: cpm wc are initials for core port methods waste core
     async def cpm_wc_create_waste_with_basic_info(
-        self: Self,
-        request_uuid: str,
-        type: int,
-        packaging: int,
-        weight_in_kg: float,
-        volume_in_l: float,
-        description: str,
-        note: Union[str, None] = None,
+        self: Self, request_uuid: str, type: int, packaging: int, weight_in_kg: float, volume_in_l: float, description: str, note: Union[str, None] = None
     ) -> Waste:
         logging.info("starting cpm_wc_create_waste_with_basic_info")
         new_waste: Waste = self._waste_provider.create_waste_with_basic_info(
-            request_uuid=request_uuid,
-            type=type,
-            packaging=packaging,
-            weight_in_kg=weight_in_kg,
-            volume_in_l=volume_in_l,
-            description=description,
-            note=note,
+            request_uuid=request_uuid, type=type, packaging=packaging, weight_in_kg=weight_in_kg, volume_in_l=volume_in_l, description=description, note=note
         )
         logging.info("ending cpm_wc_create_waste_with_basic_info")
         return new_waste
 
     # ** info: cpm wc are initials for core port methods waste core
-    async def cpm_wc_update_waste_status_by_request_id(
-        self: Self,
-        request_uuid: str,
-        process_status: int,
-    ) -> list[Waste]:
+    async def cpm_wc_update_waste_status_by_request_id(self: Self, request_uuid: str, process_status: int) -> list[Waste]:
         logging.info("starting cpm_wc_update_waste_by_requestId")
         updated_wastes: list[Waste] = self._waste_provider.update_waste_status_by_request_id(request_uuid=request_uuid, process_status=process_status)
         logging.info("ending cpm_wc_update_waste_by_requestId")
         return updated_wastes
 
     # ** info: cpm wc are initials for core port methods waste core
-    async def cpm_wc_update_waste_status_and_store_by_request_id(
-        self: Self,
-        request_uuid: str,
-        process_status: int,
-        store_id: int,
-    ) -> list[Waste]:
+    async def cpm_wc_update_waste_status_and_store_by_request_id(self: Self, request_uuid: str, process_status: int, store_id: int) -> list[Waste]:
         logging.info("starting cpm_wc_update_waste_status_and_store_by_request_id")
         updated_wastes: list[Waste] = self._waste_provider.update_waste_status_and_store_id_by_request_id(
             request_uuid=request_uuid, process_status=process_status, store_id=store_id
@@ -186,11 +163,7 @@ class WasteCore:
         return updated_wastes
 
     # ** info: cpm wc are initials for core port methods waste core
-    async def cpm_wc_check_if_wastes_batch_are_assignable_to_warehouse(
-        self: Self,
-        warehouse_id: int,
-        wastes_ids: list[str],
-    ) -> None:
+    async def cpm_wc_check_if_wastes_batch_are_assignable_to_warehouse(self: Self, warehouse_id: int, wastes_ids: list[str]) -> None:
         logging.info("starting cpm_wc_get_warehouse_capacity")
         warehouse_current_capacity, wastes_by_ids = await gather(
             self._get_warehouse_current_capacity(warehouse_id=warehouse_id), self._search_wastes_by_ids(uuids=tuple(wastes_ids))
@@ -228,10 +201,7 @@ class WasteCore:
         return updated_warehouse_capacity
 
     # ** info: cpm wc are initials for core port methods waste core
-    async def cpm_wc_list_wastes_by_collect_request_id(
-        self: Self,
-        collect_request_uuid: str,
-    ) -> list[Waste]:
+    async def cpm_wc_list_wastes_by_collect_request_id(self: Self, collect_request_uuid: str) -> list[Waste]:
         logging.info("starting cpm_wc_list_wastes_by_collect_request_id")
         list_wastes_by_collect_request_id: list[Waste] = self._waste_provider.list_wastes_by_collect_request_id(collect_request_uuid=collect_request_uuid)
         logging.info("ending cpm_wc_list_wastes_by_collect_request_id")

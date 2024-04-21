@@ -34,15 +34,7 @@ class MySQLManager:
     def __init__(self: Self, password: str, database: str, username: str, drivername: str, host: str, port: int, query: dict) -> None:
         self.env_provider: EnvProvider = EnvProvider()
         self._uuid_provider: UuidProvider = UuidProvider()
-        self._url = URL(
-            drivername=drivername,
-            password=password,
-            database=database,
-            username=username,
-            query=query,
-            host=host,
-            port=port,
-        )
+        self._url = URL(drivername=drivername, password=password, database=database, username=username, query=query, host=host, port=port)
         self._date_time_provider: DatetimeProvider = DatetimeProvider()
         self._engine = create_engine(url=self._url, echo=self.env_provider.database_logs)
         self._connection_id: str = self._uuid_provider.get_str_uuid()

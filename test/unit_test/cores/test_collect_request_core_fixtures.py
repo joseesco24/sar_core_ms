@@ -41,21 +41,9 @@ datetime_provider: DatetimeProvider = DatetimeProvider()
 
 request_waste_data_dto_list_fixture_1: list[RequestWasteDataDto] = list()
 
-request_waste_data_dto_fixture_1: RequestWasteDataDto = RequestWasteDataDto(
-    weightInKg=100.00,
-    volumeInL=100.00,
-    description="",
-    packaging=1,
-    type=1,
-)
+request_waste_data_dto_fixture_1: RequestWasteDataDto = RequestWasteDataDto(weightInKg=100.00, volumeInL=100.00, description="", packaging=1, type=1)
 
-request_waste_data_dto_fixture_2: RequestWasteDataDto = RequestWasteDataDto(
-    weightInKg=40.00,
-    volumeInL=60.00,
-    description="",
-    packaging=1,
-    type=1,
-)
+request_waste_data_dto_fixture_2: RequestWasteDataDto = RequestWasteDataDto(weightInKg=40.00, volumeInL=60.00, description="", packaging=1, type=1)
 
 request_waste_data_dto_list_fixture_1.append(request_waste_data_dto_fixture_1)
 request_waste_data_dto_list_fixture_1.append(request_waste_data_dto_fixture_2)
@@ -63,8 +51,7 @@ request_waste_data_dto_list_fixture_1.append(request_waste_data_dto_fixture_2)
 request_request_data_dto_fixture_1: RequestRequestDataDto = RequestRequestDataDto(productionCenterId=10122012334, collectDate=r"01/01/2021")
 
 request_create_request_fixture_1: CollectRequestCreateRequestDto = CollectRequestCreateRequestDto(
-    waste=request_waste_data_dto_list_fixture_1,
-    request=request_request_data_dto_fixture_1,
+    waste=request_waste_data_dto_list_fixture_1, request=request_request_data_dto_fixture_1
 )
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -181,8 +168,7 @@ response_request_data_dto_fixture_1: ResponseRequestDataDto = ResponseRequestDat
 )
 
 request_full_data_response_fixture_1: CollectRequestFullDataResponseDto = CollectRequestFullDataResponseDto(
-    waste=response_waste_data_dto_list_fixture_1,
-    request=response_request_data_dto_fixture_1,
+    waste=response_waste_data_dto_list_fixture_1, request=response_request_data_dto_fixture_1
 )
 
 request_find_request_by_status_fixture_1: CollectRequestFindByStatusReqDto = CollectRequestFindByStatusReqDto(processStatus=9)
@@ -190,7 +176,5 @@ request_find_request_by_status_fixture_1: CollectRequestFindByStatusReqDto = Col
 collect_request_find_by_status_fixture_1: CollectRequestFindByStatusResDto = CollectRequestFindByStatusResDto(values=[response_request_data_dto_fixture_1])
 
 collect_request_modify_by_id_req_dto_fixture_1: CollectRequestModifyByIdReqDto = CollectRequestModifyByIdReqDto(
-    collectReqId=collect_request.uuid,
-    processStatus=9,
-    note="this is a note",
+    collectReqId=collect_request.uuid, processStatus=9, note="this is a note"
 )

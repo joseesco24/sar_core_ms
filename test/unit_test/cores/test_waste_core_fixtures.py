@@ -136,35 +136,26 @@ parameter_search_request_fixture_1: WasteClasificationRequestDto = WasteClasific
 # ** info: waste clasification response dtos fixtures declaration
 # ---------------------------------------------------------------------------------------------------------------------
 
-waste_clasification_response_fixture_1: WasteClasificationResponseDto = WasteClasificationResponseDto(
-    storeType=1,
-)
+waste_clasification_response_fixture_1: WasteClasificationResponseDto = WasteClasificationResponseDto(storeType=1)
 
 # ---------------------------------------------------------------------------------------------------------------------
 # ** info: wase classify request dto fixtures declaration
 # ---------------------------------------------------------------------------------------------------------------------
 
 update_waste_casification_request_fixture_1: WasteClassifyRequestDto = WasteClassifyRequestDto(
-    wasteId="08893dbf-ebd1-4717-988b-fd15ddff12c9",
-    isotopesNumber=float(1.0),
-    stateWaste=1,
-    storeId=1,
+    wasteId="08893dbf-ebd1-4717-988b-fd15ddff12c9", isotopesNumber=float(1.0), stateWaste=1, storeId=1
 )
 
 # ---------------------------------------------------------------------------------------------------------------------
 # ** info: waste filter by status request dto fixtures declaration
 # ---------------------------------------------------------------------------------------------------------------------
 
-waste_filter_by_status_request_fixture_1: WasteFilterByStatusRequestDto = WasteFilterByStatusRequestDto(
-    processStatus=9,
-)
+waste_filter_by_status_request_fixture_1: WasteFilterByStatusRequestDto = WasteFilterByStatusRequestDto(processStatus=9)
 
 # ---------------------------------------------------------------------------------------------------------------------
 # ** info: building mocks
 # ---------------------------------------------------------------------------------------------------------------------
 
 waste_update_store_request_fixture_1: WasteUpdateStoreRequestDto = WasteUpdateStoreRequestDto(
-    wasteId="08893dbf-ebd1-4717-988b-fd15ddff12c9",
-    finalStore=9,
-    note="Almacenamiento final 9",
+    wasteId="08893dbf-ebd1-4717-988b-fd15ddff12c9", finalStore=9, note="Almacenamiento final 9"
 )

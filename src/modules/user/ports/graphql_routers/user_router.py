@@ -87,7 +87,4 @@ graphql_endpoint_definition: GraphQL = GraphQL(
 # ** info: assembling graphql endpoint with the main router
 # ---------------------------------------------------------------------------------------------------------------------
 
-user_gpl_router: Route = Route(
-    path=_path_provider.build_posix_path("user"),
-    endpoint=graphql_endpoint_definition,
-)
+user_gpl_router: Route = Route(path=_path_provider.build_posix_path("user"), endpoint=graphql_endpoint_definition)

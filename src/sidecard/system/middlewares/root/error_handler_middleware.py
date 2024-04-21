@@ -26,13 +26,7 @@ __all__: list[str] = ["ErrorHandlerMiddleware"]
 
 
 class ErrorHandlerMiddleware(BaseMiddleware):
-
-    async def __call__(
-        self: Self,
-        request: Request,
-        call_next: Callable,
-    ) -> StreamingResponse:
-
+    async def __call__(self: Self, request: Request, call_next: Callable) -> StreamingResponse:
         logging.debug("error handler middleware started")
 
         loguru_context: Dict = await self._set_values_from_request_context_to_dict(context=contextvars.copy_context(), context_key=r"loguru_context")

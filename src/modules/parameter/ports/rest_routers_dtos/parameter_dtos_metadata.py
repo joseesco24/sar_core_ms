@@ -2,14 +2,6 @@ parameter_searc_req_ex = {"json_schema_extra": {"examples": [{"domain": "wasteTy
 
 parameter_searc_res_ex = {
     "json_schema_extra": {
-        "examples": [
-            {
-                "values": [
-                    {"label": "Radioterapia", "value": 1},
-                    {"label": "Combustible Nuclear", "value": 2},
-                    {"label": "RadiografÃ­a industrial", "value": 3},
-                ]
-            }
-        ]
+        "examples": [{"values": [{"label": "Radioterapia", "value": 1}, {"label": "Combustible Nuclear", "value": 2}, {"label": "RadiografÃ­a industrial", "value": 3}]}]
     }
 }

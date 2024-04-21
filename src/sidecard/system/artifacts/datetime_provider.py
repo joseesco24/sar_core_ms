@@ -17,7 +17,6 @@ __all__: list[str] = ["DatetimeProvider"]
 
 
 class DatetimeProvider:
-
     __slots__ = ["_env_provider", "_timezone"]
 
     def __init__(self: Self) -> None:

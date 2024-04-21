@@ -14,7 +14,6 @@ __all__: list[str] = ["BusinessGlossaryTranslateProvider"]
 
 
 class BusinessGlossaryTranslateProvider:
-
     def __init__(self: Self) -> None:
         self.dict_waste_status_by_collect_request_status: Dict[str, int] = {
             str(CollectRequestStates.finished): WasteStates.waste_clasification_in_course,

@@ -95,14 +95,7 @@ class WasteProvider:
 
     @retry(on=Exception, attempts=4, wait_initial=0.08, wait_exp_base=2)
     def create_waste_with_basic_info(
-        self: Self,
-        request_uuid: str,
-        type: int,
-        packaging: int,
-        weight_in_kg: float,
-        volume_in_l: float,
-        description: str,
-        note: Union[str, None] = None,
+        self: Self, request_uuid: str, type: int, packaging: int, weight_in_kg: float, volume_in_l: float, description: str, note: Union[str, None] = None
     ) -> Waste:
         logging.debug("creating new waste with basic info")
         session: Session = self._session_manager.obtain_session()

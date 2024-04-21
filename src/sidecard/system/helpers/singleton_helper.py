@@ -8,7 +8,6 @@ __all__: list[str] = ["Singleton"]
 
 
 class Singleton(type):
-
     __instances__: Dict = dict()
 
     def __call__(cls, *args, **kwargs):

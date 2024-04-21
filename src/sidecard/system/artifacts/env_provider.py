@@ -43,7 +43,6 @@ class SupportedTimeZones(str, Enum):
 
 
 class EnvProvider(BaseSettings):
-
     model_config = SettingsConfigDict(env_file=find_dotenv(".env"), env_file_encoding="utf-8")
 
     app_environment_mode: EnvironmentMode = Field(..., validation_alias="APP_ENVIRONMENT_MODE")

@@ -79,12 +79,7 @@ class CollectRequestProvider:
         uuid: str = self._uuid_provider.get_str_uuid()
         date_time: datetime = self._datetime_provider.get_current_time()
         new_collect_request: CollectRequest = CollectRequest(
-            production_center_id=production_center_id,
-            collect_date=collect_date,
-            process_status=CollectRequestStates.in_review,
-            create=date_time,
-            update=date_time,
-            uuid=uuid,
+            production_center_id=production_center_id, collect_date=collect_date, process_status=CollectRequestStates.in_review, create=date_time, update=date_time, uuid=uuid
         )
         session.add(new_collect_request)
         session.commit()

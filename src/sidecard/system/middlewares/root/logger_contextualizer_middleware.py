@@ -27,17 +27,11 @@ __all__: list[str] = ["LoggerContextualizerMiddleware"]
 
 
 class LoggerContextualizerMiddleware(BaseMiddleware):
-
     def __init__(self: Self) -> None:
         self._datetime_provider: DatetimeProvider = DatetimeProvider()
         self._uuid_provider: UuidProvider = UuidProvider()
 
-    async def __call__(
-        self: Self,
-        request: Request,
-        call_next: Callable,
-    ) -> StreamingResponse:
-
+    async def __call__(self: Self, request: Request, call_next: Callable) -> StreamingResponse:
         request_id_is_uuid: bool = UuidProvider.check_str_uuid(request.headers[r"request-id"]) if r"request-id" in request.headers else False
         internal_id: str = self._uuid_provider.get_str_uuid()
         external_id: str = request.headers[r"request-id"] if request_id_is_uuid is True else internal_id
@@ -50,11 +44,7 @@ class LoggerContextualizerMiddleware(BaseMiddleware):
 
         response: StreamingResponse
 
-        with logger.contextualize(
-            rqStartTime=self._datetime_provider.get_current_time(),
-            internalId=internal_id,
-            externalId=external_id,
-        ):
+        with logger.contextualize(rqStartTime=self._datetime_provider.get_current_time(), internalId=internal_id, externalId=external_id):
             logging.debug("starting request")
             logging.info(f"request url: {request.method} - {full_url}")
             logging.debug("logger contextualizer middleware started")

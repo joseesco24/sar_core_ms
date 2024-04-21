@@ -87,7 +87,4 @@ graphql_endpoint_definition: GraphQL = GraphQL(
 # ** info: assembling graphql endpoint with the main router
 # ---------------------------------------------------------------------------------------------------------------------
 
-waste_gpl_router: Route = Route(
-    path=_path_provider.build_posix_path("waste"),
-    endpoint=graphql_endpoint_definition,
-)
+waste_gpl_router: Route = Route(path=_path_provider.build_posix_path("waste"), endpoint=graphql_endpoint_definition)

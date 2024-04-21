@@ -56,25 +56,12 @@ class UserProvider:
         user_provider_cache.clear()
 
     @retry(on=Exception, attempts=4, wait_initial=0.08, wait_exp_base=2)
-    def create_user_with_basic_info(
-        self: Self,
-        email: str,
-        name: str,
-        last_name: str,
-    ) -> User:
+    def create_user_with_basic_info(self: Self, email: str, name: str, last_name: str) -> User:
         logging.debug("creating new user with basic info")
         session: Session = self._session_manager.obtain_session()
         uuid: str = self._uuid_provider.get_str_uuid()
         date_time: datetime = self._datetime_provider.get_current_time()
-        new_user: User = User(
-            uuid=uuid,
-            active=True,
-            email=email,
-            name=name,
-            last_name=last_name,
-            create=date_time,
-            update=date_time,
-        )
+        new_user: User = User(uuid=uuid, active=True, email=email, name=name, last_name=last_name, create=date_time, update=date_time)
         session.add(new_user)
         session.commit()
         session.refresh(new_user)

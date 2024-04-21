@@ -19,7 +19,6 @@ class ErrorFormatter:
 
     @staticmethod
     def formatter(error: GraphQLError, debug: bool) -> dict:
-
         if debug is True:
             formatted: dict = format_error(error=error, debug=True)  # type: ignore
             return formatted

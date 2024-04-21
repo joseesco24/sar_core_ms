@@ -1,24 +1,6 @@
-user_creation_req_ex = {
-    "json_schema_extra": {
-        "examples": [
-            {
-                "email": "pedro.perez@correo.com",
-                "name": "Pedro Alejandro",
-                "lastName": "Perez Sarmiento",
-            }
-        ]
-    }
-}
+user_creation_req_ex = {"json_schema_extra": {"examples": [{"email": "pedro.perez@correo.com", "name": "Pedro Alejandro", "lastName": "Perez Sarmiento"}]}}
 
-user_by_email_req_ex = {
-    "json_schema_extra": {
-        "examples": [
-            {
-                "email": "pedro.perez@correo.com",
-            }
-        ]
-    }
-}
+user_by_email_req_ex = {"json_schema_extra": {"examples": [{"email": "pedro.perez@correo.com"}]}}
 
 user_creation_res_ex = {
     "json_schema_extra": {

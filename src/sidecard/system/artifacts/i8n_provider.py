@@ -19,7 +19,6 @@ __all__: list[str] = ["I8nProvider"]
 
 
 class I8nProvider:
-
     __slots__ = ["_locale_dir", "_messages_dict", "_logs_dict"]
 
     def __init__(self: Self, module: str) -> None:

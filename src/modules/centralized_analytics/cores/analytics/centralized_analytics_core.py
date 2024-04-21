@@ -28,7 +28,6 @@ __all__: list[str] = ["CentralyzedAnalyticsCore"]
 
 
 class CentralyzedAnalyticsCore:
-
     # !------------------------------------------------------------------------
     # ! info: core slots section start
     # !------------------------------------------------------------------------
@@ -91,9 +90,7 @@ class CentralyzedAnalyticsCore:
     # !------------------------------------------------------------------------
 
     async def _map_year_wcr_response(self: Self, months_merged_info: List[Dict[str, int]]) -> YearDataResponseDto:
-        return YearDataResponseDto(
-            analytics=await self._map_year_wcr_analytics(months_merged_info=months_merged_info),
-        )
+        return YearDataResponseDto(analytics=await self._map_year_wcr_analytics(months_merged_info=months_merged_info))
 
     async def _map_year_wcr_analytics(self: Self, months_merged_info: List[Dict[str, int]]) -> List[MonthAnalyticsDto]:
         return [
