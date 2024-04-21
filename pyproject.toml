@@ -10,7 +10,7 @@ packages = [{ include = "*", from = "src" }]
 python = "^3.12"
 fastapi = "^0.110.0"
 loguru = "^0.7.0"
-pydantic = {extras = ["email"], version = "^2.6.4"}
+pydantic = { extras = ["email"], version = "^2.6.4" }
 uvicorn = "^0.24.0"
 pydantic-settings = "^2.0.3"
 pymysql = "^1.1.0"
@@ -33,10 +33,12 @@ ruff = "^0.4.1"
 mypy = "^1.9.0"
 
 [tool.ruff]
-src = ["src", "test/unit_test"]
+extend-exclude = [".mypy_cache", ".pytest_cache", ".ruff_cache"]
+extend-include = ["*.py", "*.pyi", "**/pyproject.toml"]
 output-format = "grouped"
 line-length = 180
 indent-width = 4
+src = ["."]
 fix = true
 
 [tool.ruff.format]
@@ -44,8 +46,7 @@ skip-magic-trailing-comma = true
 quote-style = "double"
 
 [tool.ruff.lint]
-extend-select = ["E501"]
-ignore = ["E203","E402"]
+ignore = ["E203", "E402"]
 
 [tool.ruff.lint.isort]
 known-local-folder = ["src"]
