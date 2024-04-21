@@ -40,9 +40,7 @@ find . | grep -E "(/__pycache__$|\.pyc$|\.pyo$)" | xargs rm -rf
 
 # ** info: formatting files
 print_title "Formatting Files"
-black ./src
-printf "\n"
-black ./test/unit_test
+ruff format
 printf "\n"
 prettier ./test/load_test/k6/**/*.js --write
 printf "\n"
@@ -69,10 +67,7 @@ if ([ $changed_files_count != 0 ] && [ "$cero_element" != "" ]); then
 fi
 
 # ** info: linting files
-print_title "Linting Files"
-flake8 ./test/unit_test --verbose
-printf "\n"
-flake8 ./src --verbose
+ruff check
 
 # ** info: validating typos
 print_title "Validating Typos"

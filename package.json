@@ -9,7 +9,7 @@
 	"readme": "readme.md",
 	"scripts": {
 		"export-dependencies": "poetry export --without-hashes --only dev --format=requirements.txt > ./requirements/dev.txt && poetry export --without-hashes --format=requirements.txt > ./requirements/app.txt",
-		"lint": "flake8 ./src --verbose && printf \"\n\" && mypy --explicit-package-bases ./src && printf \"\n\" && flake8 ./test/unit_test --verbose && printf \"\n\" && mypy --explicit-package-bases ./test/unit_test",
+		"lint": "ruff check && printf \"\n\" && mypy --explicit-package-bases ./src && printf \"\n\" && mypy --explicit-package-bases ./test/unit_test",
 		"clean-cache": "find . | grep -E \"(/__pycache__$|\\.pyc$|\\.pyo$)\" | xargs rm -rf && rm -r .mypy_cache .pytest_cache",
 		"docker-dependencies-stop": "docker compose -f ./infra/docker_compose/deploy/dependencies.yaml down",
 		"docker-dependencies-start": "docker compose -f ./infra/docker_compose/deploy/dependencies.yaml up",
@@ -19,7 +19,7 @@
 		"docker-start": "docker compose -f ./docker-compose.yaml up",
 		"docker-full-stop": "docker compose -f ./infra/docker_compose/deploy/full.yaml down",
 		"docker-full-start": "cp -f ./envs/docker.env .env && docker compose -f ./infra/docker_compose/deploy/full.yaml up",
-		"format": "black ./src && printf \"\n\" && black ./test/unit_test && printf \"\n\" && prettier \"./test/load_test/k6/**/*.js\" --write && printf \"\n\" && prettier \"./**/*.{yaml,json,md,graphql,sh,env,gitignore,prettierignore,feature}\" --write && printf \"\n\" && prettier \"./**/*Dockerfile\" --write",
+		"format": "ruff format && printf \"\n\" && prettier \"./test/load_test/k6/**/*.js\" --write && printf \"\n\" && prettier \"./**/*.{yaml,json,md,graphql,sh,env,gitignore,prettierignore,feature}\" --write && printf \"\n\" && prettier \"./**/*Dockerfile\" --write",
 		"start-dev": "cp -f ./envs/development.env .env && python src/sar_core_soa.py",
 		"start-app": "cp -f ./envs/production.env .env && python src/sar_core_soa.py",
 		"commitmsg": "bash ./.husky/commit-msg.sh",
