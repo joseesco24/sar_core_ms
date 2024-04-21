@@ -47,11 +47,19 @@ quote-style = "double"
 
 [tool.ruff.lint]
 ignore = ["E203", "E402"]
+# todo: activate isort when the project is ready
+# extend-select = ["I"]
 
 [tool.ruff.lint.isort]
+# todo: activate isort when the project is ready
+# forced-separate = ["newrelic", "uvicorn", "starlette", "fastapi", "pydantic", "pydantic_settings"]
+# force-sort-within-sections = false
 known-local-folder = ["src"]
+# detect-same-package = false
 force-single-line = true
 case-sensitive = false
+# length-sort = true
+# from-first = false
 
 [build-system]
 requires = ["poetry-core"]
