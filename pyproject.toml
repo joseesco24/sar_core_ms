@@ -48,6 +48,8 @@ extend-select = ["E501"]
 ignore = ["E203","E402"]
 
 [tool.ruff.lint.isort]
+known-local-folder = ["src"]
+force-single-line = true
 case-sensitive = false
 
 [build-system]
