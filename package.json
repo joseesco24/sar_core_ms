@@ -48,9 +48,10 @@
 		"rangeStart": 0
 	},
 	"devDependencies": {
+		"@biomejs/biome": "1.7.0",
 		"@commitlint/cli": "^19.2.2",
 		"@commitlint/config-conventional": "^19.2.2",
-		"@cucumber/cucumber": "^10.4.0",
+		"@cucumber/cucumber": "^10.5.0",
 		"cucumber": "^6.0.7",
 		"husky": "^9.0.11",
 		"prettier": "^3.2.5",
