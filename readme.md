@@ -4,7 +4,11 @@
 
 ## Description
 
-This repository corresponds to the a small python microservice that is going to be used used in the sar system.
+The SAR Core Modulith is the incharge of provide some of the most important capabilities of the SAR system, as wastes collect request management, waste management and clients management
+
+## Context
+
+The SAR system (by its initials in spanish Sistema de Gestión de Residuos) is a guvernamental scope fictitious enterprise system, SAR was proposed as one of the software focused projects of the AESOF specialization from the Pontificia Universidad Javeriana that i studied during 2023 and 2024, its main objective more than develop a full enterprise system was to improve technicals, design and methodological skills through the practice. The system main functional objective is to attend the need of having a unique centralized software that allows the governments that adopt them to easily manage radioactive wastes off all kinds from radiographies wastes to nuclear wastes and also cooperate with private enterprises that act as strategic partners between other needed capabilities, cause the project was develop as part of a architecture postgraduate project its main focus is in the architectural requirements not in the funcional ones.
 
 ## Dependencies
 

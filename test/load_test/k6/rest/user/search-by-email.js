@@ -18,7 +18,7 @@ export default function testSuite() {
 	const payload = JSON.stringify({email: "pedro.perez@correo.com.co"})
 
 	describe("search by email load test", () => {
-		const response = session.get(apiPath, payload)
+		const response = session.post(apiPath, payload)
 		check(response, {"is status 200": (response) => response.status === 200})
 	})
 }

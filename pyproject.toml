@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "sar_core_soa"
-version = "v3.3.0"
-description = "This repository corresponds to the a small python microservice that is going to be used used in the sar system."
+name = "sar_core_mdl"
+version = "v3.4.0"
+description = "The SAR Core Modulith is the incharge of provide some of the most important capabilities of the SAR system, as wastes collect request management, waste management and clients management"
 authors = ["joseesco24 <josed.escobar@outlook.com>"]
 readme = "readme.md"
 packages = [{ include = "*", from = "src" }]

@@ -1,9 +1,9 @@
 version: "3.8"
 
 services:
-  sar_core_soa:
-    container_name: sar_core_soa
-    image: ghcr.io/joseesco24/sar_core_soa:v3.3.0
+  sar_core_mdl:
+    container_name: sar_core_mdl
+    image: ghcr.io/joseesco24/sar_core_mdl:v3.4.0
     environment:
       APP_MOUNT_AUTHENTICATION_MIDDLEWARE: "false"
       APP_ENVIRONMENT_MODE: "production"
@@ -21,7 +21,7 @@ services:
       DATABASE_PORT: 3306
       SAR_BRMS_BASE_URL: "http://sar_brms:8080"
       SAR_WAREHOUSE_MS_BASE_URL: "https://sar_java_ms:8090"
-      NEW_RELIC_APP_NAME: "sar_core_soa"
+      NEW_RELIC_APP_NAME: "sar_core_mdl"
       NEW_RELIC_LICENSE_KEY: "6ee49c0acdaa6b5fd5e25b5da36e737dFFFFNRAL"
       APP_MOUNT_PRIVATE_ENDPOINTS_AUTHENTICATION_MIDDLEWARE: "false"
       APP_PRIVATE_ENDPOINTS_API_KEY: "kngkwfvvaorqgejgwoovxxsrdhgwrppb"

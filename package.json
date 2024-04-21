@@ -1,7 +1,7 @@
 {
-	"name": "sar_core_soa",
-	"version": "v3.3.0",
-	"description": "This repository corresponds to the a small python microservice that is going to be used used in the sar system.",
+	"name": "sar_core_mdl",
+	"version": "v3.4.0",
+	"description": "The SAR Core Modulith is the incharge of provide some of the most important capabilities of the SAR system, as wastes collect request management, waste management and clients management",
 	"author": {
 		"email": "josed.escobar@outlook.com",
 		"name": "joseesco24"
@@ -14,14 +14,14 @@
 		"docker-dependencies-stop": "docker compose -f ./infra/docker_compose/deploy/dependencies.yaml down",
 		"docker-dependencies-start": "docker compose -f ./infra/docker_compose/deploy/dependencies.yaml up",
 		"docker-image-build": "cp -f ./envs/production.env .env && docker compose -f ./infra/docker_compose/image/build.yaml build",
-		"docker-image-push": "docker push ghcr.io/joseesco24/sar_core_soa --all-tags",
+		"docker-image-push": "docker push ghcr.io/joseesco24/sar_core_mdl --all-tags",
 		"docker-stop": "docker compose -f ./docker-compose.yaml down",
 		"docker-start": "docker compose -f ./docker-compose.yaml up",
 		"docker-full-stop": "docker compose -f ./infra/docker_compose/deploy/full.yaml down",
 		"docker-full-start": "cp -f ./envs/docker.env .env && docker compose -f ./infra/docker_compose/deploy/full.yaml up",
 		"format": "ruff format && printf \"\n\" && prettier \"./test/load_test/k6/**/*.js\" --write && printf \"\n\" && prettier \"./**/*.{yaml,json,md,graphql,sh,env,gitignore,prettierignore,feature}\" --write && printf \"\n\" && prettier \"./**/*Dockerfile\" --write",
-		"start-dev": "cp -f ./envs/development.env .env && python src/sar_core_soa.py",
-		"start-app": "cp -f ./envs/production.env .env && python src/sar_core_soa.py",
+		"start-dev": "cp -f ./envs/development.env .env && python src/sar_core_mdl.py",
+		"start-app": "cp -f ./envs/production.env .env && python src/sar_core_mdl.py",
 		"commitmsg": "bash ./.husky/commit-msg.sh",
 		"precommit": "bash ./.husky/pre-commit.sh",
 		"postinstall": "npx husky install",

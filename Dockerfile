@@ -23,4 +23,4 @@ RUN sed -i -e 's/# es_CO.UTF-8 UTF-8/es_CO.UTF-8 UTF-8/' /etc/locale.gen
 RUN dpkg-reconfigure --frontend=noninteractive locales
 
 # ** info: executing the app
-ENTRYPOINT ["python", "src/sar_core_soa.py"]
+ENTRYPOINT ["python", "src/sar_core_mdl.py"]
