@@ -1,9 +1,5 @@
 # !/usr/bin/python3
 
-# ** info: newrelic imports
-from newrelic.agent import shutdown_agent  # type: ignore
-from newrelic.agent import initialize  # type: ignore
-
 # ** info: python imports
 from os.path import join
 from os import path
@@ -79,14 +75,6 @@ from src.modules.user.ports.rest_routers.user_router import user_router
 from src.sidecard.system.middlewares.root.logger_contextualizer_middleware import LoggerContextualizerMiddleware  # type: ignore
 from src.sidecard.system.middlewares.root.authentication_middleware import AuthenticationMiddleware  # type: ignore
 from src.sidecard.system.middlewares.root.error_handler_middleware import ErrorHandlerMiddleware  # type: ignore
-
-
-# ---------------------------------------------------------------------------------------------------------------------
-# ** info: newrelic agent initialization
-# ---------------------------------------------------------------------------------------------------------------------
-
-if env_provider.app_activate_new_relic_agent is True:
-    initialize(join(path.dirname(path.realpath(__file__)), "static", "apm", "newrelic", "newrelic.ini"))
 
 # ---------------------------------------------------------------------------------------------------------------------
 # ** info: setting up global app logging
@@ -217,9 +205,6 @@ logging.info(f"application locale set to {env_provider.app_posix_locale.value}")
 
 if __name__ == "__main__":
     uvicorn.run(**uvicorn_server_configs)
-
-if env_provider.app_activate_new_relic_agent is True:
-    shutdown_agent(timeout=10)
 
 if env_provider.app_environment_mode == "production":
     logging.debug("application ended")
