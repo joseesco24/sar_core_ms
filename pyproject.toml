@@ -53,7 +53,7 @@ ignore = ["E203", "E402"]
 
 [tool.ruff.lint.isort]
 # todo: activate isort when the project is ready
-# forced-separate = ["newrelic", "uvicorn", "starlette", "fastapi", "pydantic", "pydantic_settings"]
+# forced-separate = ["uvicorn", "starlette", "fastapi", "pydantic", "pydantic_settings"]
 # force-sort-within-sections = false
 known-local-folder = ["src"]
 # detect-same-package = false

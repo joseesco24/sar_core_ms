@@ -7,7 +7,7 @@ services:
     environment:
       APP_MOUNT_AUTHENTICATION_MIDDLEWARE: "false"
       APP_ENVIRONMENT_MODE: "production"
-      APP_LOGGING_MODE: "pretty"
+      APP_LOGGING_MODE: "structured"
       APP_LOGGING_LEVEL: "DEBUG"
       APP_SERVER_PORT: 10048
       APP_SWAGGER_DOCS: "true"
@@ -21,8 +21,6 @@ services:
       DATABASE_PORT: 3306
       SAR_BRMS_BASE_URL: "http://sar_brms:8080"
       SAR_WAREHOUSE_MS_BASE_URL: "https://sar_java_ms:8090"
-      NEW_RELIC_APP_NAME: "sar_core_mdl"
-      NEW_RELIC_LICENSE_KEY: "6ee49c0acdaa6b5fd5e25b5da36e737dFFFFNRAL"
       APP_MOUNT_PRIVATE_ENDPOINTS_AUTHENTICATION_MIDDLEWARE: "false"
       APP_PRIVATE_ENDPOINTS_API_KEY: "kngkwfvvaorqgejgwoovxxsrdhgwrppb"
       APP_MOUNT_PRIVATE_ENDPOINTS: "true"
