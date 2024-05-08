@@ -1,6 +1,6 @@
 {
 	"name": "sar_core_mdl",
-	"version": "v3.4.0",
+	"version": "v3.5.0",
 	"description": "The SAR Core Modulith is the incharge of provide some of the most important capabilities of the SAR system, as wastes collect request management, waste management and clients management",
 	"author": {
 		"email": "josed.escobar@outlook.com",
