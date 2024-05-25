@@ -1,5 +1,5 @@
 # ** info: declaration of the production image base version
-FROM python:3.12.0-slim-bullseye
+FROM python:3.12.3-slim-bullseye
 
 # ** info: copying the app requirements file from the testing image
 COPY ["/requirements/app.txt","$WORKDIR/"]
