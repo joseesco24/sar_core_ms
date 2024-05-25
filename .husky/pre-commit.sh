@@ -79,3 +79,4 @@ print_title "Commit Sucessfully"
 # ** info: cleaning cache
 print_title "Cleaning Cache"
 find . | grep -E "(/__pycache__$|\.pyc$|\.pyo$)" | xargs rm -rf
+rm -rf .mypy_cache .pytest_cache .ruff_cache

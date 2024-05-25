@@ -12,7 +12,7 @@
 		"lint": "ruff check && printf \"\n\" && mypy --explicit-package-bases ./src && printf \"\n\" && mypy --explicit-package-bases ./test/unit_test",
 		"clean-cache": "find . | grep -E \"(/__pycache__$|\\.pyc$|\\.pyo$)\" | xargs rm -rf && rm -rf .mypy_cache .pytest_cache .ruff_cache",
 		"docker-image-build": "docker build --tag ghcr.io/joseesco24/sar_core_ms:v3.6.0 .",
-		"docker-image-push": "docker push ghcr.io/joseesco24/sar_core_ms:v3.6.0 --all-tags",
+		"docker-image-push": "docker push ghcr.io/joseesco24/sar_core_ms:v3.6.0",
 		"docker-stop": "docker compose -f ./docker-compose.yaml down",
 		"docker-start": "docker compose -f ./docker-compose.yaml up",
 		"format": "ruff format && printf \"\n\" && prettier \"./src/**/*.{json,graphql}\" --write",
