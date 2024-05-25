@@ -9,7 +9,7 @@ import sys
 from typing import Set
 
 # **info: appending src path to the system paths for absolute imports from src path
-sys.path.append(join(path.dirname(path.realpath(__file__)), "..", "..", "..", "."))
+sys.path.append(join(path.dirname(path.realpath(__file__)), "..", "..", "."))
 
 # ** info: dtos imports
 from src.modules.collect_request.ports.rest_routers_dtos.collect_request_dtos import CollectRequestFullDataResponseDto  # type: ignore

@@ -42,8 +42,6 @@ find . | grep -E "(/__pycache__$|\.pyc$|\.pyo$)" | xargs rm -rf
 print_title "Formatting Files"
 ruff format
 printf "\n"
-prettier ./test/load_test/k6/**/*.js --write
-printf "\n"
 prettier "./**/*.{yaml,json,md,graphql,sh,env,gitignore,prettierignore,feature}" --write
 printf "\n"
 prettier "./**/*Dockerfile" --write
@@ -71,7 +69,7 @@ ruff check
 
 # ** info: validating typos
 print_title "Validating Typos"
-mypy --explicit-package-bases ./test/unit_test
+mypy --explicit-package-bases ./test
 printf "\n"
 mypy --explicit-package-bases ./src
 
