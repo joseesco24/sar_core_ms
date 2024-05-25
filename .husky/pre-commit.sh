@@ -42,17 +42,13 @@ find . | grep -E "(/__pycache__$|\.pyc$|\.pyo$)" | xargs rm -rf
 print_title "Formatting Files"
 ruff format
 printf "\n"
-prettier "./**/*.{yaml,json,md,graphql,sh,env,gitignore,prettierignore,feature}" --write
-printf "\n"
-prettier "./**/*Dockerfile" --write
+prettier "./src/**/*.{json,graphql}" --write
 
 # ** info: exporting dependencies if needed
 if [[ " ${staged_files[@]} " =~ " poetry.lock " ]]; then
 	print_title "Exporting Dependencies"
-	poetry export --without-hashes --only dev --format=requirements.txt > ./requirements/dev.txt
-	poetry export --without-hashes --format=requirements.txt > ./requirements/app.txt
-	git add ./requirements/app.txt
-	git add ./requirements/dev.txt
+	poetry export --without-hashes --format=requirements.txt > ./requirements.txt
+	git add ./requirements.txt
 fi
 
 # ** info: updating staged files
@@ -72,6 +68,10 @@ print_title "Validating Typos"
 mypy --explicit-package-bases ./test
 printf "\n"
 mypy --explicit-package-bases ./src
+
+# ** info: linting files
+print_title "Checking Dependencies"
+poetry audit
 
 # ** info: linting files
 print_title "Commit Sucessfully"

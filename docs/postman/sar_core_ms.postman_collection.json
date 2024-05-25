@@ -34,14 +34,8 @@
 								},
 								"url": {
 									"raw": "{{HOST}}/rest/parameter/search",
-									"host": [
-										"{{HOST}}"
-									],
-									"path": [
-										"rest",
-										"parameter",
-										"search"
-									]
+									"host": ["{{HOST}}"],
+									"path": ["rest", "parameter", "search"]
 								}
 							},
 							"response": []
@@ -76,15 +70,8 @@
 										},
 										"url": {
 											"raw": "{{HOST}}/rest/centralized-analytics/wcr/yearly",
-											"host": [
-												"{{HOST}}"
-											],
-											"path": [
-												"rest",
-												"centralized-analytics",
-												"wcr",
-												"yearly"
-											]
+											"host": ["{{HOST}}"],
+											"path": ["rest", "centralized-analytics", "wcr", "yearly"]
 										}
 									},
 									"response": []
@@ -124,15 +111,8 @@
 												},
 												"url": {
 													"raw": "{{HOST}}/rest/collect-request/status/update",
-													"host": [
-														"{{HOST}}"
-													],
-													"path": [
-														"rest",
-														"collect-request",
-														"status",
-														"update"
-													]
+													"host": ["{{HOST}}"],
+													"path": ["rest", "collect-request", "status", "update"]
 												}
 											},
 											"response": []
@@ -159,16 +139,8 @@
 												},
 												"url": {
 													"raw": "{{HOST}}/rest/collect-request/status/update/finished",
-													"host": [
-														"{{HOST}}"
-													],
-													"path": [
-														"rest",
-														"collect-request",
-														"status",
-														"update",
-														"finished"
-													]
+													"host": ["{{HOST}}"],
+													"path": ["rest", "collect-request", "status", "update", "finished"]
 												}
 											},
 											"response": []
@@ -195,16 +167,8 @@
 												},
 												"url": {
 													"raw": "{{HOST}}/rest/collect-request/status/update/approved",
-													"host": [
-														"{{HOST}}"
-													],
-													"path": [
-														"rest",
-														"collect-request",
-														"status",
-														"update",
-														"approved"
-													]
+													"host": ["{{HOST}}"],
+													"path": ["rest", "collect-request", "status", "update", "approved"]
 												}
 											},
 											"response": []
@@ -231,16 +195,8 @@
 												},
 												"url": {
 													"raw": "{{HOST}}/rest/collect-request/status/update/rejected",
-													"host": [
-														"{{HOST}}"
-													],
-													"path": [
-														"rest",
-														"collect-request",
-														"status",
-														"update",
-														"rejected"
-													]
+													"host": ["{{HOST}}"],
+													"path": ["rest", "collect-request", "status", "update", "rejected"]
 												}
 											},
 											"response": []
@@ -269,15 +225,8 @@
 										},
 										"url": {
 											"raw": "{{HOST}}/rest/collect-request/status/search",
-											"host": [
-												"{{HOST}}"
-											],
-											"path": [
-												"rest",
-												"collect-request",
-												"status",
-												"search"
-											]
+											"host": ["{{HOST}}"],
+											"path": ["rest", "collect-request", "status", "search"]
 										}
 									},
 									"response": []
@@ -300,14 +249,8 @@
 								},
 								"url": {
 									"raw": "{{HOST}}/rest/collect-request/create",
-									"host": [
-										"{{HOST}}"
-									],
-									"path": [
-										"rest",
-										"collect-request",
-										"create"
-									]
+									"host": ["{{HOST}}"],
+									"path": ["rest", "collect-request", "create"]
 								}
 							},
 							"response": []
@@ -342,15 +285,8 @@
 										},
 										"url": {
 											"raw": "{{HOST}}/rest/waste/clasification/obtain",
-											"host": [
-												"{{HOST}}"
-											],
-											"path": [
-												"rest",
-												"waste",
-												"clasification",
-												"obtain"
-											]
+											"host": ["{{HOST}}"],
+											"path": ["rest", "waste", "clasification", "obtain"]
 										}
 									},
 									"response": []
@@ -377,15 +313,8 @@
 										},
 										"url": {
 											"raw": "{{HOST}}/rest/waste/clasification/update",
-											"host": [
-												"{{HOST}}"
-											],
-											"path": [
-												"rest",
-												"waste",
-												"clasification",
-												"update"
-											]
+											"host": ["{{HOST}}"],
+											"path": ["rest", "waste", "clasification", "update"]
 										}
 									},
 									"response": []
@@ -417,15 +346,8 @@
 										},
 										"url": {
 											"raw": "{{HOST}}/rest/waste/status/search",
-											"host": [
-												"{{HOST}}"
-											],
-											"path": [
-												"rest",
-												"waste",
-												"status",
-												"search"
-											]
+											"host": ["{{HOST}}"],
+											"path": ["rest", "waste", "status", "search"]
 										}
 									},
 									"response": []
@@ -452,15 +374,8 @@
 										},
 										"url": {
 											"raw": "{{HOST}}/rest/waste/status/update",
-											"host": [
-												"{{HOST}}"
-											],
-											"path": [
-												"rest",
-												"waste",
-												"status",
-												"update"
-											]
+											"host": ["{{HOST}}"],
+											"path": ["rest", "waste", "status", "update"]
 										}
 									},
 									"response": []
@@ -494,14 +409,8 @@
 								},
 								"url": {
 									"raw": "{{HOST}}/rest/user/create",
-									"host": [
-										"{{HOST}}"
-									],
-									"path": [
-										"rest",
-										"user",
-										"create"
-									]
+									"host": ["{{HOST}}"],
+									"path": ["rest", "user", "create"]
 								}
 							},
 							"response": []
@@ -528,14 +437,8 @@
 								},
 								"url": {
 									"raw": "{{HOST}}/rest/user/search-by-email",
-									"host": [
-										"{{HOST}}"
-									],
-									"path": [
-										"rest",
-										"user",
-										"search-by-email"
-									]
+									"host": ["{{HOST}}"],
+									"path": ["rest", "user", "search-by-email"]
 								}
 							},
 							"response": []
@@ -558,14 +461,8 @@
 								],
 								"url": {
 									"raw": "{{HOST}}/rest/heart-beat/",
-									"host": [
-										"{{HOST}}"
-									],
-									"path": [
-										"rest",
-										"heart-beat",
-										""
-									]
+									"host": ["{{HOST}}"],
+									"path": ["rest", "heart-beat", ""]
 								}
 							},
 							"response": []
@@ -618,13 +515,8 @@
 								},
 								"url": {
 									"raw": "{{HOST}}/graphql/waste",
-									"host": [
-										"{{HOST}}"
-									],
-									"path": [
-										"graphql",
-										"waste"
-									]
+									"host": ["{{HOST}}"],
+									"path": ["graphql", "waste"]
 								}
 							},
 							"response": []
@@ -672,13 +564,8 @@
 								},
 								"url": {
 									"raw": "{{HOST}}/graphql/user",
-									"host": [
-										"{{HOST}}"
-									],
-									"path": [
-										"graphql",
-										"user"
-									]
+									"host": ["{{HOST}}"],
+									"path": ["graphql", "user"]
 								}
 							},
 							"response": []
@@ -693,18 +580,14 @@
 			"listen": "prerequest",
 			"script": {
 				"type": "text/javascript",
-				"exec": [
-					""
-				]
+				"exec": [""]
 			}
 		},
 		{
 			"listen": "test",
 			"script": {
 				"type": "text/javascript",
-				"exec": [
-					""
-				]
+				"exec": [""]
 			}
 		}
 	],

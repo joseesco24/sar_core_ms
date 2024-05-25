@@ -8,14 +8,14 @@
 	},
 	"readme": "readme.md",
 	"scripts": {
-		"export-dependencies": "poetry export --without-hashes --only dev --format=requirements.txt > ./requirements/dev.txt && poetry export --without-hashes --format=requirements.txt > ./requirements/app.txt",
+		"export-dependencies": "poetry export --without-hashes --format=requirements.txt > ./requirements.txt",
 		"lint": "ruff check && printf \"\n\" && mypy --explicit-package-bases ./src && printf \"\n\" && mypy --explicit-package-bases ./test/unit_test",
 		"clean-cache": "find . | grep -E \"(/__pycache__$|\\.pyc$|\\.pyo$)\" | xargs rm -rf && rm -rf .mypy_cache .pytest_cache .ruff_cache",
-		"docker-image-build": "cp -f ./envs/production.env .env && docker compose -f ./infra/docker_compose/image/build.yaml build",
-		"docker-image-push": "docker push ghcr.io/joseesco24/sar_core_ms --all-tags",
+		"docker-image-build": "docker build --tag ghcr.io/joseesco24/sar_core_ms:v3.5.1 .",
+		"docker-image-push": "docker push ghcr.io/joseesco24/sar_core_ms:v3.5.1 --all-tags",
 		"docker-stop": "docker compose -f ./docker-compose.yaml down",
 		"docker-start": "docker compose -f ./docker-compose.yaml up",
-		"format": "ruff format && printf \"\n\" && prettier \"./**/*.{yaml,json,md,graphql,sh,env,gitignore,prettierignore,feature}\" --write && printf \"\n\" && prettier \"./**/*Dockerfile\" --write",
+		"format": "ruff format && printf \"\n\" && prettier \"./src/**/*.{json,graphql}\" --write",
 		"start": "cp -f .env.example .env && python src/sar_core_ms.py",
 		"commitmsg": "bash ./.husky/commit-msg.sh",
 		"precommit": "bash ./.husky/pre-commit.sh",
@@ -23,10 +23,6 @@
 		"test": "pytest --verbose"
 	},
 	"prettier": {
-		"plugins": [
-			"prettier-plugin-gherkin",
-			"prettier-plugin-sh"
-		],
 		"trailingComma": "es5",
 		"useTabs": true,
 		"semi": false,
@@ -45,11 +41,7 @@
 		"@biomejs/biome": "1.7.3",
 		"@commitlint/cli": "^19.3.0",
 		"@commitlint/config-conventional": "^19.2.2",
-		"@cucumber/cucumber": "^10.7.0",
-		"cucumber": "^6.0.7",
 		"husky": "^9.0.11",
-		"prettier": "^3.2.5",
-		"prettier-plugin-gherkin": "^2.2.1",
-		"prettier-plugin-sh": "^0.14.0"
+		"prettier": "^3.2.5"
 	}
 }

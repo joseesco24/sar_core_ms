@@ -2,13 +2,13 @@
 FROM python:3.12.3-slim-bullseye
 
 # ** info: copying the app requirements file from the testing image
-COPY ["/requirements/app.txt","$WORKDIR/"]
+COPY ["/requirements.txt","$WORKDIR/"]
 
 # ** info: installing the dependencies and upgrading pip, wheel and setuptools
-RUN pip install -r $WORKDIR/app.txt
+RUN pip install -r $WORKDIR/requirements.txt
 
 # ** info: removing the app requirements file
-RUN rm app.txt
+RUN rm requirements.txt
 
 # ** info: copying source code of the application from the testing image
 COPY ["src", "$WORKDIR/src"]
