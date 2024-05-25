@@ -1,8 +1,8 @@
 version: "3.8"
 
 services:
-  sar_core_mdl:
-    image: ghcr.io/joseesco24/sar_core_mdl:v3.5.0
+  sar_core_ms:
+    image: ghcr.io/joseesco24/sar_core_ms:v3.5.0
     build:
       dockerfile: Dockerfile
       context: ../../../.

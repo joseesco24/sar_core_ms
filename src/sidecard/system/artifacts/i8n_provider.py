@@ -27,7 +27,7 @@ class I8nProvider:
 
     def _get_locale_languaje(self: Self) -> str:
         current_locale: str = locale.getlocale()[0]
-        locale_languaje: str = current_locale if current_locale != "C" else "en_US"
+        locale_languaje: str = current_locale if current_locale != "es_ES" else "en_US"
         return locale_languaje
 
     def message(self: Self, message_key: str, **kwargs) -> str:

@@ -4,7 +4,7 @@
 
 ## Description
 
-The SAR Core Modulith is the incharge of provide some of the most important capabilities of the SAR system, as wastes collect request management, waste management and clients management.
+The SAR Core Microservice is the incharge of provide some of the most important capabilities of the SAR system, as wastes collect request management, waste management and clients management.
 
 ## Context
 

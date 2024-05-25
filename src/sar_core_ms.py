@@ -111,18 +111,18 @@ graphql_routers: List[BaseRoute] = [Mount(path=path_provider.build_posix_path("g
 # ---------------------------------------------------------------------------------------------------------------------
 
 metadata: Dict[str, Any] = {
-    "description": "The SAR Core Modulith is the incharge of provide some of the most important capabilities of the SAR system, as wastes collect request management, waste management and clients management",  # noqa # fmt: skip
+    "description": "The SAR Core Microservice is the incharge of provide some of the most important capabilities of the SAR system, as wastes collect request management, waste management and clients management",  # noqa # fmt: skip
     "summary": "Service incharge of managing wastes, collect request, and system parameters.",
     "title": "Sar Python Microservice",
     "version": "v3.2.1",
 }
 
-sar_core_mdl: FastAPI
+sar_core_ms: FastAPI
 if env_provider.app_swagger_docs is True:
-    sar_core_mdl = FastAPI(routes=graphql_routers, docs_url=path_provider.build_posix_path("rest", "docs"), redoc_url=None, swagger_ui_parameters={"defaultModelsExpandDepth": -1}, **metadata)  # noqa # fmt: skip
+    sar_core_ms = FastAPI(routes=graphql_routers, docs_url=path_provider.build_posix_path("rest", "docs"), redoc_url=None, swagger_ui_parameters={"defaultModelsExpandDepth": -1}, **metadata)  # noqa # fmt: skip
     logging.warning("swagger docs active")
 else:
-    sar_core_mdl = FastAPI(routes=graphql_routers, docs_url=None, redoc_url=None, **metadata)
+    sar_core_ms = FastAPI(routes=graphql_routers, docs_url=None, redoc_url=None, **metadata)
     logging.warning("swagger docs inactive")
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -146,7 +146,7 @@ rest_router.include_router(router=user_router)
 # ** info: mounting rest based routers
 # ---------------------------------------------------------------------------------------------------------------------
 
-sar_core_mdl.include_router(rest_router)
+sar_core_ms.include_router(rest_router)
 
 # ---------------------------------------------------------------------------------------------------------------------
 # ** info: setting up app middlewares
@@ -154,13 +154,13 @@ sar_core_mdl.include_router(rest_router)
 
 if env_provider.app_mount_authentication_middleware is True:
     logging.info("authentication middleware active")
-    sar_core_mdl.add_middleware(middleware_class=BaseHTTPMiddleware, dispatch=AuthenticationMiddleware())
+    sar_core_ms.add_middleware(middleware_class=BaseHTTPMiddleware, dispatch=AuthenticationMiddleware())
 else:
     logging.warning("authentication middleware inactive")
 
-sar_core_mdl.add_middleware(middleware_class=BaseHTTPMiddleware, dispatch=ErrorHandlerMiddleware())
-sar_core_mdl.add_middleware(middleware_class=BaseHTTPMiddleware, dispatch=LoggerContextualizerMiddleware())
-sar_core_mdl.add_middleware(CORSMiddleware, allow_credentials=True, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
+sar_core_ms.add_middleware(middleware_class=BaseHTTPMiddleware, dispatch=ErrorHandlerMiddleware())
+sar_core_ms.add_middleware(middleware_class=BaseHTTPMiddleware, dispatch=LoggerContextualizerMiddleware())
+sar_core_ms.add_middleware(CORSMiddleware, allow_credentials=True, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
 # ---------------------------------------------------------------------------------------------------------------------
 # ** info: erasing unnecessary artifacts builded during the app setup
@@ -183,7 +183,7 @@ if __name__ != "__main__":
 # ---------------------------------------------------------------------------------------------------------------------
 
 uvicorn_server_configs: Dict[str, Any] = {
-    "app": sar_core_mdl if env_provider.app_environment_mode == "production" else "sar_core_mdl:sar_core_mdl",
+    "app": sar_core_ms if env_provider.app_environment_mode == "production" else "sar_core_ms:sar_core_ms",
     "log_level": "debug" if env_provider.app_environment_mode != "production" else "error",
     "use_colors": False if env_provider.app_environment_mode == "production" else True,
     "reload": False if env_provider.app_environment_mode == "production" else True,

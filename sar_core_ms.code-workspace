@@ -12,10 +12,10 @@
     "version": "v3.5.0",
     "configurations": [
       {
-        "name": "sar_core_mdl",
+        "name": "sar_core_ms",
         "type": "debugpy",
         "request": "launch",
-        "program": "src/sar_core_mdl.py",
+        "program": "src/sar_core_ms.py",
         "console": "integratedTerminal",
         "justMyCode": true,
         "jinja": true,
