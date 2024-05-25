@@ -3,7 +3,7 @@ version: "3.8"
 services:
   sar_core_ms:
     container_name: sar_core_ms
-    image: ghcr.io/joseesco24/sar_core_ms:v3.5.0
+    image: ghcr.io/joseesco24/sar_core_ms:v3.5.1
     env_file:
       - path: ../../../.env
         required: true
