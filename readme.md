@@ -27,7 +27,7 @@ The project is mainly based on python but it include artifacts created with othe
 ## Related Repositories
 
 - [**sar_core_ms_ci**](https://github.com/joseesco24/sar_core_ms_ci)
-- [**sar_core-ms_cd**](https://github.com/joseesco24/sar_core_ms_cd)
+- [**sar_core_ms_cd**](https://github.com/joseesco24/sar_core_ms_cd)
 - [**sar_db_mysql**](https://github.com/joseesco24/sar_bd_mysql)
 - [**sar_brms**](https://github.com/joseesco24/sar_brms)
 
