@@ -20,10 +20,16 @@ The project is mainly based on python but it include artifacts created with othe
 - **Docker-26.0.0**: Used for cloud and local deployments
 - **K6-v0.50.0**: Used for load and smoke testing
 
+## Related Artifacts
+
+- [**env_files**](https://drive.google.com/drive/folders/1PNMv2e0gqUWbSapvU-GirsTy_lvvbbIi?usp=sharing)
+
 ## Related Repositories
 
-- **sar_db_mysql:** https://github.com/joseesco24/sar_bd_mysql
-- **sar_brms:** https://github.com/joseesco24/sar_brms
+- [**sar_core_ms_ci**](https://github.com/joseesco24/sar_core_ms_ci)
+- [**sar_core-ms_cd**](https://github.com/joseesco24/sar_core_ms_cd)
+- [**sar_db_mysql**](https://github.com/joseesco24/sar_bd_mysql)
+- [**sar_brms**](https://github.com/joseesco24/sar_brms)
 
 ## Local Deployment
 
