@@ -9,7 +9,7 @@
     "zowe.settings.version": 2
   },
   "launch": {
-    "version": "v3.6.0",
+    "version": "v3.6.1",
     "configurations": [
       {
         "name": "sar_core_ms",

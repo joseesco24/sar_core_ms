@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "sar_core_ms"
-version = "v3.6.0"
+version = "v3.6.1"
 description = "The SAR Core Microservice is the incharge of provide some of the most important capabilities of the SAR system, as wastes collect request management, waste management and clients management"
 authors = ["joseesco24 <josed.escobar@outlook.com>"]
 readme = "readme.md"
