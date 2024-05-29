@@ -51,7 +51,7 @@ class WarehouseMsService:
     @retry(on=HTTPException, attempts=8, wait_initial=0.4, wait_exp_base=2)
     async def obtain_warehouse_full_data(self: Self, warehouse_id: int) -> WarehouseFullDataResponseDto:
         logging.debug("obtaining warehouse full data from warehouse ms")
-        url: str = urljoin(self.base_url, f"/Dev/{warehouse_id}")
+        url: str = urljoin(self.base_url, f"/store/{warehouse_id}")
         warehouse_full_data: WarehouseFullDataResponseDto
         logging.debug(f"warehouse ms url: {url}")
         try:
@@ -73,7 +73,7 @@ class WarehouseMsService:
     @retry(on=HTTPException, attempts=8, wait_initial=0.4, wait_exp_base=2)
     async def update_warehouse_full_data(self: Self, warehouse_id: int, warehouse_current_full_data: WarehouseFullDataResponseDto) -> WarehouseFullDataResponseDto:
         logging.debug("updating warehouse full data on warehouse ms")
-        url: str = urljoin(self.base_url, f"/Dev/{warehouse_id}")
+        url: str = urljoin(self.base_url, f"/store/{warehouse_id}")
         warehouse_full_data: WarehouseFullDataResponseDto
         logging.debug(f"warehouse ms url: {url}")
         try:
