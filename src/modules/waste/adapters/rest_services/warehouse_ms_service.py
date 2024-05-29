@@ -78,12 +78,12 @@ class WarehouseMsService:
         logging.debug(f"warehouse ms url: {url}")
         try:
             data: WarehouseFullDataRequestDto = await self._map_warehouse_full_data_dto_to_ms_dict(warehouse_full_data=warehouse_current_full_data)
-            raw_data: dict[str, any] = data.model_dump_json()
+            raw_data: dict[str, any] = data.model_dump()
         except Exception:
             logging.error("error parsing request for warehouse ms")
             raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
         try:
-            raw_response: Response = await self._httpx_client.put(url=url, content=raw_data, timeout=10)
+            raw_response: Response = await self._httpx_client.put(url=url, json=raw_data, timeout=10)
         except Exception:
             logging.error("error unable to connect to warehouse ms")
             raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE)
