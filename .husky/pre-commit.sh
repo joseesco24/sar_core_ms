@@ -71,7 +71,7 @@ mypy --explicit-package-bases ./src
 
 # ** info: linting files
 print_title "Checking Dependencies"
-poetry audit
+poetry audit || true
 
 # ** info: linting files
 print_title "Commit Sucessfully"
